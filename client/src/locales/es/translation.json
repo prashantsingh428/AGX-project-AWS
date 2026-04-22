@@ -1,0 +1,88 @@
+{
+  "navbar": {
+    "who_we_are": {
+      "main": "Quiénes Somos",
+      "about": "Sobre Nosotros",
+      "founder": "Sobre el Fundador",
+      "awards": "Premios y Reconocimientos"
+    },
+    "what_we_do": "Qué Hacemos",
+    "insights": "Perspectivas",
+    "careers": "Carreras",
+    "contact_us": "Contáctenos",
+    "get_started": "Empezar"
+  },
+  "hero": {
+    "tagline": "AI GrowthExa",
+    "subtitle": "Empoderar • Escalar • Tener éxito",
+    "description": "Donde el dato piensa. La IA actúa. Las marcas crecen.",
+    "cta": "Obtenga su plan de crecimiento",
+    "secondary_title": "Dando forma al mañana, hoy",
+    "secondary_description": "En un mundo de cambio constante, la reinvención es una estrategia continua. Por eso trabajamos con las organizaciones para reescribir las reglas de crecimiento, innovación y resiliencia.",
+    "secondary_cta": "Vea lo que hacemos"
+  },
+  "growth_plan": {
+    "tagline": "PLAN DE CRECIMIENTO PERSONALIZADO",
+    "title": "Cada marca es diferente.",
+    "subtitle": "Tu plan de crecimiento también debería serlo.",
+    "description": "Comparte tus objetivos y desafíos con nosotros. Crearemos un plan de marketing personalizado impulsado por IA adaptado a las necesidades y objetivos únicos de tu marca.",
+    "consultation": "Consulta estratégica gratuita de 30 minutos",
+    "solution": "Recomendación de solución de IA personalizada",
+    "commitment": "Sin compromiso",
+    "tracking": "Seguimiento de rendimiento centrado en el ROI",
+    "consultant": "Consultor dedicado al crecimiento de IA",
+    "form": {
+      "name": "Nombre completo *",
+      "email": "Dirección de correo electrónico *",
+      "phone": "Número de teléfono *",
+      "company": "Nombre de la empresa",
+      "industry": "Industria",
+      "services": "Servicios que está buscando",
+      "budget": "Presupuesto mensual de marketing",
+      "message": "Consulta / Mensaje",
+      "submit": "Obtener mi plan de crecimiento personalizado",
+      "placeholder": {
+        "name": "John Doe",
+        "email": "john@empresa.com",
+        "phone": "9876543210",
+        "company": "Su Empresa Inc.",
+        "industry": "Seleccione su industria",
+        "services": "Seleccionar servicio",
+        "budget": "Seleccione su rango de presupuesto",
+        "message": "¿Cuáles son sus mayores desafíos de marketing?"
+      },
+      "industries": {
+        "ecommerce": "Comercio electrónico",
+        "saas": "SaaS / Tecnología",
+        "healthcare": "Cuidado de la salud",
+        "finance": "Finanzas",
+        "real_estate": "Bienes inmuebles",
+        "education": "Educación",
+        "retail": "Venta al por menor",
+        "consulting": "Consultoría",
+        "other": "Otro"
+      },
+      "service_options": {
+        "brand": "Identidad de marca y diseño",
+        "marketing": "Marketing impulsado por IA",
+        "content": "Creación de contenido",
+        "social": "Gestión de redes sociales",
+        "seo": "SEO y marketing de resultados",
+        "automation": "Automatización de marketing",
+        "full": "Crecimiento de servicio completo"
+      },
+      "budgets": {
+        "less_5k": "Menos de $5,000",
+        "5k_10k": "$5,000 - $10,000",
+        "10k_25k": "$10,000 - $25,000",
+        "25k_50k": "$25,000 - $50,000",
+        "50k_plus": "$50,000+"
+      },
+      "status": {
+        "success": "¡Gracias! Nos pondremos en contacto pronto.",
+        "error": "Algo salió mal. Por favor, inténtelo de nuevo.",
+        "processing": "Enviando..."
+      }
+    }
+  }
+}

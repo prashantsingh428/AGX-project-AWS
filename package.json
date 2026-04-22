@@ -1,0 +1,14 @@
+{
+  "name": "ai-growth-exa-aws",
+  "version": "1.0.0",
+  "description": "Unified runner for AI Growth Exa AWS",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "dev-server": "cd server && npm run dev",
+    "dev-client": "cd client && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
