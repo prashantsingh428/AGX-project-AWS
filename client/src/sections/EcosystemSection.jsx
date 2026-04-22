@@ -7,7 +7,7 @@ import officeImage from '../assets/images/modern_office_collab.png';
 gsap.registerPlugin(ScrollTrigger);
 
 // Import client logos
-const imagesGlob = import.meta.glob('../assets/images/clients/*.{png,svg,webp,jpeg,jpg}', { eager: true, as: 'url' });
+const imagesGlob = import.meta.glob('../assets/images/clients/*.{png,svg,webp,jpeg,jpg}', { eager: true, query: '?url', import: 'default' });
 const clientImages = Object.values(imagesGlob);
 
 const EcosystemSection = () => {

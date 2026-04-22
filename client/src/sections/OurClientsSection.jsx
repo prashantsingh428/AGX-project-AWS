@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const imagesGlob = import.meta.glob('../assets/images/clients/*.{png,svg,webp,jpeg,jpg}', { eager: true, as: 'url' });
+const imagesGlob = import.meta.glob('../assets/images/clients/*.{png,svg,webp,jpeg,jpg}', { eager: true, query: '?url', import: 'default' });
 const clientImages = Object.values(imagesGlob);
 
 const ClientLogo = ({ src }) => (

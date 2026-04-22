@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, useLocation } from 'react-router-dom';
 import FloatingParticles from '../components/FloatingParticles';
 // Import assets
-const imagesGlob = import.meta.glob('../assets/images/*.{png,svg,webp,jpeg,jpg}', { eager: true, as: 'url' });
+const imagesGlob = import.meta.glob('../assets/images/*.{png,svg,webp,jpeg,jpg}', { eager: true, query: '?url', import: 'default' });
 const clientImages = Object.values(imagesGlob);
 import {
   Lightbulb,
