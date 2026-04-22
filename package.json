@@ -4,6 +4,7 @@
   "description": "Unified runner for AI Growth Exa AWS",
   "main": "index.js",
   "scripts": {
+    "build": "npm install --prefix client && npm run build --prefix client",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "dev-server": "cd server && npm run dev",
     "dev-client": "cd client && npm run dev"
