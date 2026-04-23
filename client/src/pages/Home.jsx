@@ -8,6 +8,7 @@ const EcosystemSection = lazy(() => import('../sections/EcosystemSection'));
 const InsightBannerSection = lazy(() => import('../sections/InsightBannerSection'));
 const FullImageSection = lazy(() => import('../sections/FullImageSection'));
 const SuccessStoriesSection = lazy(() => import('../sections/SuccessStoriesSection'));
+const LimitlessSection = lazy(() => import('../sections/LimitlessSection'));
 
 const SectionLoader = () => (
     <div className="min-h-[200px] flex items-center justify-center">
@@ -28,6 +29,7 @@ const Home = () => {
                 <EcosystemSection />
 
                 <SuccessStoriesSection />
+                <LimitlessSection />
             </Suspense>
         </>
     );

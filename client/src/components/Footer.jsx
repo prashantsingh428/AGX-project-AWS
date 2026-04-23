@@ -97,49 +97,76 @@ const Footer = () => {
     ];
 
     return (
-        <footer ref={footerRef} className="bg-slate-50 text-slate-600 py-12 px-6 sm:px-12 lg:px-16 border-t border-gray-200 relative overflow-hidden">
+        <footer ref={footerRef} className="bg-slate-50 text-slate-600 py-12 px-6 sm:px-12 lg:px-16 border-t border-gray-200 relative overflow-hidden mt-24">
             {/* Background Decorative Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[150px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-100/30 blur-[150px] rounded-full pointer-events-none"></div>
 
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
 
-            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl relative z-10">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 max-w-7xl relative z-10">
                 {/* Branding Column */}
-                <div className="footer-column flex flex-col space-y-4 lg:pr-4">
-                    <Link to="/" className="inline-block transform transition-transform hover:scale-105">
-                        <img src={logo} alt="Ai Growth Exa" className="h-10 md:h-12 w-auto object-contain" />
-                    </Link>
-                    <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-                        Elevating businesses through precision AI-powered strategies and performance-first growth systems.
-                    </p>
-                    <div className="flex items-center gap-4 text-gray-500">
-                        <span className="flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold">
+                <div className="footer-column flex flex-col space-y-6 lg:pr-4">
+                    <div className="space-y-4">
+                        <Link to="/" className="inline-block transform transition-transform hover:scale-105">
+                            <img src={logo} alt="Ai Growth Exa" className="h-10 md:h-12 w-auto object-contain" />
+                        </Link>
+                        <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
+                            Elevating businesses through precision AI-powered strategies and performance-first growth systems.
+                        </p>
+                    </div>
+
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors">
+                            <Mail size={16} className="text-primary/60" />
+                            <a href="mailto:contact@aigrowthexa.com" className="text-sm">contact@aigrowthexa.com</a>
+                        </div>
+                        <div className="flex items-center gap-3 text-slate-500 hover:text-primary transition-colors">
+                            <Phone size={16} className="text-primary/60" />
+                            <span className="text-sm">+1 (555) 000-0000</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        {socialLinks.map((link) => (
+                            <a
+                                key={link.name}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300 shadow-sm"
+                            >
+                                {link.icon}
+                            </a>
+                        ))}
+                    </div>
+
+                    <div className="flex items-center gap-4 text-gray-500 pt-2 border-t border-gray-100 italic">
+                        <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold">
                             <Shield size={12} className="text-primary" />
                             Secure
                         </span>
-                        <span className="flex items-center gap-1.5 text-xs uppercase tracking-widest font-bold">
+                        <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold">
                             <Globe size={12} className="text-primary" />
                             Global
                         </span>
                     </div>
                 </div>
 
-                { }
+                {/* Explore Column */}
                 <div className="footer-column flex flex-col space-y-4">
-                    <h3 className="text-xl font-bold text-slate-900 mb-2 relative flex items-center gap-2">
-                        <Globe size={20} className="text-primary" />
+                    <h3 className="text-lg font-bold text-slate-900 mb-2 relative flex items-center gap-2">
+                        <Globe size={18} className="text-primary" />
                         Explore
-                        <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-primary"></span>
+                        <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary"></span>
                     </h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2.5">
                         {[
                             { name: "About Us", path: "/about", icon: <Info size={14} /> },
                             { name: "Our Services", path: "/services", icon: <Briefcase size={14} /> },
                             { name: "Blog", path: "/blog", icon: <BookOpen size={14} /> },
                             { name: "Careers", path: "/careers", icon: <Users size={14} /> },
-                            { name: "About the Founder", path: "/about", icon: <User size={14} /> },
-                            { name: "Industries We Serve", path: "/services", icon: <Building2 size={14} /> },
+                            { name: "Global Presence", path: "/about", icon: <Building2 size={14} /> },
                             { name: "Case Studies", path: "/blog", icon: <BookOpen size={14} /> },
                             { name: "Contact Us", path: "/contact", icon: <MessageCircle size={14} /> }
                         ].map((item) => (
@@ -147,7 +174,7 @@ const Footer = () => {
                                 <Link
                                     to={item.path}
                                     state={item.path === '/contact' ? { background: location } : undefined}
-                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary"
+                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary text-sm"
                                     onMouseEnter={handleLinkHover}
                                     onMouseLeave={handleLinkLeave}
                                 >
@@ -159,84 +186,95 @@ const Footer = () => {
                     </ul>
                 </div>
 
-
-                { }
+                {/* Solutions Column - NEW */}
                 <div className="footer-column flex flex-col space-y-4">
-                    <h3 className="text-xl font-bold text-slate-900 mb-2 relative flex items-center gap-2">
-                        <Mail size={20} className="text-primary" />
+                    <h3 className="text-lg font-bold text-slate-900 mb-2 relative flex items-center gap-2">
+                        <Briefcase size={18} className="text-primary" />
+                        Solutions
+                        <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary"></span>
+                    </h3>
+                    <ul className="space-y-2.5">
+                        {[
+                            "Generative AI Strategy",
+                            "Custom AI Agents",
+                            "Data Infrastructure",
+                            "Growth Intelligence",
+                            "Cloud Transformation",
+                            "Automated Operations",
+                            "Predictive Analytics"
+                        ].map((sol) => (
+                            <li key={sol}>
+                                <Link
+                                    to="/services"
+                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary text-sm"
+                                    onMouseEnter={handleLinkHover}
+                                    onMouseLeave={handleLinkLeave}
+                                >
+                                    <ArrowRight size={12} className="text-primary/30" />
+                                    {sol}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+
+                {/* Connect Column */}
+                <div className="footer-column flex flex-col space-y-4">
+                    <h3 className="text-lg font-bold text-slate-900 mb-2 relative flex items-center gap-2">
+                        <Mail size={18} className="text-primary" />
                         Connect With Us
-                        <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-primary"></span>
+                        <span className="absolute -bottom-1 left-0 w-12 h-0.5 bg-primary"></span>
                     </h3>
                     <form className="space-y-3" onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            placeholder="Name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-sm text-slate-900"
-                        />
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-sm text-slate-900"
-                        />
+                        <div className="grid grid-cols-2 gap-3">
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-[13px] text-slate-900"
+                            />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-[13px] text-slate-900"
+                            />
+                        </div>
                         <input
                             type="tel"
                             placeholder="Phone Number"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-sm text-slate-900"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Company Name"
-                            name="company"
-                            value={formData.company}
-                            onChange={handleChange}
-                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-sm text-slate-900"
+                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-[13px] text-slate-900"
                         />
                         <textarea
                             placeholder="Message"
                             name="message"
                             value={formData.message}
                             onChange={handleChange}
-                            rows="3"
-                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-sm resize-none text-slate-900"
+                            rows="2"
+                            className="w-full bg-white border border-gray-200 rounded px-4 py-2 focus:outline-none focus:border-primary transition-colors text-[13px] resize-none text-slate-900"
                         ></textarea>
                         <button
                             type="submit"
-                            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 rounded transition-all duration-300 transform hover:scale-105"
+                            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 rounded text-sm transition-all duration-300 transform"
                         >
-                            Send Message
+                            {loading ? "Sending..." : "Send Message"}
                         </button>
                     </form>
                 </div>
             </div>
 
             <div className="border-t border-gray-200 mt-16 pt-10 relative z-10">
-                {/* Social Icons & Language Row */}
-                <div className="flex flex-col md:flex-row items-center justify-center relative mb-8 gap-6">
-                    <div className="flex items-center gap-4">
-                        {socialLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300 shadow-sm"
-                            >
-                                {link.icon}
-                            </a>
-                        ))}
-                    </div>
-                    <div className="md:absolute right-0 top-1/2 md:-translate-y-1/2">
-                        <LanguageSelector />
-                    </div>
+                {/* Language Row */}
+                <div className="flex justify-center mb-8">
+                    <LanguageSelector />
                 </div>
 
                 {/* Copyright & Legal Row */}

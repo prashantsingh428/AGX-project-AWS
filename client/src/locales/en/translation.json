@@ -8,7 +8,27 @@
     },
     "what_we_do": "What We Do",
     "insights": "Insights",
-    "careers": "Careers",
+    "careers": {
+      "main": "Careers",
+      "overview": "Overview",
+      "open_roles": {
+        "main": "Open Roles",
+        "all_jobs": "All Jobs",
+        "featured": "Featured Roles",
+        "departments": {
+          "main": "Departments",
+          "marketing": "Marketing",
+          "technology": "Technology",
+          "creative": "Creative",
+          "business": "Business"
+        }
+      },
+      "life_at_exa": "Life at AI Growth Exa",
+      "growth_learning": "Growth & Learning",
+      "what_you_work_on": "What You’ll Work On",
+      "hiring_process": "Hiring Process",
+      "apply_now": "Apply Now"
+    },
     "contact_us": "Contact Us",
     "get_started": "Get Started"
   },

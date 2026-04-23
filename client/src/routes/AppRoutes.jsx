@@ -20,6 +20,7 @@ const Awards = lazy(() => import('../pages/Awards'));
 const Founder = lazy(() => import('../pages/Founder'));
 const Casestudies = lazy(() => import('../pages/Casestudies'));
 const Industries = lazy(() => import('../pages/Industries'));
+const Contact = lazy(() => import('../pages/Contact'));
 const AdminPanel = lazy(() => import('../pages/admin/AdminPanel'));
 
 const NotFound = () => <div className="p-20 text-center">404 - Page Not Found</div>;
@@ -63,6 +64,7 @@ const AppRoutes = () => {
                     <Route path="/case-studies" element={<Casestudies />} />
                     <Route path="/industries" element={<Industries />} />
                     <Route path="/blog" element={<Blog />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/careers" element={<Career />} />
                     <Route path="/cookie-policy" element={<CookieInfo />} />
                     <Route path="/copyright-policy" element={<CopyrightInfo />} />
@@ -73,7 +75,6 @@ const AppRoutes = () => {
 
                 {/* Modal routes */}
                 <Routes>
-                    <Route path="/contact" element={<ContactModal isOpen={true} />} />
                     <Route path="/login" element={<AuthModal isOpen={true} initialView="login" />} />
                     <Route path="/signup" element={<AuthModal isOpen={true} initialView="register" />} />
                     <Route path="/register" element={<AuthModal isOpen={true} initialView="register" />} />

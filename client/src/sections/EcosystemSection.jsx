@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import officeImage from '../assets/images/modern_office_collab.png';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -96,13 +96,11 @@ const EcosystemSection = () => {
         return () => ctx.revert();
     }, []);
 
-    // Ensure we have enough logos for a 3-column grid (multiple rows)
-    const displayLogos = clientImages.length > 0
-        ? [...clientImages, ...clientImages, ...clientImages].slice(0, 24) // More logos for a better scroll experience
-        : [];
+    // Use only unique logos as requested
+    const displayLogos = clientImages;
 
     return (
-        <section 
+        <section
             ref={sectionRef}
             className="pb-24 md:pb-40 pt-32 md:pt-40 bg-slate-100 relative z-50 overflow-hidden"
         >
@@ -122,9 +120,6 @@ const EcosystemSection = () => {
                             <p>
                                 As an ecosystem orchestrator, we provide our clients curated, best-in-class components from a network of technology partners and innovators.
                             </p>
-                            <p>
-                                This collaboration is designed to drive lasting value and accelerate digital transformations by leveraging an innovative mindset and deep AI expertise.
-                            </p>
                         </div>
                     </div>
                     <div className="lg:col-span-7">
@@ -137,11 +132,89 @@ const EcosystemSection = () => {
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {/* Bottom Tier: Partner Ecosystem - The Pinning Area */}
+            {/* Discovery Banner: Ecosystem Search Mockup - Scaled Down & Theme Aligned */}
+            <div className="bg-gradient-to-r from-[#1D3557] to-[#2A4A7F] py-12 my-16 md:my-24 relative overflow-hidden">
+                {/* Subtle Geometric Background Pattern */}
+                <div className="absolute inset-0 opacity-5">
+                    <div className="absolute -top-12 -left-12 w-64 h-64 rounded-full bg-white blur-3xl"></div>
+                    <div className="absolute -bottom-12 -right-12 w-64 h-64 rounded-full bg-white blur-3xl"></div>
+                </div>
+
+                <div className="container mx-auto px-6 max-w-7xl relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+                        {/* Left: Search Interaction */}
+                        <div className="lg:col-span-7 space-y-6">
+                            <h2 className="text-2xl md:text-4xl font-bold text-white leading-tight">
+                                Discover more about <br />
+                                AI Growth Exa Ecosystem
+                            </h2>
+                            <div className="space-y-3">
+                                <p className="text-base text-white/70 font-medium">
+                                    Let our AI-powered search help you
+                                </p>
+                                <div className="relative group max-w-xl">
+                                    <input
+                                        type="text"
+                                        placeholder="Search ..."
+                                        className="w-full bg-white/5 border border-white/10 rounded-none py-4 px-6 pr-20 text-white placeholder:text-white/30 focus:outline-none focus:bg-white/10 focus:border-white/30 transition-all duration-300 backdrop-blur-sm transition-all"
+                                    />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4">
+                                        <Search className="w-4 h-4 text-white/30" />
+                                        <div className="h-6 w-[1px] bg-white/10"></div>
+                                        <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right: Suggested Topics */}
+                        <div className="lg:col-span-5 lg:border-l lg:border-white/5 lg:pl-12 space-y-4">
+                            <h4 className="text-lg font-bold text-white mb-4">We think these topics might interest you</h4>
+                            <div className="grid gap-2">
+                                {[
+                                    'AI Growth Exa innovation partnerships',
+                                    'Collaborative digital ecosystems',
+                                    'Enterprise co-innovation platforms'
+                                ].map((topic) => (
+                                    <button
+                                        key={topic}
+                                        className="flex items-center justify-between w-full p-3 bg-white/5 hover:bg-white/10 border border-white/5 transition-all duration-300 group text-left"
+                                    >
+                                        <span className="text-white/80 text-xs font-medium pr-4">{topic}</span>
+                                        <Search className="w-3 h-3 text-white/30 group-hover:text-white transition-colors" />
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="container mx-auto px-6 max-w-7xl">
+
+                {/* Bottom Tier: Partner Ecosystem - Reversed Layout */}
                 <div ref={bottomTierRef} className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-                    {/* Left: Pinned Text Container */}
-                    <div ref={pinnedContainerRef} className="lg:col-span-5 space-y-8">
+                    {/* Left: Scrolling Logos Grid (Moved to Left) */}
+                    <div className="lg:col-span-7 grid grid-cols-2 lg:grid-cols-3 gap-6 lg:order-1">
+                        {displayLogos.map((logo, idx) => (
+                            <div
+                                key={idx}
+                                ref={(el) => (logoCardsRef.current[idx] = el)}
+                                className="aspect-[16/10] bg-white border border-slate-100 rounded-none flex items-center justify-center p-6 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-500 group"
+                            >
+                                <img
+                                    src={logo}
+                                    alt="Partner Logo"
+                                    className="max-w-[80%] max-h-[80%] object-contain group-hover:scale-110 transition-transform duration-500"
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Right: Pinned Text Container (Moved to Right) */}
+                    <div ref={pinnedContainerRef} className="lg:col-span-5 space-y-8 lg:order-2">
                         <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
                             Strategic Alliance <br />
                             Partner Ecosystem
@@ -158,23 +231,6 @@ const EcosystemSection = () => {
                             Click each partner logo to learn more
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </button>
-                    </div>
-
-                    {/* Right: Scrolling Logos Grid */}
-                    <div className="lg:col-span-7 grid grid-cols-2 lg:grid-cols-3 gap-6">
-                        {displayLogos.map((logo, idx) => (
-                            <div
-                                key={idx}
-                                ref={(el) => (logoCardsRef.current[idx] = el)}
-                                className="aspect-[16/10] bg-white border border-slate-100 rounded-none flex items-center justify-center p-6 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-500 group"
-                            >
-                                <img
-                                    src={logo}
-                                    alt="Partner Logo"
-                                    className="max-w-[80%] max-h-[80%] object-contain group-hover:scale-110 transition-transform duration-500"
-                                />
-                            </div>
-                        ))}
                     </div>
                 </div>
 

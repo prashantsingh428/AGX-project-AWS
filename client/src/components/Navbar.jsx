@@ -150,8 +150,8 @@ const Navbar = () => {
                 { name: t('navbar.who_we_are.awards'), path: '/awards', description: "Celebrating excellence in AI innovation" }
             ]
         },
-        { 
-            name: t('navbar.what_we_do'), 
+        {
+            name: t('navbar.what_we_do'),
             path: '/services',
             megaData: {
                 title: "Future-Ready Ecosystem",
@@ -167,7 +167,44 @@ const Navbar = () => {
             ]
         },
         { name: t('navbar.insights'), path: '/blog' },
-        { name: t('navbar.careers'), path: '/careers' },
+        {
+            name: t('navbar.careers.main') || t('navbar.careers'),
+            path: '/careers',
+            megaData: {
+                title: "Build the Future with Us",
+                description: "Join a team of visionaries, engineers, and creatives shaping the next frontier of artificial intelligence.",
+                ctaText: "View All Openings",
+                ctaPath: "/careers"
+            },
+            dropdown: [
+                { name: t('navbar.careers.overview'), path: '/careers', description: "Our culture, values and mission" },
+                { 
+                    name: t('navbar.careers.open_roles.main'), 
+                    path: '/careers', 
+                    description: "Find your next challenge",
+                    subItems: [
+                        { name: t('navbar.careers.open_roles.all_jobs'), path: '/careers' },
+                        { name: t('navbar.careers.open_roles.featured'), path: '/careers' },
+                        { 
+                            name: t('navbar.careers.open_roles.departments.main'), 
+                            path: '/careers',
+                            isDepartment: true,
+                            children: [
+                                { name: t('navbar.careers.open_roles.departments.marketing'), path: '/careers' },
+                                { name: t('navbar.careers.open_roles.departments.technology'), path: '/careers' },
+                                { name: t('navbar.careers.open_roles.departments.creative'), path: '/careers' },
+                                { name: t('navbar.careers.open_roles.departments.business'), path: '/careers' },
+                            ]
+                        }
+                    ]
+                },
+                { name: t('navbar.careers.life_at_exa'), path: '/careers', description: "A glimpse into our daily work environment" },
+                { name: t('navbar.careers.growth_learning'), path: '/careers', description: "How we invest in your professional journey" },
+                { name: t('navbar.careers.what_you_work_on'), path: '/careers', description: "Impactful projects and cutting-edge tech" },
+                { name: t('navbar.careers.hiring_process'), path: '/careers', description: "What to expect from application to offer" },
+                { name: t('navbar.careers.apply_now'), path: '/careers', isHighlight: true }
+            ]
+        },
         { name: t('navbar.contact_us'), path: '/contact' },
     ];
 
@@ -203,19 +240,18 @@ const Navbar = () => {
                                     state={link.path === '/contact' ? { background: location } : undefined}
                                     ref={addToRefs}
                                     className={({ isActive }) =>
-                                        `flex items-center gap-1.5 text-[15px] font-semibold transition-all hover:text-primary nav-link-hover ${
-                                            isActive || (link.path === '/contact' && location.pathname === '/contact') || hoveredLink === link.name 
-                                                ? 'text-primary' 
-                                                : 'text-gray-600'
+                                        `flex items-center gap-1.5 text-[15px] font-semibold transition-all hover:text-primary nav-link-hover ${isActive || (link.path === '/contact' && location.pathname === '/contact') || hoveredLink === link.name
+                                            ? 'text-primary'
+                                            : 'text-gray-600'
                                         }`
                                     }
                                 >
                                     {link.name}
                                     {link.dropdown && (
-                                        <svg 
-                                            className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredLink === link.name ? 'rotate-180' : ''}`} 
-                                            fill="none" 
-                                            stroke="currentColor" 
+                                        <svg
+                                            className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredLink === link.name ? 'rotate-180' : ''}`}
+                                            fill="none"
+                                            stroke="currentColor"
                                             viewBox="0 0 24 24"
                                         >
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
@@ -229,13 +265,13 @@ const Navbar = () => {
 
                 {/* Right Side - Search & Auth */}
                 <div className="hidden md:flex items-center gap-9 ml-auto">
-                    <motion.div 
+                    <motion.div
                         ref={dropdownRef}
                         initial={false}
                         animate={{ width: isSearchExpanded ? 240 : 40 }}
                         className="relative group h-10 flex items-center bg-gray-50 border border-gray-100 rounded-full overflow-hidden transition-all duration-300 hover:border-gray-200"
                     >
-                        <button 
+                        <button
                             onClick={() => setIsSearchExpanded(!isSearchExpanded)}
                             className="absolute left-0 inset-y-0 w-10 flex items-center justify-center text-gray-400 hover:text-primary transition-colors z-10"
                         >
@@ -243,7 +279,7 @@ const Navbar = () => {
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </button>
-                        
+
                         <AnimatePresence>
                             {isSearchExpanded && (
                                 <motion.input
