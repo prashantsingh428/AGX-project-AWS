@@ -75,7 +75,7 @@ const SuccessStoriesSection = () => {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
+                            transition={{ duration: 0.3, delay: index * 0.05 }}
                             className="group relative aspect-[4/5] overflow-hidden rounded-2xl cursor-pointer bg-slate-100"
                         >
                             {/* Background Image */}

@@ -98,7 +98,7 @@ const FounderIntroduction = () => {
             {/* Main Content with proper spacing */}
             <main className="container mx-auto px-4 py-8" ref={heroRef}>
                 {/* Hero Section */}
-                <div className={`mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <div className={`mb-16 transition-all duration-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                     <div className="flex flex-col lg:flex-row items-center gap-12">
                         <div className="lg:w-1/3">
                             <div className="relative">

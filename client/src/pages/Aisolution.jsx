@@ -52,7 +52,7 @@ function Reveal({ children, delay = 0, dir = "up" }) {
         <div ref={ref} style={{
             opacity: vis ? 1 : 0,
             transform: transforms[dir] || transforms.up,
-            transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
+            transition: `opacity 0.35s ease ${delay}ms, transform 0.35s ease ${delay}ms`,
         }}>
             {children}
         </div>
@@ -60,7 +60,7 @@ function Reveal({ children, delay = 0, dir = "up" }) {
 }
 
 // ── Counter ─────────────────────────────────────────────────────────────────
-function Counter({ to, suffix = "", duration = 1600 }) {
+function Counter({ to, suffix = "", duration = 800 }) {
     const [val, setVal] = useState(0);
     const [ref, vis] = useInView(0.5);
     useEffect(() => {

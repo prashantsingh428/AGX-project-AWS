@@ -27,12 +27,12 @@ const BrandStorySection = () => {
 
             tl.fromTo(contentRef.current,
                 { x: -50, opacity: 0 },
-                { x: 0, opacity: 1, duration: 1, ease: "power3.out" }
+                { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }
             )
                 .fromTo(cardRef.current,
                     { x: 50, opacity: 0, scale: 0.95 },
-                    { x: 0, opacity: 1, scale: 1, duration: 1, ease: "power3.out" },
-                    "-=0.8"
+                    { x: 0, opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" },
+                    "-=0.4"
                 );
         }, sectionRef);
 

@@ -36,22 +36,22 @@ const About = () => {
       // Hero animations
       gsap.fromTo(
         '.hero-text',
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out' }
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.3, stagger: 0.04, ease: 'power2.out' }
       );
 
       // Stats animation
       gsap.fromTo(
         '.stat-card',
-        { y: 30, opacity: 0 },
+        { y: 15, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
+          duration: 0.2,
+          stagger: 0.03,
           scrollTrigger: {
             trigger: statsRef.current,
-            start: 'top 80%',
+            start: 'top 90%',
           },
         }
       );
@@ -118,7 +118,7 @@ const About = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl transition-all duration-300">
+            <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl transition-all duration-200">
               <div className="mb-4 text-red-500">
                 <ShieldCheck size={40} />
               </div>
@@ -134,7 +134,7 @@ const About = () => {
               <p className="mt-4 text-gray-600 font-medium italic">Traditional marketing was loud — but not smart.</p>
             </div>
 
-            <div className="p-8 bg-primary/5 rounded-3xl border border-primary/10 hover:shadow-xl transition-all duration-300 relative">
+            <div className="p-8 bg-primary/5 rounded-3xl border border-primary/10 hover:shadow-xl transition-all duration-200 relative">
               <div className="mb-4 text-primary">
                 <Lightbulb size={40} />
               </div>
@@ -150,7 +150,7 @@ const About = () => {
               </ul>
             </div>
 
-            <div className="p-8 bg-indigo-50 rounded-3xl border border-indigo-100 hover:shadow-xl transition-all duration-300 relative">
+            <div className="p-8 bg-indigo-50 rounded-3xl border border-indigo-100 hover:shadow-xl transition-all duration-200 relative">
               <div className="mb-4 text-indigo-600">
                 <Rocket size={40} />
               </div>
@@ -194,7 +194,7 @@ const About = () => {
               { step: '4', title: 'Optimization', desc: 'Continuous testing, learning, and performance improvement.' },
               { step: '5', title: 'Scaling', desc: 'We double down on what works and build systems for long-term growth.' }
             ].map((item, i) => (
-              <div key={i} className="bg-slate-800 p-6 rounded-2xl border border-slate-700 hover:border-primary transition-all duration-300 group">
+              <div key={i} className="bg-slate-800 p-6 rounded-2xl border border-slate-700 hover:border-primary transition-all duration-200 group">
                 <div className="text-4xl font-black text-slate-600 mb-4 group-hover:text-primary transition-colors">{item.step}</div>
                 <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-slate-400 text-sm">{item.desc}</p>
@@ -229,7 +229,7 @@ const About = () => {
               { title: 'Transparent Reporting', desc: 'Clear numbers. No confusion. No hidden data.', icon: <BarChart size={32} />, color: 'bg-indigo-50 text-indigo-700 border-indigo-100' },
               { title: 'Dedicated Growth Team', desc: 'Strategists, analysts, and performance experts — aligned to your goals.', icon: <Users size={32} />, color: 'bg-orange-50 text-orange-700 border-orange-100' },
             ].map((item, i) => (
-              <div key={i} className={`p-8 rounded-3xl border ${item.color} hover:shadow-lg transition-all duration-300 flex gap-6 items-start`}>
+              <div key={i} className={`p-8 rounded-3xl border ${item.color} hover:shadow-lg transition-all duration-200 flex gap-6 items-start`}>
                 <div className="p-4 bg-white rounded-2xl shadow-sm">{item.icon}</div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">{item.title}</h3>

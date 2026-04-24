@@ -13,7 +13,7 @@ const MegaMenu = ({ name, data, items, isOpen, onClose, onMouseEnter }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
             className="absolute top-full left-0 w-full bg-white text-gray-900 border-b border-gray-100 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] z-40 overflow-hidden"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onClose}
@@ -76,7 +76,7 @@ const MegaMenu = ({ name, data, items, isOpen, onClose, onMouseEnter }) => {
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -10 }}
-                                    transition={{ duration: 0.3 }}
+                                    transition={{ duration: 0.15 }}
                                     className="space-y-8"
                                 >
                                     <div className="space-y-2">

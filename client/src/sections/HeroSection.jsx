@@ -34,31 +34,31 @@ const HeroSection = () => {
     tl.fromTo(
       titleRef.current,
       { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2 }
+      { y: 0, opacity: 1, duration: 0.6 }
     )
       .fromTo(
         textRef.current,
         { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 },
-        "-=0.6"
+        { y: 0, opacity: 1, duration: 0.4 },
+        "-=0.3"
       )
       .fromTo(
         buttonsRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 1.5, ease: "power4.out" },
-        "-=0.4"
+        { opacity: 1, duration: 0.8, ease: "power4.out" },
+        "-=0.2"
       )
       .fromTo(
         insightsBarRef.current,
         { opacity: 0, x: 20 },
-        { opacity: 1, x: 0, duration: 1 },
-        "-=1"
+        { opacity: 1, x: 0, duration: 0.5 },
+        "-=0.5"
       )
       .fromTo(
         secondaryRef.current,
         { opacity: 0, x: 30 },
-        { opacity: 1, x: 0, duration: 1.2 },
-        "-=0.8"
+        { opacity: 1, x: 0, duration: 0.6 },
+        "-=0.4"
       )
 
     // Text shuffling interval

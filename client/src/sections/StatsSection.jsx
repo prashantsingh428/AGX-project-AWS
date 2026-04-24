@@ -77,11 +77,11 @@ const StatsSection = () => {
                 {
                     x: 0,
                     opacity: 1,
-                    duration: 0.8,
+                    duration: 0.4,
                     ease: 'power3.out',
                     scrollTrigger: {
                         trigger: leftContentRef.current,
-                        start: 'top 80%',
+                        start: 'top 90%',
                         once: true
                     }
                 }
@@ -96,12 +96,12 @@ const StatsSection = () => {
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 0.6,
-                        delay: index * 0.15,
+                        duration: 0.35,
+                        delay: index * 0.08,
                         ease: 'power3.out',
                         scrollTrigger: {
                             trigger: card,
-                            start: 'top 85%',
+                            start: 'top 95%',
                             once: true
                         }
                     }

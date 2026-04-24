@@ -43,8 +43,8 @@ const containerVariants = {
     show: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.15,
-            delayChildren: 0.3
+            staggerChildren: 0.08,
+            delayChildren: 0.1
         },
     },
 };
@@ -55,9 +55,9 @@ const itemVariants = {
         opacity: 1,
         y: 0,
         transition: {
-            duration: 0.8,
+            duration: 0.4,
             type: "spring",
-            stiffness: 100
+            stiffness: 120
         }
     },
 };
@@ -113,7 +113,7 @@ export default function BlogInsights() {
 
     // Page 
     useEffect(() => {
-        const timer = setTimeout(() => setShowContent(true), 1200);
+        const timer = setTimeout(() => setShowContent(true), 300);
         return () => clearTimeout(timer);
     }, []);
 
@@ -121,9 +121,15 @@ export default function BlogInsights() {
         const fetchBlogs = async () => {
             try {
                 const response = await api.get('/blogs');
-                setBlogs(response.data);
+                // Ensure blogs is always an array, handling various response formats
+                const blogData = Array.isArray(response.data) 
+                    ? response.data 
+                    : (response.data?.blogs || response.data?.data || []);
+                setBlogs(blogData);
                 setLoading(false);
             } catch (error) {
+                console.error("Fetch Blogs Error:", error);
+                setBlogs([]); // Fallback to empty array on error
                 setLoading(false);
             }
         };
@@ -568,9 +574,9 @@ export default function BlogInsights() {
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {loading ? (
                                     <div className="col-span-3 text-center py-10">Loading insights...</div>
-                                ) : blogs.length > 0 ? (
+                                ) : (Array.isArray(blogs) && blogs.length > 0) ? (
                                     blogs.map((blog, i) => (
-                                        <EnhancedBlogCard key={blog._id} index={i} blog={blog} />
+                                        <EnhancedBlogCard key={blog._id || i} index={i} blog={blog} />
                                     ))
                                 ) : (
                                     <div className="col-span-3 text-center py-10">No insights found.</div>

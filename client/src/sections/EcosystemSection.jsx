@@ -39,12 +39,12 @@ const EcosystemSection = () => {
                     {
                         y: 0,
                         opacity: 1,
-                        duration: 0.8,
-                        stagger: 0.2,
+                        duration: 0.4,
+                        stagger: 0.1,
                         ease: 'power3.out',
                         scrollTrigger: {
                             trigger: topTierRef.current,
-                            start: 'top 80%',
+                            start: 'top 90%',
                             once: true
                         }
                     }
@@ -80,12 +80,12 @@ const EcosystemSection = () => {
                     {
                         scale: 1,
                         opacity: 1,
-                        duration: 0.5,
-                        delay: index * 0.05,
+                        duration: 0.2,
+                        delay: index * 0.02,
                         ease: 'back.out(1.7)',
                         scrollTrigger: {
                             trigger: card,
-                            start: 'top 90%',
+                            start: 'top 95%',
                             once: true
                         }
                     }

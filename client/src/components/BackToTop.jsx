@@ -35,7 +35,7 @@ const BackToTop = () => {
                     initial={{ opacity: 0, y: 20, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                    className="fixed bottom-10 left-10 z-[100]"
+                    className="fixed bottom-10 right-10 z-[100]"
                 >                    <motion.button
                         onClick={scrollToTop}
                         initial={{ borderColor: 'rgba(29,52,97,0.2)' }}
