@@ -119,7 +119,7 @@ const LanguageModal = ({ isOpen, onClose }) => {
                               onClick={() => handleLanguageChange(country.code)}
                               className="flex items-center gap-4 text-slate-700 hover:text-primary transition-all text-base font-semibold"
                             >
-                              <span className="text-xl grayscale group-hover:grayscale-0 transition-all">
+                              <span className="text-xl transition-all">
                                 {getCountryFlag(country.name)}
                               </span>
                               <span>{country.name}</span>

@@ -133,7 +133,7 @@ const LanguageSelector = () => {
                                                         onClick={() => handleLanguageChange(lang.code)}
                                                         className="flex items-center gap-3 text-slate-600 hover:text-primary transition-all duration-200 text-[13px] font-medium"
                                                     >
-                                                        <span className="text-lg flex-shrink-0 grayscale group-hover/item:grayscale-0 transition-all">
+                                                        <span className="text-lg flex-shrink-0 transition-all">
                                                             {lang.flag}
                                                         </span>
                                                         <span className="truncate">

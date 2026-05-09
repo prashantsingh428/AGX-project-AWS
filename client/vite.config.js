@@ -9,6 +9,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      }
+    }
+  },
   build: {
     target: 'es2015',
     minify: 'terser',
@@ -27,6 +35,9 @@ export default defineConfig({
         }
       }
     },
+    // change in the code
     chunkSizeWarningLimit: 500
   }
 })
+
+
