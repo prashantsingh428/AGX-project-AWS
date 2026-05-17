@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ChevronDown, ArrowRight } from "lucide-react"
@@ -13,8 +13,6 @@ const HeroSection = () => {
   const buttonsRef = useRef(null)
   const insightsBarRef = useRef(null)
   const secondaryRef = useRef(null)
-  const location = useLocation()
-
   const [textIndex, setTextIndex] = useState(0)
 
   const shufflingTexts = [
@@ -120,8 +118,7 @@ const HeroSection = () => {
 
           <div className="mt-12 flex flex-wrap gap-4">
             <Link
-              to="/contact"
-              state={{ background: location }}
+              to="/#growth-plan"
               className="px-8 py-3 bg-primary text-white hover:bg-primary/90 font-bold text-xs uppercase tracking-wider transition-all"
             >
               Get Your Growth Plan
@@ -164,18 +161,18 @@ const HeroSection = () => {
           ))}
         </button>
         {[
-          "AI Growth Engine",
-          "10X AI Growth.",
-          "AI lab",
-          "Exa Intelligence 360"
+          { label: "AI Growth Engine", to: "/services" },
+          { label: "10X AI Growth.", to: "/case-studies" },
+          { label: "AI lab", to: "/blog" },
+          { label: "Exa Intelligence 360", to: "/about" }
         ].map((item, i) => (
-          <a
+          <Link
             key={i}
-            href="#"
+            to={item.to}
             className="text-[13px] uppercase tracking-[0.1em] nav-link-hover hover:text-white transition-colors"
           >
-            {item}
-          </a>
+            {item.label}
+          </Link>
         ))}
       </div>
 

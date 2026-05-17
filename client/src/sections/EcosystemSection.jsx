@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Search } from 'lucide-react';
 import officeImage from '../assets/images/modern_office_collab.png';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -178,13 +179,14 @@ const EcosystemSection = () => {
                                     'Collaborative digital ecosystems',
                                     'Enterprise co-innovation platforms'
                                 ].map((topic) => (
-                                    <button
+                                    <Link
                                         key={topic}
+                                        to="/blog"
                                         className="flex items-center justify-between w-full p-3 bg-white/5 hover:bg-white/10 border border-white/5 transition-all duration-300 group text-left"
                                     >
                                         <span className="text-white/80 text-xs font-medium pr-4">{topic}</span>
                                         <Search className="w-3 h-3 text-white/30 group-hover:text-white transition-colors" />
-                                    </button>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -227,10 +229,10 @@ const EcosystemSection = () => {
                                 AI Growth Exa's vast experience and business acumen coupled with these dynamic innovators enable us to solve your business problems so you can thrive.
                             </p>
                         </div>
-                        <button className="group flex items-center gap-3 px-6 py-3 bg-white border border-slate-200 rounded-full text-slate-700 font-bold text-sm hover:border-primary hover:text-primary transition-all duration-300 shadow-sm">
+                        <Link to="/contact" className="group inline-flex items-center gap-3 px-6 py-3 bg-white border border-slate-200 rounded-full text-slate-700 font-bold text-sm hover:border-primary hover:text-primary transition-all duration-300 shadow-sm">
                             Click each partner logo to learn more
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

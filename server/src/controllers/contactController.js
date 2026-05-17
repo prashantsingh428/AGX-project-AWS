@@ -2,17 +2,32 @@ const Contact = require("../models/Contact");
 
 const submitContact = async (req, res) => {
     try {
-        const { name, email, service, message } = req.body;
+        const {
+            name,
+            email,
+            service,
+            message,
+            jobTitle,
+            organization,
+            phone,
+            country
+        } = req.body;
 
-        if (!name || !email || !service || !message) {
-            return res.status(400).json({ message: "All fields are required" });
+        const resolvedService = service || jobTitle || "General Inquiry";
+
+        if (!name || !email || !message) {
+            return res.status(400).json({ message: "Name, email, and message are required" });
         }
 
         const newContact = new Contact({
             name,
             email,
-            service,
-            message
+            service: resolvedService,
+            message,
+            jobTitle,
+            organization,
+            phone,
+            country
         });
 
         await newContact.save();

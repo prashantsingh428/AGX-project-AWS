@@ -11,11 +11,15 @@ import {
     BookOpen,
     Linkedin,
     Mail,
-    Phone
+    Phone,
+    Facebook,
+    Twitter,
+    Youtube
 } from 'lucide-react';
 
 import WhatsAppModal from '../components/Modals/WhatsAppModal';
 import founderProfile from '../assets/images/founder/founder-profile.png';
+import chalkboardBanner from '../assets/images/founder/chalkboard_banner.png';
 
 const FounderIntroduction = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,325 +31,270 @@ const FounderIntroduction = () => {
     }, []);
 
     const marketingPlanSteps = [
-        {
-            number: "1",
-            title: "Situation (SWOT)",
-            items: ["Identify problem", "Develop solution", "Implement solution"]
-        },
-        {
-            number: "2",
-            title: "Objectives",
-            items: ["Sales", "Market share", "Increase revenue", "Reduce costs"]
-        },
-        {
-            number: "3",
-            title: "Strategy",
-            items: ["Segment-target", "Price-quality", "Product positioning", "Differentiation", "Distribution"]
-        },
-        {
-            number: "4",
-            title: "Action Plan",
-            items: ["Budget allocation", "Production", "Promotion", "Distribution"]
-        },
-        {
-            number: "5",
-            title: "Forecasts",
-            items: ["Quality", "Quantity", "Market share", "Profitability"]
-        },
-        {
-            number: "6",
-            title: "Control",
-            items: ["Evaluate results", "Make adjustments", "Measure success", "Track progress"]
-        }
+        { number: "1", title: "Situation (SWOT)", items: ["Identify problem", "Develop solution"] },
+        { number: "2", title: "Objectives", items: ["Sales", "Market share"] },
+        { number: "3", title: "Strategy", items: ["Segment-target", "Positioning"] },
+        { number: "4", title: "Action Plan", items: ["Budget allocation", "Execution"] },
+        { number: "5", title: "Forecasts", items: ["Quality", "Quantity"] },
+        { number: "6", title: "Control", items: ["Evaluate results", "Adjustments"] }
     ];
 
-    const focusAreas = [
-        {
-            icon: <Target className="w-8 h-8" />,
-            title: "Growth Strategy Design",
-            description: "Building scalable growth roadmaps aligned with real business goals, not vanity metrics."
-        },
-        {
-            icon: <TrendingUp className="w-8 h-8" />,
-            title: "Performance Marketing Systems",
-            description: "Designing ROI-focused ad systems with clear attribution, control, and scale."
-        },
-        {
-            icon: <Cpu className="w-8 h-8" />,
-            title: "AI Automation Frameworks",
-            description: "Smarter funnels, predictive targeting, automated follow-ups, and conversion systems."
-        }
-    ];
-
-    const industries = [
-        { name: "Healthcare", description: "Lead generation & patient acquisition systems" },
-        { name: "SaaS & IT Services", description: "Subscription growth, funnels & retention strategies" },
-        { name: "Real Estate", description: "High-net lead systems & CRM automation" },
-        { name: "Enterprises", description: "Large-scale performance and growth optimization" }
-    ];
-
-    const stats = [
-        { label: "Years of Experience", value: "5.8+" },
-        { label: "Ad Budgets Managed", value: "1.5-2 Career" },
-        { label: "Projects Delivered", value: "1600+" },
-        { label: "ROAS & CPL Improvements", value: "Proven" }
+    const professionalJourney = [
+        { date: "STAGE 1", title: "Intern", desc: "Started from ground up" },
+        { date: "STAGE 2", title: "Digital Marketing Specialist", desc: "Hands-on execution" },
+        { date: "STAGE 3", title: "Digital Marketing Manager", desc: "Team leadership" },
+        { date: "STAGE 4", title: "Chief Marketing Officer", desc: "Strategic oversight" },
+        { date: "STAGE 5", title: "Founder & Growth Architect", desc: "AI Growth Exa" }
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-20">
+        <div className="min-h-screen bg-black font-sans selection:bg-primary selection:text-white">
             <WhatsAppModal isOpen={isWhatsAppModalOpen} onClose={() => setIsWhatsAppModalOpen(false)} />
 
-            {/* Main Content with proper spacing */}
-            <main className="container mx-auto px-4 py-8" ref={heroRef}>
-                {/* Hero Section */}
-                <div className={`mb-16 transition-all duration-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                    <div className="flex flex-col lg:flex-row items-center gap-12">
-                        <div className="lg:w-1/3">
-                            <div className="relative">
-                                <div className="w-64 h-64 md:w-80 md:h-80 bg-gray-200 rounded-full mx-auto overflow-hidden border-8 border-white shadow-2xl">
-                                    <img
-                                        src={founderProfile}
-                                        alt="Priyanshu Srivastava"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <div className="absolute -bottom-4 -right-4 bg-primary text-white px-6 py-2 rounded-lg shadow-lg animate-pulse-slow">
-                                    <Briefcase className="w-5 h-5 inline mr-2" />
-                                    Founder
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="lg:w-2/3">
-                            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                                Priyanshu Srivastava
+            {/* 1. HERO SECTION (DARK) */}
+            <section ref={heroRef} className="relative pt-32 pb-0 md:pt-40 overflow-hidden bg-black text-white border-b border-white/10">
+                <div className="container mx-auto px-6 lg:px-12 max-w-7xl relative z-10">
+                    <div className="flex flex-col lg:flex-row items-end justify-between">
+                        
+                        {/* Hero Text Content */}
+                        <div className={`lg:w-1/2 pb-20 lg:pb-32 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
+                                Growth Strategist, <br />
+                                AI Architect <br />
+                                & Founder
                             </h1>
-                            <p className="text-xl text-gray-600 mb-6 italic border-l-4 border-primary pl-4">
-                                "Behind every scalable brand is a growth mind that understands both numbers and people."
-                            </p>
-                            <p className="text-lg text-gray-700 mb-6">
+                            <div className="w-16 h-1 bg-primary mb-8"></div>
+                            <p className="text-gray-400 text-lg md:text-xl max-w-md leading-relaxed">
                                 Priyanshu Srivastava is a growth-focused strategist and AI marketing architect who believes marketing should not just look good — it should perform, convert, and scale.
                             </p>
-                            <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg mb-8">
-                                <p className="text-lg font-semibold text-gray-800 mb-2">
-                                    He founded AI Growth Exa with one clear vision:
-                                </p>
-                                <p className="text-gray-700">
-                                    To replace guesswork marketing with intelligent, data-backed growth systems.
-                                </p>
-                                <p className="text-gray-600 mt-3">
-                                    In a market full of noise, trends, and shortcuts, Priyanshu focuses on clarity, systems, and results.
-                                </p>
+                        </div>
+
+                        {/* Hero Image */}
+                        <div className={`lg:w-1/2 relative flex justify-center lg:justify-end transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+                            <div className="relative w-[300px] md:w-[450px] lg:w-[500px]">
+                                {/* Subtle glow behind image */}
+                                <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full"></div>
+                                <img
+                                    src={founderProfile}
+                                    alt="Priyanshu Srivastava"
+                                    className="relative z-10 w-full h-auto object-contain filter drop-shadow-2xl"
+                                />
                             </div>
+                        </div>
+
+                    </div>
+
+                    {/* Logo Bar - Featured / Industries */}
+                    <div className="border-t border-white/20 py-8 flex flex-col md:flex-row items-center justify-center md:justify-start gap-8 md:gap-12">
+                        <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">Industries Served:</span>
+                        <div className="flex flex-wrap items-center justify-center gap-8 text-xl font-bold text-gray-300 opacity-80">
+                            <span>HEALTHCARE</span>
+                            <span>SaaS & IT</span>
+                            <span>REAL ESTATE</span>
+                            <span>ENTERPRISE</span>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-                    {stats.map((stat, index) => (
-                        <div
-                            key={index}
-                            className={`bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-                        >
-                            <div className="text-3xl font-bold text-primary mb-2">{stat.value}</div>
-                            <div className="text-gray-600 text-sm">{stat.label}</div>
-                            {stat.label === "ROAS & CPL Improvements" && (
-                                <div className="mt-2">
-                                    <span className="text-green-600 text-sm font-semibold">✓ Verified Results</span>
+            {/* 2. ABOUT & STATS SECTION (WHITE) */}
+            <section className="bg-white py-24">
+                <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
+                    
+                    <div className="flex flex-col lg:flex-row items-center gap-16 mb-20">
+                        {/* Left: Bio & Button */}
+                        <div className="lg:w-1/3">
+                            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6 leading-tight">
+                                Building <br />Growth That <br />Lasts.
+                            </h2>
+                            <div className="w-12 h-1 bg-primary mb-6"></div>
+                            <p className="text-gray-600 mb-8 italic">
+                                "Behind every scalable brand is a growth mind that understands both numbers and people."
+                            </p>
+                            <p className="text-gray-600 mb-8 text-sm leading-relaxed">
+                                He founded AI Growth Exa with one clear vision: To replace guesswork marketing with intelligent, data-backed growth systems. In a market full of noise, trends, and shortcuts, Priyanshu focuses on clarity, systems, and results.
+                            </p>
+                            <a href="mailto:contact@aigrowthexa.com" className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-sm font-bold uppercase tracking-wider text-black hover:bg-gray-50 hover:border-gray-400 transition-all rounded-sm">
+                                Contact Priyanshu <ChevronRight className="ml-2 w-4 h-4" />
+                            </a>
+                        </div>
+
+                        {/* Center: Cutout Image with Label */}
+                        <div className="lg:w-1/3 flex justify-center relative">
+                            <img
+                                src={founderProfile}
+                                alt="Priyanshu Profile"
+                                className="w-64 h-auto object-contain filter drop-shadow-xl z-10"
+                            />
+                            {/* Yellow Label */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#ffcc00] text-black font-bold text-2xl px-6 py-2 rotate-[-2deg] z-20 whitespace-nowrap shadow-md">
+                                Connect Today
+                            </div>
+                        </div>
+
+                        {/* Right: Core Focus */}
+                        <div className="lg:w-1/3 flex flex-col justify-center">
+                            <h3 className="text-2xl font-bold text-black mb-4 border-b-2 border-primary inline-block pb-1 self-start">Core Focus:</h3>
+                            <div className="space-y-6 mt-6">
+                                <div className="flex gap-4 items-start">
+                                    <Target className="w-6 h-6 text-gray-400 flex-shrink-0" />
+                                    <div>
+                                        <h4 className="font-bold text-black">Growth Strategy Design</h4>
+                                        <p className="text-sm text-gray-500">Building scalable roadmaps.</p>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-
-                {/* Core Focus Areas */}
-                <section className="mb-16">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Core Focus Areas</h2>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {focusAreas.map((area, index) => (
-                            <div
-                                key={index}
-                                className={`bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-2`}
-                            >
-                                <div className="text-primary mb-4">{area.icon}</div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3">{area.title}</h3>
-                                <p className="text-gray-600">{area.description}</p>
+                                <div className="flex gap-4 items-start">
+                                    <TrendingUp className="w-6 h-6 text-gray-400 flex-shrink-0" />
+                                    <div>
+                                        <h4 className="font-bold text-black">Performance Marketing</h4>
+                                        <p className="text-sm text-gray-500">ROI-focused ad systems.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 items-start">
+                                    <Cpu className="w-6 h-6 text-gray-400 flex-shrink-0" />
+                                    <div>
+                                        <h4 className="font-bold text-black">AI Automation</h4>
+                                        <p className="text-sm text-gray-500">Smarter funnels & targeting.</p>
+                                    </div>
+                                </div>
                             </div>
-                        ))}
+                        </div>
                     </div>
-                </section>
 
-                {/* 6-Step Marketing Plan */}
-                <section className="mb-16 bg-white rounded-2xl shadow-lg p-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">The 6-Step Marketing Plan</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {marketingPlanSteps.map((step, index) => (
-                            <div
-                                key={index}
-                                className={`border border-gray-200 rounded-xl p-6 hover:border-primary/50 hover:shadow-md transition-all duration-300`}
-                            >
-                                <div className="flex items-center mb-4">
-                                    <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
+                    {/* Bottom Stats Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-gray-100">
+                        <div className="text-center">
+                            <div className="text-5xl font-light text-black mb-2">5.8+</div>
+                            <div className="w-8 h-0.5 bg-[#ffcc00] mx-auto mb-3"></div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-gray-500">Years Exp.</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-5xl font-light text-black mb-2">2CR</div>
+                            <div className="w-8 h-0.5 bg-[#ffcc00] mx-auto mb-3"></div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-gray-500">Budgets Managed</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-5xl font-light text-black mb-2">1600+</div>
+                            <div className="w-8 h-0.5 bg-[#ffcc00] mx-auto mb-3"></div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-gray-500">Projects Delivered</div>
+                        </div>
+                        <div className="text-center">
+                            <div className="text-5xl font-light text-black mb-2">Top</div>
+                            <div className="w-8 h-0.5 bg-[#ffcc00] mx-auto mb-3"></div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-gray-500">ROAS Proven</div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* 3. TEXTURED BANNER */}
+            <section className="relative py-32 bg-black flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 opacity-40">
+                    <img src={chalkboardBanner} alt="Texture" className="w-full h-full object-cover" />
+                </div>
+                <div className="absolute inset-0 bg-black/50"></div>
+                
+                <div className="relative z-10 container mx-auto px-6 text-center">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-light text-white tracking-wide uppercase max-w-5xl mx-auto leading-tight">
+                        "Anyone can run ads. <br />
+                        <span className="font-medium text-white/90 border-b border-white/20 pb-2">Very few can build growth that lasts."</span>
+                    </h2>
+                </div>
+            </section>
+
+            {/* 4. JOURNEY & CONTACT (WHITE) */}
+            <section className="bg-white py-24">
+                <div className="container mx-auto px-6 lg:px-12 max-w-7xl">
+                    <div className="flex flex-col lg:flex-row gap-16 mb-20">
+                        {/* Left: Journey Timeline */}
+                        <div className="lg:w-3/5">
+                            <h2 className="text-2xl font-bold mb-8 text-black">Professional Journey</h2>
+                            <div className="space-y-6">
+                                {professionalJourney.map((item, index) => (
+                                    <div key={index} className="flex flex-col sm:flex-row border-b border-gray-100 pb-6 group">
+                                        <div className="sm:w-32 flex-shrink-0 pt-1">
+                                            <span className="text-sm font-bold text-black uppercase">{item.date}</span>
+                                        </div>
+                                        <div className="flex-grow">
+                                            <h3 className="text-lg font-bold text-black mb-1 group-hover:text-primary transition-colors">{item.title}</h3>
+                                            <p className="text-gray-500 text-sm flex items-center gap-2">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#ffcc00]"></span>
+                                                {item.desc}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Right: Contact Card (Sticky) */}
+                        <div className="lg:w-2/5 relative">
+                            <div className="sticky top-24 bg-black text-white p-10 w-full max-w-md ml-auto flex flex-col overflow-hidden rounded-xl shadow-2xl border border-white/10">
+                                <h3 className="text-2xl font-bold mb-8 z-10 leading-snug">
+                                    CONNECT WITH <br/>PRIYANSHU TODAY
+                                </h3>
+                                <a href="mailto:contact@aigrowthexa.com" className="inline-flex items-center justify-between px-6 py-4 border border-white/20 text-sm font-bold uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all mb-4 z-10 rounded-lg">
+                                    Send an Email <ChevronRight className="w-4 h-4" />
+                                </a>
+                                <button onClick={() => setIsWhatsAppModalOpen(true)} className="inline-flex items-center justify-between px-6 py-4 border border-[#25D366] bg-[#25D366]/10 text-sm font-bold uppercase tracking-wider text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all z-10 rounded-lg">
+                                    Chat on WhatsApp <Phone className="w-4 h-4" />
+                                </button>
+
+                                {/* Decorative Image in corner */}
+                                <img
+                                    src={founderProfile}
+                                    alt="Priyanshu"
+                                    className="absolute -bottom-10 -right-10 w-64 h-auto opacity-30 pointer-events-none filter grayscale mix-blend-screen"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Full Width: 6-Step Growth Plan */}
+                    <div className="border-t border-gray-100 pt-20">
+                        <div className="text-center mb-12">
+                            <span className="inline-block py-1 px-3 rounded-full bg-gray-100 text-gray-600 text-xs font-bold tracking-widest uppercase mb-4">Framework</span>
+                            <h2 className="text-3xl md:text-4xl font-bold text-black">The 6-Step Growth Plan</h2>
+                        </div>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {marketingPlanSteps.map((step, i) => (
+                                <div key={i} className="flex items-start gap-4 p-6 bg-gray-50 border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-200 flex items-center justify-center font-bold text-black flex-shrink-0 text-lg">
                                         {step.number}
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 ml-4">{step.title}</h3>
-                                </div>
-                                <ul className="space-y-2">
-                                    {step.items.map((item, itemIndex) => (
-                                        <li key={itemIndex} className="flex items-center text-gray-600">
-                                            <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Industries & Experience */}
-                <div className="flex flex-col lg:flex-row gap-12 mb-16">
-                    <div className="lg:w-1/2">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-8">Industry Experience</h2>
-
-                        <div className="bg-white p-6 rounded-xl shadow-lg mb-8">
-                            <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-xl font-bold text-gray-900">Indian Home Healthcare Market</h3>
-                                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                    CAGR 19.3%
-                                </span>
-                            </div>
-                            <div className="h-48 bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-                                <div className="text-center">
-                                    <div className="flex items-end justify-center space-x-4 mb-4">
-                                        <div className="text-center">
-                                            <div className="h-24 w-12 bg-primary rounded-t"></div>
-                                            <div className="mt-2 font-semibold">2022</div>
-                                            <div className="text-sm">USD 8.8B</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="h-40 w-12 bg-red-500 rounded-t"></div>
-                                            <div className="mt-2 font-semibold">2030</div>
-                                            <div className="text-sm">Market Forecast</div>
-                                        </div>
-                                    </div>
-                                    <span className="text-gray-600">Market Growth Chart</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">Industries Served</h3>
-                            {industries.map((industry, index) => (
-                                <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                    <h4 className="font-bold text-gray-900 mb-1">{industry.name}</h4>
-                                    <p className="text-gray-600 text-sm">{industry.description}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="lg:w-1/2">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-8">Professional Journey</h2>
-
-                        <div className="relative">
-                            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-primary/20"></div>
-
-                            {[
-                                { role: "Intern", period: "Started from ground up", icon: <BookOpen /> },
-                                { role: "Digital Marketing Specialist", period: "Hands-on execution", icon: <Target /> },
-                                { role: "Digital Marketing Manager", period: "Team leadership", icon: <Users /> },
-                                { role: "Chief Marketing Officer", period: "Strategic oversight", icon: <TrendingUp /> },
-                                { role: "Founder & Growth Architect", period: "AI Growth Exa", icon: <Briefcase /> }
-                            ].map((item, index) => (
-                                <div key={index} className="relative mb-8 pl-16">
-                                    <div className="absolute left-4 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
-                                    <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
-                                        <div className="flex items-center mb-2">
-                                            <div className="text-primary mr-3">{item.icon}</div>
-                                            <h3 className="text-xl font-bold text-gray-900">{item.role}</h3>
-                                        </div>
-                                        <p className="text-gray-600">{item.period}</p>
+                                    <div className="pt-1">
+                                        <h4 className="font-bold text-black text-lg mb-2">{step.title}</h4>
+                                        <p className="text-sm text-gray-500 leading-relaxed">{step.items.join(' • ')}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
+
                 </div>
+            </section>
 
-                {/* Philosophy Section */}
-                <section className="mb-16 bg-gradient-to-r from-primary/5 to-gray-50 rounded-2xl p-8">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                            "Anyone can run ads. Very few can build growth that lasts."
-                        </h2>
-                        <p className="text-lg text-gray-700 mb-8">
-                            Priyanshu believes in long-term partnerships, transparent communication, data-driven decision-making, and empowering teams with clarity and systems.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-4">
-                            {["Long-term partnerships", "Transparent communication", "Data-driven decisions", "Team empowerment"].map((item, index) => (
-                                <div key={index} className="bg-white px-4 py-2 rounded-lg shadow border border-gray-200">
-                                    {item}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+            {/* 5. FOOTER SOCIAL BLOCKS */}
+            <div className="flex flex-col sm:flex-row w-full bg-[#f4f4f4] border-t border-gray-200">
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex-1 py-8 flex flex-col items-center justify-center gap-3 text-gray-400 hover:bg-white hover:text-[#0077b5] transition-all border-b sm:border-b-0 sm:border-r border-gray-200">
+                    <Linkedin className="w-6 h-6" />
+                    <span className="text-xs font-bold uppercase tracking-wider">Connect on LinkedIn</span>
+                </a>
+                <a href="mailto:contact@aigrowthexa.com" className="flex-1 py-8 flex flex-col items-center justify-center gap-3 text-gray-400 hover:bg-white hover:text-primary transition-all border-b sm:border-b-0 sm:border-r border-gray-200">
+                    <Mail className="w-6 h-6" />
+                    <span className="text-xs font-bold uppercase tracking-wider">Email Direct</span>
+                </a>
+                <button onClick={() => setIsWhatsAppModalOpen(true)} className="flex-1 py-8 flex flex-col items-center justify-center gap-3 text-gray-400 hover:bg-white hover:text-[#25D366] transition-all border-b sm:border-b-0 sm:border-r border-gray-200">
+                    <Phone className="w-6 h-6" />
+                    <span className="text-xs font-bold uppercase tracking-wider">WhatsApp</span>
+                </button>
+                <a href="#" className="flex-1 py-8 flex flex-col items-center justify-center gap-3 text-gray-400 hover:bg-white hover:text-black transition-all">
+                    <Award className="w-6 h-6" />
+                    <span className="text-xs font-bold uppercase tracking-wider">View Portfolio</span>
+                </a>
+            </div>
 
-                {/* Connect Section */}
-                <section className="text-center mb-16">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-8">Connect With the Founder</h2>
-                    <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                        Want to Talk Growth, Strategy, or AI? Connect directly with the mind behind AI Growth Exa.
-                    </p>
-
-                    <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 max-w-4xl mx-auto">
-                        <div className="flex flex-col md:flex-row items-center justify-around gap-8">
-                            {/* Buttons Column */}
-                            <div className="flex flex-col gap-4 w-full md:w-auto">
-                                <a
-                                    href="mailto:contact@aigrowthexa.com"
-                                    className="bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-3 text-lg font-semibold w-full md:w-64"
-                                >
-                                    <Mail className="w-5 h-5" />
-                                    <span>Email Founder</span>
-                                </a>
-                                <a
-                                    href="https://linkedin.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-white text-primary px-8 py-4 rounded-lg hover:bg-primary/5 transition-colors flex items-center justify-center gap-3 text-lg font-semibold border-2 border-primary w-full md:w-64"
-                                >
-                                    <Linkedin className="w-5 h-5" />
-                                    <span>LinkedIn Profile</span>
-                                </a>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="hidden md:block w-px h-32 bg-gray-200"></div>
-
-                            {/* WhatsApp QR Column */}
-                             <div className="flex flex-col items-center group cursor-pointer" onClick={() => setIsWhatsAppModalOpen(true)}>
-                                <div className="relative bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-3 group-hover:border-primary/50 group-hover:shadow-md transition-all">
-                                    <img
-                                        src="/assets/whatsapp-qr.png"
-                                        alt="WhatsApp QR Code"
-                                        className="w-48 h-auto object-contain blur-[2px] group-hover:blur-0 transition-all duration-300"
-                                    />
-                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div className="bg-white/90 px-3 py-1 rounded-full text-sm font-bold text-primary shadow-sm">Click to Expand</div>
-                                    </div>
-                                </div>
-                                <button className="flex items-center gap-2 text-green-600 font-semibold group-hover:text-green-700 transition-colors">
-                                    <Phone className="w-4 h-4" />
-                                    <span>Connect on WhatsApp</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
         </div>
     );
 };

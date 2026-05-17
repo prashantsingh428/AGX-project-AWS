@@ -140,11 +140,11 @@ const LanguageModal = ({ isOpen, onClose }) => {
                 <div className="mt-16 pt-12 border-t border-slate-50 grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-4">
                     <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">Middle East</h3>
-                    <button className="flex items-center gap-3 text-slate-700 hover:text-primary transition-all font-bold group">
+                    <a href="/contact" className="flex items-center gap-3 text-slate-700 hover:text-primary transition-all font-bold group">
                       <Globe className="w-5 h-5 text-slate-400 group-hover:text-primary" />
                       Visit our Regional Website
                       <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all font-bold" />
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>

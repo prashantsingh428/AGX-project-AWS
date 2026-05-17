@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Send, Mail, Phone, MapPin, Globe, Loader2 } from 'lucide-react';
 import api from '../../api/api';
+import { useNotification } from '../../context/NotificationContext';
 
 const ContactModal = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
+    const { showNotification } = useNotification();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [formData, setFormData] = useState({
@@ -29,7 +31,7 @@ const ContactModal = ({ isOpen, onClose }) => {
             }, 2000);
         } catch (error) {
             console.error('Error submitting contact form:', error);
-            alert('Failed to send message. Please try again.');
+            showNotification('Failed to send message. Please try again.', 'error');
         } finally {
             setLoading(false);
         }

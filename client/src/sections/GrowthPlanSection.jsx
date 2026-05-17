@@ -3,11 +3,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../api/api.js';
 import { useTranslation } from 'react-i18next';
+import { useNotification } from '../context/NotificationContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const GrowthPlanSection = () => {
     const { t } = useTranslation();
+    const { showNotification } = useNotification();
     const sectionRef = useRef(null);
     const leftRef = useRef(null);
     const formRef = useRef(null);
@@ -94,7 +96,12 @@ const GrowthPlanSection = () => {
                 throw new Error(t('growth_plan.form.status.error'));
             }
 
-            const response = await api.post('/leads/leadcreate', formData);
+            // Remove empty optional fields so backend enum validators don't reject empty strings.
+            const payload = Object.fromEntries(
+                Object.entries(formData).filter(([, value]) => value !== '')
+            );
+
+            await api.post('/leads/leadcreate', payload);
 
 
 
@@ -113,8 +120,8 @@ const GrowthPlanSection = () => {
                 message: ''
             });
 
-            // Show success alert
-            alert(`✅ ${t('growth_plan.form.status.success')}`);
+            // Show success notification
+            showNotification(t('growth_plan.form.status.success'), 'success');
 
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -133,14 +140,14 @@ const GrowthPlanSection = () => {
                 errorMessage = error.message;
             }
 
-            alert(`❌ ${errorMessage}`);
+            showNotification(errorMessage, 'error');
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
-        <section ref={sectionRef} className="relative overflow-hidden py-12 bg-white">
+        <section id="growth-plan" ref={sectionRef} className="relative overflow-hidden py-12 bg-white">
             <div className="container mx-auto px-6 max-w-7xl relative z-10">
                 <div className="flex flex-col items-start gap-10">
                     {/* Top Content - 2 Column Split */}
@@ -246,6 +253,7 @@ const GrowthPlanSection = () => {
                                         name="services"
                                         value={formData.services}
                                         onChange={handleChange}
+                                        required
                                         className="w-full px-5 py-4 bg-[#F2F2F2] border border-gray-300 rounded-xl text-[#4D4D4D] focus:outline-none focus:border-primary transition-all font-medium appearance-none cursor-pointer"
                                         disabled={isSubmitting}
                                     >

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Play, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const SuccessStoriesSection = () => {
     const stories = [
@@ -58,12 +59,12 @@ const SuccessStoriesSection = () => {
                     
                     {/* Fake Navigation Buttons (Matches Reference Image) */}
                     <div className="hidden md:flex gap-3">
-                        <button className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                        <Link to="/case-studies" className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
                             <ArrowLeft className="w-5 h-5 text-gray-600" />
-                        </button>
-                        <button className="w-12 h-12 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:bg-black transition-colors">
+                        </Link>
+                        <Link to="/case-studies" className="w-12 h-12 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:bg-black transition-colors">
                             <ArrowRight className="w-5 h-5 text-white" />
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from "../api/api";
+import { useNotification } from "../context/NotificationContext";
 
 import {
     FaSearch,
@@ -29,10 +30,12 @@ import {
     FaLinkedin,
     FaGithub,
     FaFilePdf,
+    FaCheck,
 } from 'react-icons/fa';
 
 // Single Job Application Modal Component
 const JobApplicationModal = ({ job, onClose, onSubmit }) => {
+    const { showNotification } = useNotification();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -117,12 +120,12 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
                 },
             });
 
-            alert("Application submitted successfully ✅");
+            showNotification("Application submitted successfully ✅", "success");
             onClose();
 
         } catch (error) {
             console.error(error);
-            alert("Something went wrong ❌");
+            showNotification("Something went wrong ❌", "error");
         } finally {
             setFormData(prev => ({ ...prev, isSubmitting: false }));
         }
@@ -467,6 +470,41 @@ const JobApplicationModal = ({ job, onClose, onSubmit }) => {
 
 // Main Careers Page Component
 const CareersPage = () => {
+    const { showNotification } = useNotification();
+    const [consultationData, setConsultationData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+    });
+    const [isConsulting, setIsConsulting] = useState(false);
+
+    const handleConsultationChange = (e) => {
+        setConsultationData({ ...consultationData, [e.target.name]: e.target.value });
+    };
+
+    const handleConsultationSubmit = async () => {
+        if (!consultationData.name || !consultationData.email) {
+            showNotification('Please fill in required fields', 'error');
+            return;
+        }
+        setIsConsulting(true);
+        try {
+            // Map subject to message as the backend requires a message field
+            const payload = {
+                ...consultationData,
+                message: `Career/Financial Consultation Inquiry: ${consultationData.subject || 'No subject provided'}`
+            };
+            await api.post('/contact', payload);
+            showNotification('Consultation request sent successfully!', 'success');
+            setConsultationData({ name: '', email: '', phone: '', subject: '' });
+        } catch (error) {
+            showNotification('Failed to send request. Please try again.', 'error');
+        } finally {
+            setIsConsulting(false);
+        }
+    };
+
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -626,7 +664,7 @@ const CareersPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-primary/5">
+        <div className="min-h-screen bg-white font-sans selection:bg-primary selection:text-white pb-20">
             {/* Scroll Progress Bar */}
             <div className="fixed top-0 left-0 right-0 h-1 z-50">
                 <div
@@ -635,173 +673,266 @@ const CareersPage = () => {
                 />
             </div>
 
-            {/* Hero Section */}
-            <div className="relative overflow-hidden bg-primary text-white py-52 px-4">
-                <div className="container mx-auto relative z-10">
-                    <div className="text-center max-w-5xl mx-auto">
-                        <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mb-6 leading-tight">
-                            Build the <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300">
-                                Future
-                            </span>
-                            <br />
-                            of <span className="text-white">AI-Driven Growth</span>
+            {/* 1. HERO SECTION (matches "Guiding Your Path to Prosperity" screenshot) */}
+            <div className="relative w-full h-[600px] md:h-[700px] flex items-center mb-48">
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80" alt="Team collaborating" className="w-full h-full object-cover" />
+                    {/* Dark gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0B1220]/90 via-[#0B1220]/80 to-[#0B1220]/30" />
+                </div>
+
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="max-w-2xl">
+                        <div className="inline-flex items-center gap-2 text-orange-400 font-bold tracking-wider uppercase text-sm mb-4">
+                            <span className="w-2 h-2 rounded-full bg-orange-400" /> Career Vision
+                        </div>
+                        <h1 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight mb-6">
+                            Guiding Your Path<br />to Prosperity
                         </h1>
-
-                        <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto text-primary-foreground/80 leading-relaxed font-light">
-                            At AI Growth Exa, we're not just building marketing campaigns — we're architecting careers,
-                            cultivating leaders, and crafting future-ready professionals.
+                        <p className="text-gray-300 text-lg mb-8 leading-relaxed max-w-xl">
+                            At AI Growth Exa, we're not just building marketing campaigns — we're architecting careers, cultivating leaders, and crafting future-ready professionals dedicated to your growth.
                         </p>
+                        <button
+                            onClick={() => {
+                                document.getElementById("open-roles").scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full transition shadow-lg flex items-center gap-2"
+                        >
+                            Start Your Journey Today <FaArrowRight />
+                        </button>
+                    </div>
+                </div>
 
-                        <div className="flex flex-col md:flex-row justify-center gap-6">
-                            {/* Explore Open Roles Button */}
-                            <button
-                                onClick={() => handleApplyClick(null)}
-                                className="group relative overflow-hidden bg-white text-primary font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 shadow-lg shadow-black/20 flex items-center justify-center gap-2"
-                                type="button"
-                            >
-                                <span className="relative z-10">Explore Open Roles</span>
-                                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                            </button>
-
-                            <button
-                                className="group relative bg-primary-foreground/10 border border-white/20 hover:border-white text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 hover:bg-white/20 flex items-center justify-center gap-2"
-                                type="button"
-                            >
-                                <span className="relative z-10">Meet Our Team</span>
-                                <FaUsers className="text-white/60 group-hover:text-white transition-colors" />
-                            </button>
+                {/* Overlapping Cards */}
+                <div className="absolute -bottom-24 left-0 right-0 z-20">
+                    <div className="container mx-auto px-4">
+                        <div className="grid md:grid-cols-3 gap-6">
+                            {/* Card 1 */}
+                            <div className="bg-white rounded-xl shadow-xl p-6 flex gap-4 items-start border border-gray-100 hover:-translate-y-2 transition-transform duration-300">
+                                <div className="w-12 h-12 rounded-full bg-[#0B1220] text-white flex justify-center items-center flex-shrink-0 text-xl shadow-md">
+                                    <FaGraduationCap />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 mb-1">Learn Faster</h3>
+                                    <p className="text-sm text-gray-600">Accelerated learning with cutting-edge AI tools and masterclasses.</p>
+                                </div>
+                            </div>
+                            {/* Card 2 */}
+                            <div className="bg-white rounded-xl shadow-xl p-6 flex gap-4 items-start border border-gray-100 hover:-translate-y-2 transition-transform duration-300">
+                                <div className="w-12 h-12 rounded-full bg-[#0B1220] text-white flex justify-center items-center flex-shrink-0 text-xl shadow-md">
+                                    <FaChartLine />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 mb-1">Tackle Challenges</h3>
+                                    <p className="text-sm text-gray-600">Solve real business problems driving measurable ROI.</p>
+                                </div>
+                            </div>
+                            {/* Card 3 */}
+                            <div className="bg-white rounded-xl shadow-xl p-6 flex gap-4 items-start border border-gray-100 hover:-translate-y-2 transition-transform duration-300">
+                                <div className="w-12 h-12 rounded-full bg-[#0B1220] text-white flex justify-center items-center flex-shrink-0 text-xl shadow-md">
+                                    <FaRocket />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 mb-1">Master Skills</h3>
+                                    <p className="text-sm text-gray-600">Build expertise in AI-driven marketing and analytics.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                {/* Abstract Background Shapes */}
-                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
             </div>
 
-            {/* Stats Section */}
-            <div className="py-16 bg-gradient-to-r from-white via-primary/5 to-white">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {companyStats.map((stat, index) => (
-                            <div
-                                key={index}
-                                className="text-center group"
-                            >
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10 mb-4 transition-all duration-300 shadow-lg">
-                                    <div className="text-primary text-2xl">{stat.icon}</div>
-                                </div>
-                                <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-                                    {stat.number}
-                                </div>
-                                <div className="text-gray-600 font-medium">{stat.label}</div>
-                            </div>
-                        ))}
+            {/* 2. ABOUT COMPANY */}
+            <div id="life-at-exa" className="container mx-auto px-4 py-20">
+                <div className="flex flex-col lg:flex-row items-center gap-16">
+                    <div className="lg:w-1/2 relative">
+                        {/* Background orange shape mimicking screenshot */}
+                        <div className="absolute -top-10 -left-10 w-full h-full bg-orange-200 rounded-tl-[100px] rounded-br-[100px] -z-10 opacity-80"></div>
+                        <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&w=800&q=80" alt="Team discussion" className="w-full rounded-tr-[50px] rounded-bl-[50px] shadow-xl z-10 relative object-cover h-[500px]" />
+                        
+                        {/* Little floating dot elements */}
+                        <div className="absolute top-1/4 -left-4 w-8 h-8 rounded-full bg-orange-400 z-20 flex justify-center items-center text-white shadow-lg"><FaStar size={12}/></div>
+                        <div className="absolute bottom-1/4 -right-4 w-8 h-8 rounded-full bg-[#0B1220] z-20 flex justify-center items-center text-white shadow-lg"><FaStar size={12}/></div>
                     </div>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="container mx-auto px-4 py-16">
-
-                {/* Welcome Message */}
-                <div className="text-center max-w-4xl mx-auto mb-20">
-                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/70 text-white px-6 py-2 rounded-full mb-6">
-                        <FaStar className="text-yellow-300" />
-                        <span className="font-semibold">Welcome to Our Careers Hub</span>
-                    </div>
-
-                    <h2 className="text-5xl md:text-6xl font-bold mb-8">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary/60">
-                            This is Not Just a Job
-                        </span>
-                        <br />
-                        <span className="text-gray-900">It's a Career Revolution</span>
-                    </h2>
-
-                    <p className="text-2xl text-gray-700 leading-relaxed mb-12">
-                        If you're curious, ambitious, and electrified by AI, growth, and innovation,
-                        you won't just work here — you'll <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">evolve here</span>.
-                    </p>
-                </div>
-
-                {/* 3D Cards Section */}
-                <div className="mb-24">
-                    <h3 className="text-4xl font-bold text-center mb-12 text-gray-900">
-                        This is a place for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">visionaries</span> who want to:
-                    </h3>
-
-                    <div className="grid md:grid-cols-3 gap-8 mb-20">
-                        {[
-                            {
-                                title: "Learn Faster Than Lightning",
-                                desc: "Accelerated learning with cutting-edge AI tools, weekly masterclasses, and access to premium courses.",
-                                icon: <FaGraduationCap />,
-                            },
-                            {
-                                title: "Tackle High-Impact Growth Challenges",
-                                desc: "Solve real business problems for global clients, driving measurable ROI and transforming industries.",
-                                icon: <FaChartLine />,
-                            },
-                            {
-                                title: "Master Future-Ready Skills",
-                                desc: "Build expertise in AI-driven marketing, predictive analytics, and growth strategies.",
-                                icon: <FaRocket />,
-                            }
-                        ].map((item, index) => (
-                            <div
-                                key={index}
-                                className="group"
-                                onMouseEnter={() => setHoveredCard(index)}
-                                onMouseLeave={() => setHoveredCard(null)}
-                            >
-                                <div className={`
-                  relative h-full bg-white
-                  rounded-2xl p-8 shadow-xl hover:shadow-2xl
-                  transform-gpu transition-all duration-500 ease-out
-                  ${hoveredCard === index ? 'shadow-blue-500/10 -translate-y-2' : ''}
-                  border border-gray-100
-                `}>
-                                    <div className="relative z-10">
-                                        <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
-                                            <div className="text-3xl text-primary group-hover:text-white transition-colors duration-300">{item.icon}</div>
-                                        </div>
-
-                                        <h4 className="text-2xl font-bold text-gray-900 mb-4">{item.title}</h4>
-                                        <p className="text-gray-600 leading-relaxed">{item.desc}</p>
-
-                                        <div className="mt-8 pt-6 border-t border-gray-100">
-                                            <div className="flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition-colors">
-                                                <span>Learn more about this</span>
-                                                <FaChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Job Openings Section */}
-                <div className="mb-24">
-                    <div className="text-center mb-12">
-                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white px-6 py-2 rounded-full mb-4">
-                            <FaFire />
-                            <span className="font-semibold">We're Hiring!</span>
+                    
+                    <div className="lg:w-1/2 pl-0 md:pl-10">
+                        <div className="inline-flex items-center gap-2 text-orange-400 font-bold tracking-wider uppercase text-xs mb-4">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-400" /> About Company
                         </div>
-
-                        <h2 className="text-5xl font-bold text-gray-900 mb-6">
-                            Open Roles{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/80">
-                                (Future-Focused Hiring)
-                            </span>
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#0B1220] mb-6 leading-tight">
+                            Committed to Your Career <br className="hidden md:block"/> Success and Security
                         </h2>
-
-                        <p className="text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                            We're actively seeking high-potential professionals across our AI-driven service verticals.
-                            Join us in building the future of digital transformation.
+                        <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                            If you're curious, ambitious, and electrified by AI, growth, and innovation, you won't just work here — you'll evolve here. We help you achieve career peace of mind through personalized mentoring and expert guidance.
                         </p>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                            <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-500 flex justify-center items-center"><FaCheck size={10}/></div>
+                                <span className="text-gray-800 font-bold text-sm">Work with Experts</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-500 flex justify-center items-center"><FaCheck size={10}/></div>
+                                <span className="text-gray-800 font-bold text-sm">Unleash Your Potential</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-500 flex justify-center items-center"><FaCheck size={10}/></div>
+                                <span className="text-gray-800 font-bold text-sm">Your Success is Ours</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 rounded-full bg-orange-100 text-orange-500 flex justify-center items-center"><FaCheck size={10}/></div>
+                                <span className="text-gray-800 font-bold text-sm">Transforming Businesses</span>
+                            </div>
+                        </div>
+
+                        <button className="border border-gray-300 hover:border-orange-400 text-gray-700 hover:text-orange-500 px-8 py-3 rounded-full transition font-semibold text-sm">
+                            About Us <FaChevronRight className="inline ml-2 text-[10px]"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* 3. OUR DEPARTMENTS (Mimicking "Our Financial Solutions") */}
+            <div className="bg-slate-50 py-24 border-y border-gray-100 mt-10">
+                <div className="container mx-auto px-4 max-w-6xl">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+                        <div>
+                            <div className="inline-flex items-center gap-2 text-orange-400 font-bold tracking-wider uppercase text-xs mb-4">
+                                <span className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Latest Roles
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#0B1220]">
+                                Our Departments
+                            </h2>
+                        </div>
+                        <p className="text-gray-500 max-w-md text-sm leading-relaxed">
+                            Our commitment is to provide actionable environments that help you make informed decisions and achieve long-term career success. Trust us to be your partner in growth.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {/* Dept 1 */}
+                        <div className="bg-white p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
+                            <h3 className="text-xl font-bold text-[#0B1220] mb-6 text-center border-b border-gray-100 pb-4">Marketing & Strategy</h3>
+                            <div className="relative h-48 overflow-hidden mb-6">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Marketing" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                <div className="absolute -bottom-4 right-4 w-10 h-10 bg-[#1A3636] rounded-full flex justify-center items-center text-white z-10 shadow-lg">
+                                    <FaChartLine size={16}/>
+                                </div>
+                            </div>
+                            <p className="text-gray-500 text-sm mb-6 line-clamp-3 text-center px-4">
+                                We analyze market situations, project future trends, and create holistic growth plans.
+                            </p>
+                            <div className="text-center">
+                                <button className="text-[#0B1220] font-bold text-xs uppercase tracking-wider hover:text-orange-500 transition-colors" onClick={() => { setActiveTab('marketing'); document.getElementById("open-roles").scrollIntoView({ behavior: "smooth" }); }}>
+                                    Read More <FaArrowRight className="inline ml-1 text-[10px]"/>
+                                </button>
+                            </div>
+                        </div>
+                        {/* Dept 2 */}
+                        <div className="bg-white p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
+                            <h3 className="text-xl font-bold text-[#0B1220] mb-6 text-center border-b border-gray-100 pb-4">Technology & AI</h3>
+                            <div className="relative h-48 overflow-hidden mb-6">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Technology" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                <div className="absolute -bottom-4 right-4 w-10 h-10 bg-[#1A3636] rounded-full flex justify-center items-center text-white z-10 shadow-lg">
+                                    <FaCode size={16}/>
+                                </div>
+                            </div>
+                            <p className="text-gray-500 text-sm mb-6 line-clamp-3 text-center px-4">
+                                We develop comprehensive technical solutions, including automation and custom architecture.
+                            </p>
+                            <div className="text-center">
+                                <button className="text-[#0B1220] font-bold text-xs uppercase tracking-wider hover:text-orange-500 transition-colors" onClick={() => { setActiveTab('technology'); document.getElementById("open-roles").scrollIntoView({ behavior: "smooth" }); }}>
+                                    Read More <FaArrowRight className="inline ml-1 text-[10px]"/>
+                                </button>
+                            </div>
+                        </div>
+                        {/* Dept 3 */}
+                        <div className="bg-white p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
+                            <h3 className="text-xl font-bold text-[#0B1220] mb-6 text-center border-b border-gray-100 pb-4">Creative & Design</h3>
+                            <div className="relative h-48 overflow-hidden mb-6">
+                                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80" alt="Creative" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                <div className="absolute -bottom-4 right-4 w-10 h-10 bg-[#1A3636] rounded-full flex justify-center items-center text-white z-10 shadow-lg">
+                                    <FaPalette size={16}/>
+                                </div>
+                            </div>
+                            <p className="text-gray-500 text-sm mb-6 line-clamp-3 text-center px-4">
+                                We tailor visual solutions to your brand goals and risk tolerance, ensuring a stellar portfolio.
+                            </p>
+                            <div className="text-center">
+                                <button className="text-[#0B1220] font-bold text-xs uppercase tracking-wider hover:text-orange-500 transition-colors" onClick={() => { setActiveTab('creative'); document.getElementById("open-roles").scrollIntoView({ behavior: "smooth" }); }}>
+                                    Read More <FaArrowRight className="inline ml-1 text-[10px]"/>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 4. HIRING PROCESS (Mimicking "How We Operate") */}
+            <div className="container mx-auto px-4 py-24">
+                <div className="text-center mb-16">
+                    <div className="inline-flex items-center gap-2 text-orange-400 font-bold tracking-wider uppercase text-xs mb-4">
+                        <span className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Work Process
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#0B1220]">
+                        How We Operate
+                    </h2>
+                </div>
+
+                <div className="relative max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center text-center gap-12 md:gap-0 mt-10">
+                    {/* Connecting line for desktop */}
+                    <div className="hidden md:block absolute top-10 left-24 right-24 border-t-2 border-dotted border-gray-300 -z-10"></div>
+
+                    {/* Step 1 */}
+                    <div className="flex flex-col items-center bg-white z-10 w-56 group">
+                        <div className="w-20 h-20 bg-orange-50 group-hover:bg-orange-100 rounded-full flex justify-center items-center text-2xl text-orange-500 border-4 border-white shadow-sm transition-colors mb-6 relative">
+                            <span className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full text-white text-[10px] font-bold flex justify-center items-center border-2 border-white">01</span>
+                            <FaFilePdf />
+                        </div>
+                        <h4 className="font-bold text-[#0B1220] text-sm mb-2">Initial Application</h4>
+                        <p className="text-xs text-gray-500 px-4 leading-relaxed">Discuss your career goals and needs during a personalized review.</p>
+                    </div>
+                    {/* Step 2 */}
+                    <div className="flex flex-col items-center bg-white z-10 w-56 group">
+                        <div className="w-20 h-20 bg-orange-50 group-hover:bg-orange-100 rounded-full flex justify-center items-center text-2xl text-orange-500 border-4 border-white shadow-sm transition-colors mb-6 relative">
+                            <span className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full text-white text-[10px] font-bold flex justify-center items-center border-2 border-white">02</span>
+                            <FaUserTie />
+                        </div>
+                        <h4 className="font-bold text-[#0B1220] text-sm mb-2">Strategy Development</h4>
+                        <p className="text-xs text-gray-500 px-4 leading-relaxed">We create a tailored pathway designed to meet your specific objectives.</p>
+                    </div>
+                    {/* Step 3 */}
+                    <div className="flex flex-col items-center bg-white z-10 w-56 group">
+                        <div className="w-20 h-20 bg-orange-50 group-hover:bg-orange-100 rounded-full flex justify-center items-center text-2xl text-orange-500 border-4 border-white shadow-sm transition-colors mb-6 relative">
+                            <span className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full text-white text-[10px] font-bold flex justify-center items-center border-2 border-white">03</span>
+                            <FaBrain />
+                        </div>
+                        <h4 className="font-bold text-[#0B1220] text-sm mb-2">Plan Implementation</h4>
+                        <p className="text-xs text-gray-500 px-4 leading-relaxed">Execute the customized strategies with our support, ensuring alignment.</p>
+                    </div>
+                    {/* Step 4 */}
+                    <div className="flex flex-col items-center bg-white z-10 w-56 group">
+                        <div className="w-20 h-20 bg-orange-50 group-hover:bg-orange-100 rounded-full flex justify-center items-center text-2xl text-orange-500 border-4 border-white shadow-sm transition-colors mb-6 relative">
+                            <span className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full text-white text-[10px] font-bold flex justify-center items-center border-2 border-white">04</span>
+                            <FaHandshake />
+                        </div>
+                        <h4 className="font-bold text-[#0B1220] text-sm mb-2">Ongoing Monitoring</h4>
+                        <p className="text-xs text-gray-500 px-4 leading-relaxed">We regularly review and adjust your plan to adapt to any changes.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 5. OPEN ROLES (Retaining Original Filtered Jobs) */}
+            <div id="open-roles" className="bg-slate-50 py-24 border-t border-gray-100">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <div className="inline-flex items-center gap-2 text-orange-400 font-bold tracking-wider uppercase text-xs mb-4">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-400" /> We're Hiring
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#0B1220] mb-4">
+                            Explore Open Roles
+                        </h2>
                     </div>
 
                     {/* Search and Filters */}
@@ -812,7 +943,7 @@ const CareersPage = () => {
                             </div>
                             <input
                                 type="text"
-                                className="w-full px-4 py-3 pl-12 rounded-lg border-2 border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-lg rounded-xl"
+                                className="w-full px-4 py-4 pl-12 rounded-lg border border-gray-200 bg-white focus:border-orange-400 outline-none transition-all text-sm shadow-sm"
                                 placeholder="Search roles by title, department, or skills..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -820,118 +951,56 @@ const CareersPage = () => {
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex flex-wrap gap-2 mb-8">
-                            <button
-                                onClick={() => setActiveTab('all')}
-                                className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === 'all' ? 'bg-white shadow-md text-primary' : 'text-gray-600 hover:text-gray-900 bg-gray-100'}`}
-                                type="button"
-                            >
-                                All Roles
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('featured')}
-                                className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${activeTab === 'featured' ? 'bg-white shadow-md text-primary' : 'text-gray-600 hover:text-gray-900 bg-gray-100'}`}
-                                type="button"
-                            >
-                                <FaStar className="text-yellow-500" />
-                                Featured
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('marketing')}
-                                className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === 'marketing' ? 'bg-white shadow-md text-primary' : 'text-gray-600 hover:text-gray-900 bg-gray-100'}`}
-                                type="button"
-                            >
-                                Marketing
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('technology')}
-                                className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === 'technology' ? 'bg-white shadow-md text-primary' : 'text-gray-600 hover:text-gray-900 bg-gray-100'}`}
-                                type="button"
-                            >
-                                Technology
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('creative')}
-                                className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === 'creative' ? 'bg-white shadow-md text-primary' : 'text-gray-600 hover:text-gray-900 bg-gray-100'}`}
-                                type="button"
-                            >
-                                Creative
-                            </button>
+                        <div className="flex flex-wrap justify-center gap-2 mb-8">
+                            <button onClick={() => setActiveTab('all')} className={`px-6 py-2.5 rounded-full font-bold transition-all text-xs uppercase tracking-wide border ${activeTab === 'all' ? 'bg-[#0B1220] text-white border-[#0B1220]' : 'text-gray-600 bg-white border-gray-200 hover:border-gray-300'}`}>All Roles</button>
+                            <button onClick={() => setActiveTab('featured')} className={`px-6 py-2.5 rounded-full font-bold transition-all text-xs uppercase tracking-wide border flex items-center gap-2 ${activeTab === 'featured' ? 'bg-[#0B1220] text-white border-[#0B1220]' : 'text-gray-600 bg-white border-gray-200 hover:border-gray-300'}`}><FaStar className={activeTab === 'featured' ? "text-yellow-400" : "text-yellow-500"} /> Featured</button>
+                            <button onClick={() => setActiveTab('marketing')} className={`px-6 py-2.5 rounded-full font-bold transition-all text-xs uppercase tracking-wide border ${activeTab === 'marketing' ? 'bg-[#0B1220] text-white border-[#0B1220]' : 'text-gray-600 bg-white border-gray-200 hover:border-gray-300'}`}>Marketing</button>
+                            <button onClick={() => setActiveTab('technology')} className={`px-6 py-2.5 rounded-full font-bold transition-all text-xs uppercase tracking-wide border ${activeTab === 'technology' ? 'bg-[#0B1220] text-white border-[#0B1220]' : 'text-gray-600 bg-white border-gray-200 hover:border-gray-300'}`}>Technology</button>
+                            <button onClick={() => setActiveTab('creative')} className={`px-6 py-2.5 rounded-full font-bold transition-all text-xs uppercase tracking-wide border ${activeTab === 'creative' ? 'bg-[#0B1220] text-white border-[#0B1220]' : 'text-gray-600 bg-white border-gray-200 hover:border-gray-300'}`}>Creative</button>
                         </div>
                     </div>
 
                     {/* Job Cards Grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
                         {filteredJobs.map((job) => (
-                            <div
-                                key={job.id}
-                                className="group"
-                            >
-                                <div className="bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:border-blue-300 overflow-hidden">
-                                    <div className="p-6 pb-2">
-                                        <div className="flex justify-between items-start">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                                                    {job.icon}
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                                        {job.title}
-                                                    </h3>
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
-                                                            {job.department}
-                                                        </span>
-                                                        {job.featured && (
-                                                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-primary/60 to-primary/90 text-white">
-                                                                <FaStar className="mr-1" /> Featured
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div key={job.id} className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 h-full overflow-hidden flex flex-col group p-6">
+                                <div className="flex-1">
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-xl border border-gray-100 group-hover:border-orange-200 group-hover:bg-orange-50 transition-colors">
+                                            {job.icon}
+                                        </div>
+                                        {job.featured && (
+                                            <span className="inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-yellow-100 text-yellow-700 uppercase tracking-widest">
+                                                <FaStar className="mr-1" size={8} /> Featured
+                                            </span>
+                                        )}
+                                    </div>
+                                    <h3 className="text-lg font-serif font-bold text-[#0B1220] mb-2 leading-snug">
+                                        {job.title}
+                                    </h3>
+                                    <span className="inline-block px-2 py-1 rounded text-[10px] font-bold bg-gray-100 text-gray-500 mb-6 uppercase tracking-wider">
+                                        {job.department}
+                                    </span>
+                                    
+                                    <div className="space-y-3 mb-6">
+                                        <div className="flex items-center text-xs text-gray-600 font-medium">
+                                            <FaGlobe className="w-4 text-gray-400" /> <span className="ml-2">{job.location}</span>
+                                        </div>
+                                        <div className="flex items-center text-xs text-gray-600 font-medium">
+                                            <FaBriefcase className="w-4 text-gray-400" /> <span className="ml-2">{job.type} • {job.experience}</span>
+                                        </div>
+                                        <div className="flex items-center text-xs font-bold text-[#0B1220]">
+                                            <FaDollarSign className="w-4 text-green-600" /> <span className="ml-2">{job.salary}</span>
                                         </div>
                                     </div>
-
-                                    <div className="p-6 pt-2">
-                                        <div className="grid grid-cols-2 gap-4 mb-6">
-                                            <div className="space-y-1">
-                                                <div className="text-sm text-gray-500">Location</div>
-                                                <div className="font-medium flex items-center gap-2">
-                                                    <FaGlobe className="text-gray-400" />
-                                                    {job.location}
-                                                </div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="text-sm text-gray-500">Experience</div>
-                                                <div className="font-medium">{job.experience}</div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="text-sm text-gray-500">Type</div>
-                                                <div className="font-medium">{job.type}</div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                <div className="text-sm text-gray-500">Salary Range</div>
-                                                <div className="font-medium text-green-600">{job.salary}</div>
-                                            </div>
-                                        </div>
-
-                                        <p className="text-gray-600 text-sm">
-                                            Join our team to work on cutting-edge AI solutions that transform businesses globally.
-                                        </p>
-                                    </div>
-
-                                    <div className="p-6 pt-2">
-                                        {/* Apply Now Button */}
-                                        <button
-                                            onClick={() => handleApplyClick(job)}
-                                            className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 group/btn"
-                                            type="button"
-                                        >
-                                            <span>Apply Now</span>
-                                            <FaArrowRight className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                        </button>
-                                    </div>
+                                </div>
+                                <div className="pt-4 border-t border-gray-100">
+                                    <button
+                                        onClick={() => handleApplyClick(job)}
+                                        className="w-full bg-white border border-gray-200 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600 text-gray-800 font-bold py-2.5 px-4 rounded text-xs transition-colors duration-300 flex items-center justify-center gap-2"
+                                    >
+                                        Apply Now <FaArrowRight size={10}/>
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -939,65 +1008,87 @@ const CareersPage = () => {
 
                     {filteredJobs.length === 0 && (
                         <div className="text-center py-16">
-                            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
-                                <FaSearch className="text-3xl text-gray-400" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4">No roles match your search</h3>
-                            <p className="text-gray-600 max-w-md mx-auto">
-                                Try a different search term or browse all roles.
-                            </p>
+                            <h3 className="text-xl font-bold text-gray-900 mb-4">No roles match your search</h3>
                             <button
-                                onClick={() => {
-                                    setSearchTerm('');
-                                    setActiveTab('all');
-                                }}
-                                className="mt-6 border-2 border-gray-300 hover:border-primary text-gray-700 hover:text-primary bg-white hover:bg-primary/5 font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
-                                type="button"
+                                onClick={() => { setSearchTerm(''); setActiveTab('all'); }}
+                                className="mt-4 border border-gray-300 hover:border-orange-400 text-gray-700 hover:text-orange-500 bg-white py-2 px-6 rounded text-sm font-semibold transition-colors"
                             >
                                 View All Roles
                             </button>
                         </div>
                     )}
-
-                    <div className="text-center mt-12">
-                        <p className="text-gray-500 text-sm">
-                            *Even if your role isn't listed, we'd still love to hear from driven, high-impact talent.
-                        </p>
-                    </div>
                 </div>
+            </div>
 
-                {/* Final CTA Section */}
-                <div className="text-center py-20">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white px-8 py-3 rounded-full mb-8">
-                            <FaHandshake className="text-xl" />
-                            <span className="text-lg font-bold">Ready to Transform Your Career?</span>
+            {/* 6. BOTTOM CTA (Schedule Consultation / Quick Apply) */}
+            <div className="container mx-auto px-4 py-24">
+                <div className="bg-[#1A3636] rounded-[40px] overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
+                    {/* Decorative element */}
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl"></div>
+
+                    <div className="md:w-5/12 relative">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team" className="w-full h-full object-cover min-h-[300px]" />
+                    </div>
+                    <div className="md:w-7/12 p-8 md:p-16 flex flex-col justify-center z-10">
+                        <div className="inline-flex items-center gap-2 text-white/60 font-bold tracking-wider uppercase text-[10px] mb-4">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-400" /> Get In Touch
+                        </div>
+                        <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 leading-tight">
+                            Schedule Your Free <br/> Financial Consultation
+                        </h2>
+                        <p className="text-white/60 mb-8 text-sm max-w-md leading-relaxed">
+                            Looking to supercharge your career or need career advice? Drop us a message. We're always looking for brilliant minds to join our teams.
+                        </p>
+                        
+                        {/* Quick form UI mirroring the screenshot */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-w-xl">
+                            <input 
+                                type="text" 
+                                name="name"
+                                value={consultationData.name}
+                                onChange={handleConsultationChange}
+                                placeholder="Name" 
+                                className="bg-[#2A4747] border-none text-white text-sm px-4 py-3 rounded focus:outline-none focus:ring-1 focus:ring-white/30 placeholder-white/40" 
+                            />
+                            <input 
+                                type="email" 
+                                name="email"
+                                value={consultationData.email}
+                                onChange={handleConsultationChange}
+                                placeholder="Email" 
+                                className="bg-[#2A4747] border-none text-white text-sm px-4 py-3 rounded focus:outline-none focus:ring-1 focus:ring-white/30 placeholder-white/40" 
+                            />
+                            <input 
+                                type="tel" 
+                                name="phone"
+                                value={consultationData.phone}
+                                onChange={handleConsultationChange}
+                                placeholder="Phone" 
+                                className="bg-[#2A4747] border-none text-white text-sm px-4 py-3 rounded focus:outline-none focus:ring-1 focus:ring-white/30 placeholder-white/40" 
+                            />
+                            <input 
+                                type="text" 
+                                name="subject"
+                                value={consultationData.subject}
+                                onChange={handleConsultationChange}
+                                placeholder="Subject" 
+                                className="bg-[#2A4747] border-none text-white text-sm px-4 py-3 rounded focus:outline-none focus:ring-1 focus:ring-white/30 placeholder-white/40" 
+                            />
+                        </div>
+                        
+                        <div className="flex">
+                            <button 
+                                onClick={handleConsultationSubmit}
+                                disabled={isConsulting}
+                                className="bg-gray-100 hover:bg-white text-[#1A3636] font-bold py-3.5 px-8 rounded flex items-center gap-2 text-sm transition-colors disabled:opacity-50"
+                            >
+                                {isConsulting ? 'Sending...' : 'Send Message'} <FaArrowRight size={12}/>
+                            </button>
                         </div>
 
-                        <h2 className="text-6xl font-bold mb-10">
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60">
-                                Apply to Join
-                            </span>
-                            <br />
-                            <span className="text-gray-900">AI Growth Exa Today</span>
-                        </h2>
-
-                        <p className="text-2xl text-gray-700 mb-12 leading-relaxed max-w-3xl mx-auto">
-                            Don't just find a job. Find a mission. Find a team that challenges you,
-                            supports you, and accelerates your growth beyond imagination.
-                        </p>
-
-                        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                            {/* Start Your Application Journey Button */}
-                            <button
-                                onClick={() => handleApplyClick(null)}
-                                className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-white font-bold py-5 px-14 rounded-2xl text-xl transition-all duration-300 shadow-2xl shadow-primary/30 flex items-center justify-center gap-4"
-                                type="button"
-                            >
-                                <span className="relative z-10">Start Your Application Journey</span>
-                                <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                            </button>
+                        {/* Floating button icon like screenshot */}
+                        <div className="absolute top-1/2 -right-8 -translate-y-1/2 w-20 h-20 bg-gray-200 rounded-2xl hidden lg:flex justify-center items-center shadow-lg transform -rotate-12">
+                            <FaSearch className="text-3xl text-gray-400" />
                         </div>
                     </div>
                 </div>

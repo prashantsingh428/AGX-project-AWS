@@ -122,9 +122,9 @@ const ServiceCard = ({ title, description, icon, animation }) => {
                         <p className="text-[13px] leading-snug mb-5 text-gray-300 font-medium px-1">
                             {description}
                         </p>
-                        <button className="px-7 py-2 bg-primary text-white font-black rounded-full text-[9px] uppercase tracking-widest hover:bg-white hover:text-primary transition-all duration-500">
+                        <Link to="/services" className="inline-block px-7 py-2 bg-primary text-white font-black rounded-full text-[9px] uppercase tracking-widest hover:bg-white hover:text-primary transition-all duration-500">
                             Learn More
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -237,4 +237,3 @@ const WhatWeHelpWithSection = () => {
 };
 
 export default WhatWeHelpWithSection;
-

@@ -12,16 +12,19 @@ import TermsAndConditions from '../pages/TermsAndConditions';
 
 const Home = lazy(() => import('../pages/Home'));
 const Blog = lazy(() => import('../pages/Blog'));
+const BlogDetail = lazy(() => import('../pages/BlogDetail'));
 const Career = lazy(() => import('../pages/Career'));
 const AiSolution = lazy(() => import('../pages/Aisolution'));
 const Services = lazy(() => import('../pages/Services'));
 const About = lazy(() => import('../pages/About'));
-const Awards = lazy(() => import('../pages/Awards'));
+const PremiumAwards = lazy(() => import('../pages/PremiumAwards'));
 const Founder = lazy(() => import('../pages/Founder'));
 const Casestudies = lazy(() => import('../pages/Casestudies'));
 const Industries = lazy(() => import('../pages/Industries'));
 const Contact = lazy(() => import('../pages/Contact'));
 const AdminPanel = lazy(() => import('../pages/admin/AdminPanel'));
+const ServiceDetailPage = lazy(() => import('../pages/ServiceDetailPage'));
+const CareerDetailPage = lazy(() => import('../pages/CareerDetailPage'));
 
 const NotFound = () => <div className="p-20 text-center">404 - Page Not Found</div>;
 
@@ -57,15 +60,18 @@ const AppRoutes = () => {
                 <Routes location={background || location}>
                     <Route path="/" element={<Home />} />
                     <Route path="/services" element={<Services />} />
+                    <Route path="/services/:slug" element={<ServiceDetailPage />} />
                     <Route path="/aisolution" element={<AiSolution />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/founder" element={<Founder />} />
-                    <Route path="/awards" element={<Awards />} />
+                    <Route path="/awards" element={<PremiumAwards />} />
                     <Route path="/case-studies" element={<Casestudies />} />
                     <Route path="/industries" element={<Industries />} />
                     <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:id" element={<BlogDetail />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/careers" element={<Career />} />
+                    <Route path="/careers/:slug" element={<CareerDetailPage />} />
                     <Route path="/cookie-policy" element={<CookieInfo />} />
                     <Route path="/copyright-policy" element={<CopyrightInfo />} />
                     <Route path="/privacy-policy" element={<PrivacyInfo />} />

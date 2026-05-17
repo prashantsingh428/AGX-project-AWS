@@ -11,11 +11,13 @@ import {
 import logo from '../assets/client-logos/ailogo2.png';
 import api from '../api/api.js';
 import LanguageSelector from './LanguageSelector';
+import { useNotification } from '../context/NotificationContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
     const location = useLocation();
+    const { showNotification } = useNotification();
     const footerRef = useRef(null);
 
     const [formData, setFormData] = useState({
@@ -41,7 +43,7 @@ const Footer = () => {
         try {
             setLoading(true);
             await api.post("/connect", formData);
-            alert("Message sent successfully 🚀");
+            showNotification("Message sent successfully 🚀", "success");
 
             setFormData({
                 name: "",
@@ -51,7 +53,7 @@ const Footer = () => {
                 message: "",
             });
         } catch (error) {
-            alert("Something went wrong 😢");
+            showNotification("Something went wrong 😢", "error");
         } finally {
             setLoading(false);
         }

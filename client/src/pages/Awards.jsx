@@ -295,7 +295,11 @@ const Awards = () => {
                                 <span className="text-sm text-gray-500">
                                     Certificate ID: {cert.id.toString().padStart(6, '0')}
                                 </span>
-                                <button className="text-primary hover:text-primary/80 font-semibold text-sm flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedImage(cert.imageUrl)}
+                                    className="text-primary hover:text-primary/80 font-semibold text-sm flex items-center gap-2"
+                                >
                                     View Details
                                     <span>→</span>
                                 </button>

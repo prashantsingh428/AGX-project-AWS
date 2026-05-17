@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X, Mail, Lock, User, ArrowRight, Loader2, Github, CheckCircle } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowRight, Loader2, Github, CheckCircle, AlertCircle } from 'lucide-react';
 import api from '../../api/api';
 
 const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
@@ -186,10 +186,33 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
 
             {/* Notification Toast */}
             {notification && (
-                <div className={`absolute top-8 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl z-[150] flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${notification.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[92%] max-w-lg z-[150] animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div className={`rounded-xl border bg-white shadow-[0_16px_36px_rgba(15,23,42,0.2)] p-3.5 ${
+                        notification.type === 'success' ? 'border-emerald-200' : 'border-rose-200'
                     }`}>
-                    {notification.type === 'success' ? <CheckCircle className="w-5 h-5 shrink-0" /> : <X className="w-5 h-5 shrink-0" />}
-                    <span className="font-bold text-sm tracking-wide">{notification.message}</span>
+                        <div className="flex items-start gap-3">
+                            <div className={`mt-0.5 rounded-full p-1.5 ${
+                                notification.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
+                            }`}>
+                                {notification.type === 'success' ? <CheckCircle className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-700">
+                                    {notification.type === 'success' ? 'Operation Successful' : 'Action Required'}
+                                </p>
+                                <p className="text-sm text-slate-900 leading-relaxed font-medium mt-0.5">
+                                    {notification.message}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setNotification(null)}
+                                className="text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                                aria-label="Dismiss notification"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -329,7 +352,13 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                         <div className="flex justify-between ml-1">
                                             <label className="text-xs font-bold uppercase text-slate-500">Password</label>
                                             {view === 'login' && (
-                                                <a href="#" className="text-xs text-primary font-semibold hover:text-primary/80">Forgot?</a>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => showNotification("Please contact support at contact@aigrowthexa.com to reset your password.", "success")}
+                                                    className="text-xs text-primary font-semibold hover:text-primary/80"
+                                                >
+                                                    Forgot?
+                                                </button>
                                             )}
                                         </div>
                                         <div className="relative">

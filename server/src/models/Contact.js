@@ -18,6 +18,22 @@ const contactSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
+        jobTitle: {
+            type: String,
+            trim: true
+        },
+        organization: {
+            type: String,
+            trim: true
+        },
+        phone: {
+            type: String,
+            trim: true
+        },
+        country: {
+            type: String,
+            trim: true
+        },
         message: {
             type: String,
             required: true,

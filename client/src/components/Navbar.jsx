@@ -160,10 +160,10 @@ const Navbar = () => {
                 ctaPath: "/services"
             },
             dropdown: [
-                { name: "AI Marketing", path: "/services", description: "LLM-powered performance automation" },
-                { name: "Data Strategy", path: "/services", description: "Predictive analytics and business intelligence" },
-                { name: "Brand Identity", path: "/services", description: "Next-gen design for an AI-first world" },
-                { name: "Cloud Infrastructure", path: "/services", description: "Scalable enterprise AI architecture" }
+                { name: "AI Marketing", path: "/services/ai-marketing", description: "LLM-powered performance automation" },
+                { name: "Data Strategy", path: "/services/data-strategy", description: "Predictive analytics and business intelligence" },
+                { name: "Brand Identity", path: "/services/brand-identity", description: "Next-gen design for an AI-first world" },
+                { name: "Cloud Infrastructure", path: "/services/cloud-infrastructure", description: "Scalable enterprise AI architecture" }
             ]
         },
         { name: t('navbar.insights'), path: '/blog' },
@@ -180,29 +180,28 @@ const Navbar = () => {
                 { name: t('navbar.careers.overview'), path: '/careers', description: "Our culture, values and mission" },
                 { 
                     name: t('navbar.careers.open_roles.main'), 
-                    path: '/careers', 
+                    path: '/careers#open-roles', 
                     description: "Find your next challenge",
                     subItems: [
-                        { name: t('navbar.careers.open_roles.all_jobs'), path: '/careers' },
-                        { name: t('navbar.careers.open_roles.featured'), path: '/careers' },
+                        { name: t('navbar.careers.open_roles.all_jobs'), path: '/careers#open-roles' },
+                        { name: t('navbar.careers.open_roles.featured'), path: '/careers#open-roles' },
                         { 
                             name: t('navbar.careers.open_roles.departments.main'), 
-                            path: '/careers',
+                            path: '/careers#open-roles',
                             isDepartment: true,
                             children: [
-                                { name: t('navbar.careers.open_roles.departments.marketing'), path: '/careers' },
-                                { name: t('navbar.careers.open_roles.departments.technology'), path: '/careers' },
-                                { name: t('navbar.careers.open_roles.departments.creative'), path: '/careers' },
-                                { name: t('navbar.careers.open_roles.departments.business'), path: '/careers' },
+                                { name: t('navbar.careers.open_roles.departments.marketing'), path: '/careers#open-roles' },
+                                { name: t('navbar.careers.open_roles.departments.technology'), path: '/careers#open-roles' },
+                                { name: t('navbar.careers.open_roles.departments.creative'), path: '/careers#open-roles' },
+                                { name: t('navbar.careers.open_roles.departments.business'), path: '/careers#open-roles' },
                             ]
                         }
                     ]
                 },
-                { name: t('navbar.careers.life_at_exa'), path: '/careers', description: "A glimpse into our daily work environment" },
-                { name: t('navbar.careers.growth_learning'), path: '/careers', description: "How we invest in your professional journey" },
-                { name: t('navbar.careers.what_you_work_on'), path: '/careers', description: "Impactful projects and cutting-edge tech" },
-                { name: t('navbar.careers.hiring_process'), path: '/careers', description: "What to expect from application to offer" },
-                { name: t('navbar.careers.apply_now'), path: '/careers', isHighlight: true }
+                { name: t('navbar.careers.life_at_exa'), path: '/careers#life-at-exa', description: "A glimpse into our daily work environment" },
+                { name: t('navbar.careers.growth_learning'), path: '/careers/growth-learning', description: "How we invest in your professional journey" },
+                { name: t('navbar.careers.what_you_work_on'), path: '/careers/what-you-work-on', description: "Impactful projects and cutting-edge tech" },
+                { name: t('navbar.careers.apply_now'), path: '/careers#open-roles', isHighlight: true }
             ]
         },
         { name: t('navbar.contact_us'), path: '/contact' },

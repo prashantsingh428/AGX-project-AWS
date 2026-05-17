@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 // ── Images — matched exactly to document content ────────────────────────────
 // Hero BG: "How to Leverage AI for Business Growth" style — AI hands + tech
@@ -376,8 +377,8 @@ function HeroSection({ navH = 72 }) {
 
                         <Reveal delay={220}>
                             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 32 }}>
-                                <button className="btnP">🎯 Customize Your AI Plan</button>
-                                <button className="btnO">📞 Book Strategy Call</button>
+                                <Link to="/contact" className="btnP">🎯 Customize Your AI Plan</Link>
+                                <Link to="/contact" className="btnO">📞 Book Strategy Call</Link>
                             </div>
                         </Reveal>
 
@@ -735,8 +736,8 @@ export default function AISolutions() {
                             AI is no longer optional. It's the difference between staying relevant and falling behind.
                         </p>
                         <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-                            <button className="btnP">🎯 Customize Your AI Growth Plan</button>
-                            <button className="btnO">📞 Book an AI Strategy Call</button>
+                            <Link to="/contact" className="btnP">🎯 Customize Your AI Growth Plan</Link>
+                            <Link to="/contact" className="btnO">📞 Book an AI Strategy Call</Link>
                         </div>
                         <p style={{ marginTop: 22, fontSize: 12, color: "#475569" }}>No commitment required · Free 30-min strategy call</p>
                     </Reveal>

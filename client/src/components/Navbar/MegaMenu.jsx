@@ -60,7 +60,7 @@ const MegaMenu = ({ name, data, items, isOpen, onClose, onMouseEnter }) => {
                                         {item.name}
                                     </Link>
                                     {(item.subItems || item.children) && (
-                                        <ChevronRight size={18} className={`transition-transform duration-300 ${activeItem?.name === item.name ? 'translate-x-1 opacity-100' : 'opacity-0 -translate-x-2'}`} />
+                                        <ChevronRight size={18} className={`transition-all duration-300 ${activeItem?.name === item.name ? 'translate-x-1 text-primary' : 'text-gray-400'}`} />
                                     )}
                                 </div>
                             ))}

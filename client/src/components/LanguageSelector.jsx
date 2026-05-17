@@ -152,10 +152,10 @@ const LanguageSelector = () => {
                                         {region.footer && (
                                             <div className="pt-8 space-y-4">
                                                 <h4 className="text-sm font-black text-slate-800 tracking-tight">{region.footer.title}</h4>
-                                                <button className="flex items-center gap-3 text-slate-600 hover:text-primary transition-all text-[13px] font-medium group/link">
+                                                <a href="/contact" className="flex items-center gap-3 text-slate-600 hover:text-primary transition-all text-[13px] font-medium group/link">
                                                     <Globe className="w-4 h-4 text-slate-400 group-hover/link:text-primary" />
                                                     {region.footer.link}
-                                                </button>
+                                                </a>
                                             </div>
                                         )}
                                     </div>

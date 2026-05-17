@@ -3,6 +3,7 @@ import { Play } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import bannerBg from '../assets/images/insight_banner_bg.png';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,10 +54,10 @@ const InsightBannerSection = () => {
                         that will shape tomorrow’s markets.
                     </p>
 
-                    <button className="flex items-center gap-2 text-cyan-400 font-bold text-sm tracking-wide hover:gap-3 transition-all duration-300 group">
+                    <Link to="/blog" className="inline-flex items-center gap-2 text-cyan-400 font-bold text-sm tracking-wide hover:gap-3 transition-all duration-300 group">
                         Read the report
                         <Play className="w-3 h-3 fill-cyan-400" />
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

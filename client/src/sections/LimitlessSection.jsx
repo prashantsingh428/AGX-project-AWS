@@ -1,5 +1,6 @@
 import React from 'react';
 import limitlessImage from '../assets/images/limitless_collaboration.png';
+import { Link } from 'react-router-dom';
 
 const LimitlessSection = () => {
     return (
@@ -24,9 +25,9 @@ const LimitlessSection = () => {
                         At AI Growth Exa, you're not just joining a company – you're becoming part of a community. Let's be limitless together.
                     </p>
                     <div className="pt-4">
-                        <button className="px-10 py-3 bg-white text-slate-950 font-bold uppercase tracking-widest text-xs hover:bg-slate-100 transition-all duration-300 shadow-xl">
+                        <Link to="/careers" className="inline-block px-10 py-3 bg-white text-slate-950 font-bold uppercase tracking-widest text-xs hover:bg-slate-100 transition-all duration-300 shadow-xl">
                             KNOW MORE
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
