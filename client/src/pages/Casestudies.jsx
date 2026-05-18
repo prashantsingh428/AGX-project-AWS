@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,7 +7,7 @@ import {
     TrendingUp, TrendingDown, Users, Clock, Home, ShoppingBag,
     Code2, Stethoscope, Target, CheckCircle, XCircle, BarChart,
     Rocket, Zap, ArrowRight, Phone, Calendar, Eye, Award,
-    Shield, Building2, Repeat, Mail, Cpu, ArrowUpRight, LayoutGrid
+    Shield, Building2, Repeat, Mail, Cpu, ArrowUpRight, LayoutGrid, X
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,6 +19,7 @@ const CaseStudies = () => {
     const location = useLocation();
     const csRef = useRef(null);
     const cardRefs = useRef([]);
+    const [selectedStudy, setSelectedStudy] = useState(null);
 
     useEffect(() => {
         /* ── Cards GSAP ── */
@@ -37,6 +38,13 @@ const CaseStudies = () => {
                     {
                         x: 0, opacity: 1, duration: 0.45, stagger: 0.07, ease: 'power2.out',
                         scrollTrigger: { trigger: card, start: 'top 76%' }
+                    }
+                );
+                gsap.fromTo(card.querySelectorAll('.mv'),
+                    { scale: 0.4, opacity: 0 },
+                    {
+                        scale: 1, opacity: 1, duration: 0.65, stagger: 0.15, ease: 'back.out(1.7)',
+                        scrollTrigger: { trigger: card, start: 'top 70%' }
                     }
                 );
             });
@@ -136,7 +144,7 @@ const CaseStudies = () => {
 
     return (
         <div style={{ background: '#FAF9F6', minHeight: '100vh', fontFamily: 'Inter, sans-serif', color: '#111' }}>
-            
+
             {/* HERO SECTION */}
             <section style={{ paddingTop: '140px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', maxWidth: '1000px', margin: '0 auto' }}>
                 <div style={{ textAlign: 'center', marginBottom: '50px' }}>
@@ -146,13 +154,13 @@ const CaseStudies = () => {
                         <span style={{ color: '#aaa' }}>Why Us</span>
                         <span style={{ color: '#aaa' }}>About Us</span>
                         <span style={{ color: '#aaa' }}>Portfolio</span>
-                        <span style={{ color: '#facc15', display: 'flex', alignItems: 'center', gap: '4px' }}>Book a call <ArrowUpRight size={14}/></span>
+                        <span style={{ color: '#facc15', display: 'flex', alignItems: 'center', gap: '4px' }}>Book a call <ArrowUpRight size={14} /></span>
                     </div>
 
                     <h1 style={{ fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.04em', margin: '0 0 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                        We drive growth to <br/> your business <ArrowUpRight size={44} strokeWidth={2.5} style={{ alignSelf: 'flex-end', marginBottom: '8px' }} />
+                        We drive growth to <br /> your business <ArrowUpRight size={44} strokeWidth={2.5} style={{ alignSelf: 'flex-end', marginBottom: '8px' }} />
                     </h1>
-                    
+
                     <p style={{ fontSize: '1.05rem', color: '#555', maxWidth: '520px', margin: '0 auto 30px', lineHeight: 1.6, fontWeight: 500 }}>
                         Unlock your brand's potential with our proven marketing expertise. From strategy to execution, we drive growth.
                     </p>
@@ -195,7 +203,7 @@ const CaseStudies = () => {
                     <div style={{ background: '#fff', borderRadius: '24px', padding: '30px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                         <div style={{ fontSize: '3rem', color: '#111', lineHeight: 0.5, marginTop: '20px', fontFamily: 'serif', fontWeight: 900 }}>"</div>
                         <p style={{ fontSize: '1.1rem', fontWeight: 600, lineHeight: 1.5, margin: '16px 0 24px 0', letterSpacing: '-0.01em' }}>
-                            The final product exceeded my expectations. <br/><br/>
+                            The final product exceeded my expectations. <br /><br />
                             Impressed with the results!
                         </p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -214,7 +222,7 @@ const CaseStudies = () => {
                 <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', gap: '60px', flexWrap: 'wrap' }}>
                     <div style={{ flex: '1 1 300px' }}>
                         <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.03em' }}>
-                            Why our clients <br/> choose us as <br/> partners
+                            Why our clients <br /> choose us as <br /> partners
                         </h2>
                     </div>
                     <div style={{ flex: '2 1 400px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '50px 30px' }}>
@@ -237,7 +245,7 @@ const CaseStudies = () => {
             <section style={{ padding: '100px 24px', maxWidth: '1000px', margin: '0 auto' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '50px', flexWrap: 'wrap', gap: '40px' }}>
                     <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.5rem)', fontWeight: 800, flex: '1 1 300px', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-                        Get to know us a little <br/> more
+                        Get to know us a little <br /> more
                     </h2>
                     <div style={{ flex: '1 1 400px', color: '#555', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 500 }}>
                         <p style={{ marginBottom: '16px' }}>Our approach combines strategic thinking with innovative tactics to drive tangible results and achieve our clients' goals.</p>
@@ -267,91 +275,130 @@ const CaseStudies = () => {
                         </h2>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '44px' }}>
+                    <div className="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {caseStudies.map((study, index) => (
                             <div key={study.id}
                                 ref={el => cardRefs.current[index] = el}
-                                style={{ background: '#ffffff', borderRadius: '24px', border: '1px solid #eaeaea', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.03)', transition: 'transform 0.3s' }}
+                                className="snap-start shrink-0 w-[85vw] sm:w-[300px] md:w-[320px]"
+                                style={{ background: '#ffffff', borderRadius: 24, border: '1.5px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', transition: 'box-shadow 0.3s,transform 0.3s', display: 'flex', flexDirection: 'column' }}
+                                onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 16px 48px rgba(0,0,0,0.1),0 0 0 2px #0f172a`; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                                onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                             >
-                                <div style={{ height: '6px', background: study.accent }} />
-
-                                <div style={{ padding: '32px 40px' }}>
-                                    {/* Card header */}
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px', flexWrap: 'wrap' }}>
-                                        <div style={{ fontSize: '3rem', fontWeight: 900, color: '#f1f1f1', lineHeight: 1, flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
-                                            {study.num}
-                                        </div>
-                                        <div style={{ width: '70px', height: '70px', borderRadius: '16px', background: study.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: study.accent, flexShrink: 0 }}>
+                                <div style={{ background: '#0f172a', height: 4 }} />
+                                <div style={{ padding: '28px 32px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+                                        <div style={{ width: 56, height: 56, borderRadius: 14, background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0f172a', flexShrink: 0, border: '1.5px solid #e2e8f0' }}>
                                             {study.icon}
                                         </div>
-                                        <div style={{ flex: 1 }}>
-                                            <div style={{ fontSize: '12px', fontWeight: 800, color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>{study.industry}</div>
-                                            <h3 style={{ fontSize: 'clamp(1.4rem,2vw,1.8rem)', fontWeight: 800, color: '#111', margin: '0 0 8px', letterSpacing: '-0.02em' }}>{study.title}</h3>
-                                        </div>
-                                        <div style={{ padding: '8px 16px', background: '#faf9f6', border: '1px solid #eaeaea', borderRadius: '999px', fontSize: '13px', fontWeight: 700, color: '#444', flexShrink: 0 }}>
-                                            {study.businessType}
+                                        <div>
+                                            <div style={{ fontSize: 11, fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>{study.industry}</div>
+                                            <div style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, color: '#0f172a', display: 'inline-block' }}>{study.businessType}</div>
                                         </div>
                                     </div>
+                                    <h3 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', margin: '0 0 16px', lineHeight: 1.3 }}>{study.title}</h3>
 
-                                    {/* 2-col: Before / Strategy */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(250px,1fr))', gap: '20px', marginBottom: '24px' }}>
-                                        <div style={{ background: '#faf9f6', borderRadius: '16px', padding: '24px', border: '1px solid #eaeaea' }}>
-                                            <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#111', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <XCircle size={16} style={{ color: '#dc2626' }} /> Before
-                                            </h4>
-                                            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                                {study.beforeData.map((item, i) => (
-                                                    <li key={i} className="ci" style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#dc2626', flexShrink: 0, marginTop: '8px' }} />
-                                                        <span style={{ fontSize: '14px', fontWeight: 600, color: '#555', lineHeight: 1.5 }}>{item}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
+                                    <p style={{ fontSize: '15px', color: '#475569', marginBottom: 24, flex: 1, lineHeight: 1.6 }}>"{study.outcome}"</p>
 
-                                        <div style={{ background: '#fff', border: '1px solid #eaeaea', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
-                                            <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#111', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <CheckCircle size={16} style={{ color: study.accent }} /> Strategy Used
-                                            </h4>
-                                            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                                {study.strategy.map((item, i) => (
-                                                    <li key={i} className="ci" style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                                                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: study.accent, flexShrink: 0, marginTop: '8px' }} />
-                                                        <span style={{ fontSize: '14px', fontWeight: 600, color: '#111', lineHeight: 1.5 }}>{item}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    {/* Metrics row */}
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '16px', marginBottom: '24px' }}>
-                                        {study.metrics.map((metric, i) => (
-                                            <div key={i} className="ci" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '20px', background: '#fff', border: '1px solid #eaeaea', borderRadius: '16px' }}>
-                                                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#faf9f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#111', flexShrink: 0 }}>
-                                                    {metric.icon}
-                                                </div>
-                                                <div>
-                                                    <div style={{ fontSize: '24px', fontWeight: 800, color: '#111', lineHeight: 1 }}>{metric.value}</div>
-                                                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#666', marginTop: '6px' }}>{metric.label}</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Outcome */}
-                                    <div style={{ background: '#faf9f6', border: '1px solid #eaeaea', borderRadius: '16px', padding: '24px' }}>
-                                        <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#111', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <Award size={16} style={{ color: '#111' }} /> Outcome
-                                        </h4>
-                                        <p style={{ fontSize: '16px', fontWeight: 600, color: '#333', fontStyle: 'italic', margin: 0, lineHeight: 1.6 }}>"{study.outcome}"</p>
-                                    </div>
+                                    <button
+                                        onClick={() => setSelectedStudy(study)}
+                                        style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '12px', background: '#f8fafc', color: '#0f172a', fontWeight: 800, fontSize: '0.95rem', borderRadius: 12, border: '1px solid #e2e8f0', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        onMouseEnter={e => { e.currentTarget.style.background = '#0f172a'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#0f172a'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.color = '#0f172a'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
+                                    >
+                                        Read More <ArrowRight size={16} />
+                                    </button>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
+
+            {/* MODAL */}
+            {selectedStudy && (
+                <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(8px)', padding: 24 }} onClick={() => setSelectedStudy(null)}>
+                    <div style={{ background: '#ffffff', borderRadius: 24, width: '100%', maxWidth: 900, maxHeight: '90vh', overflowY: 'auto', border: '1.5px solid #e2e8f0', boxShadow: '0 24px 60px rgba(0,0,0,0.15)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+
+                        {/* Modal Header */}
+                        <div style={{ position: 'sticky', top: 0, background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', borderBottom: '1px solid #e2e8f0', padding: '20px 32px', display: 'flex', justifySelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <div style={{ width: 40, height: 40, borderRadius: 10, background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0f172a', flexShrink: 0, border: '1.5px solid #e2e8f0' }}>
+                                    {selectedStudy.icon}
+                                </div>
+                                <div>
+                                    <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>{selectedStudy.title}</h3>
+                                    <div style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginTop: 2 }}>{selectedStudy.industry}</div>
+                                </div>
+                            </div>
+                            <button onClick={() => setSelectedStudy(null)} style={{ background: '#f1f5f9', border: 'none', width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }} onMouseEnter={e => e.currentTarget.style.background = '#e2e8f0'} onMouseLeave={e => e.currentTarget.style.background = '#f1f5f9'}>
+                                <X size={18} />
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div style={{ padding: '32px' }}>
+                            {/* 2-col: Before / Strategy */}
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 18, marginBottom: 18 }}>
+                                {/* Before */}
+                                <div style={{ background: '#fff5f5', border: '1.5px solid #fecaca', borderRadius: 14, padding: '22px 20px' }}>
+                                    <h4 style={{ fontSize: 14, fontWeight: 900, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <span style={{ width: 24, height: 24, borderRadius: '50%', background: '#fee2e2', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                            <XCircle size={14} style={{ color: '#dc2626' }} />
+                                        </span>
+                                        Before
+                                    </h4>
+                                    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                        {selectedStudy.beforeData.map((item, i) => (
+                                            <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                                                <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', flexShrink: 0, marginTop: 7 }} />
+                                                <span style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', lineHeight: 1.6 }}>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* Strategy */}
+                                <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: 14, padding: '22px 20px' }}>
+                                    <h4 style={{ fontSize: 14, fontWeight: 900, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <Zap size={16} style={{ color: '#0f172a', flexShrink: 0 }} /> Strategy Used
+                                    </h4>
+                                    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                        {selectedStudy.strategy.map((item, i) => (
+                                            <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                                                <CheckCircle size={16} style={{ color: '#0f172a', flexShrink: 0, marginTop: 2 }} />
+                                                <span style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', lineHeight: 1.6 }}>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* Metrics row */}
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 16, marginBottom: 20 }}>
+                                {selectedStudy.metrics.map((metric, i) => (
+                                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '18px 20px', background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: 14 }}>
+                                        <div style={{ width: 46, height: 46, borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0f172a', flexShrink: 0, border: '1px solid #e2e8f0' }}>
+                                            {metric.icon}
+                                        </div>
+                                        <div>
+                                            <div style={{ fontSize: 26, fontWeight: 900, color: '#0f172a', lineHeight: 1 }}>{metric.value}</div>
+                                            <div style={{ fontSize: 13, fontWeight: 700, color: '#334155', marginTop: 4 }}>{metric.label}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Outcome */}
+                            <div style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: 14, padding: '20px 24px' }}>
+                                <h4 style={{ fontSize: 14, fontWeight: 900, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 7 }}>
+                                    <Award size={16} style={{ color: '#0f172a' }} /> Outcome
+                                </h4>
+                                <p style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', fontStyle: 'italic', margin: 0, lineHeight: 1.7 }}>"{selectedStudy.outcome}"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
