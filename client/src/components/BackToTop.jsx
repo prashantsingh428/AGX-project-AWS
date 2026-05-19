@@ -5,7 +5,7 @@ import { ChevronUp } from 'lucide-react';
 const BackToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
-    // Show button when page is scrolled up to given distance
+    // Show the button when page is scrolled up to given distance
     const toggleVisibility = () => {
         if (window.pageYOffset > 300) {
             setIsVisible(true);
