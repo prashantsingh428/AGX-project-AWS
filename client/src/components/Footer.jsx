@@ -282,7 +282,7 @@ const Footer = () => {
                 {/* Copyright & Legal Row */}
                 <div className="flex flex-col items-center justify-center space-y-3 text-sm text-slate-500 mb-6">
                     <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
-                        <span className="font-medium text-slate-600">Copyright © {new Date().getFullYear()} Ai Growth Exa. All rights reserved.</span>
+                        <span className="font-medium text-slate-600">Copyrights © {new Date().getFullYear()} Ai Growth Exa. All rights reserved.</span>
                         <span className="text-slate-300 hidden sm:inline">•</span>
                         <Link to="/contact" state={{ background: location }} className="hover:text-primary transition-colors">Contact Us</Link>
                         <span className="text-slate-300">/</span>
