@@ -192,7 +192,7 @@ const AiBrainVisual = () => {
                         <div className="h-px w-24 bg-gradient-to-r from-transparent via-primary/30 to-transparent mx-auto"></div>
 
                         <div className="flex flex-col items-center">
-                            <span className="text-2xl font-bold text-slate-900 tracking-tighter">2.4M+</span>
+                            <span className="text-2xl font-bold text-slate-900 tracking-tighter">2.5M+</span>
                             <span className="text-[10px] text-primary/70 uppercase tracking-[0.3em] font-bold">Data Points</span>
                         </div>
                     </div>
@@ -203,7 +203,7 @@ const AiBrainVisual = () => {
                         <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary/40 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                     </span>
-                    <span className="text-[10px] text-primary font-bold uppercase tracking-[0.2em]">AI System Operational</span>
+                    <span className="text-[10px] text-primary font-bold uppercase tracking-[0.2em]">AI System Operationals</span>
                 </div>
             </div>
 
