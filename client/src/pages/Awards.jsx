@@ -168,7 +168,7 @@ const Awards = () => {
         <div className={`transition-all duration-500 transform ${tabAnimation === 'fade' ? 'opacity-0' : 'opacity-100 translate-y-0'}`}>
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                    Industry & Community Recognition
+                    Industry & Community Recognition.
                 </h2>
                 <p className="text-gray-600 max-w-2xl mx-auto">
                     Our work has been recognized by global platforms, industry leaders, and professional institutions.

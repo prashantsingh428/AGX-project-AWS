@@ -164,14 +164,14 @@ const About = () => {
             </h1>
 
             <p className="hero-text text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-medium">
-              At AI Growth Exa, we don’t just market brands. We build intelligent growth systems designed for an AI-first world. Founded in 2019, we believe marketing should be intelligent, measurable, and scalable — not guesswork.
+              At AI Growth Exa, we don’t just market brands. We build intelligent growth system designed for an AI-first world. Founded in 2019, we believe marketing should be intelligent, measurable, and scalable — not guesswork.
             </p>
 
             <Link
               to="/contact"
               className="hero-text inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/20"
             >
-              Start Your Journey Today
+              Start Your Journey Today.
               <ArrowRight size={20} />
             </Link>
           </div>
