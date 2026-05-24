@@ -432,11 +432,11 @@ const Industries = () => {
                     </h1>
                     <p className="hero-sub" style={{ fontSize: 'clamp(0.95rem,2vw,1.2rem)', color: '#cbd5e1', maxWidth: 680, margin: '0 auto 22px', lineHeight: 1.7, fontWeight: 500 }}>
                         At <strong style={{ color: '#fff' }}>AI Growth Exa</strong>, we don't believe in one-size-fits-all marketing.
-                        Every industry has different buyers, trust triggers, and decision cycles.
+                        Every industry has different buyer, trust triggers, and decision cycles.
                     </p>
                     <div className="hero-box" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '14px 26px', maxWidth: 660, margin: '0 auto 26px', backdropFilter: 'blur(10px)' }}>
                         <p style={{ fontSize: '0.98rem', color: '#93c5fd', fontWeight: 600, margin: 0 }}>
-                            That's why we design <strong style={{ color: '#fff' }}>industry-specific AI marketing systems</strong> — built for real Indian markets, real buyer behavior, and real growth challenges.
+                            That's why we designs <strong style={{ color: '#fff' }}>industry-specific AI marketing systems</strong> — built for real Indian markets, real buyer behavior, and real growth challenges.
                         </p>
                     </div>
                     {/* Pills */}
