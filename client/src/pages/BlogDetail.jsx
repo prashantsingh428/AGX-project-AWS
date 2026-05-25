@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-    Calendar, User, MessageCircle, ChevronRight, Search, 
-    Facebook, Twitter, Linkedin, Instagram, Play, CornerDownRight 
+import {
+    Calendar, User, MessageCircle, ChevronRight, Search,
+    Facebook, Twitter, Linkedin, Instagram, Play, CornerDownRight
 } from 'lucide-react';
 import api from '../api/api';
 
@@ -22,7 +22,7 @@ export default function BlogDetail() {
                 setBlog(response.data);
             } catch (error) {
                 console.error("Failed to fetch blog:", error);
-                
+
                 // Fallback to beautiful dummy content
                 const dummyBlogs = {
                     "1": {
@@ -62,7 +62,7 @@ export default function BlogDetail() {
                         image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80"
                     }
                 };
-                
+
                 if (dummyBlogs[id]) {
                     setBlog(dummyBlogs[id]);
                 }
@@ -79,8 +79,8 @@ export default function BlogDetail() {
         const fetchRecent = async () => {
             try {
                 const response = await api.get('/blogs');
-                const data = Array.isArray(response.data) 
-                    ? response.data 
+                const data = Array.isArray(response.data)
+                    ? response.data
                     : (response.data?.blogs || response.data?.data || []);
                 setRecentBlogs(data.slice(0, 4));
             } catch (error) {
@@ -116,12 +116,12 @@ export default function BlogDetail() {
         );
     }
 
-    const featuredImage = blog.image 
+    const featuredImage = blog.image
         ? (blog.image.startsWith('http') ? blog.image : `${import.meta.env.VITE_SERVER_URL}${blog.image}`)
         : "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?auto=format&fit=crop&w=1200&q=80";
 
     const categories = [
-        "Marketing Trends", "Personal Injury Law", "Education Law", 
+        "Marketing Trends", "Personal Injury Law", "Education Law",
         "Law Master Support", "Injury Rights Partners", "Reclaim Legal Service"
     ];
 
@@ -143,7 +143,7 @@ export default function BlogDetail() {
 
             {/* MAIN LAYOUT */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 flex flex-col lg:flex-row gap-12">
-                
+
                 {/* LEFT: CONTENT AREA */}
                 <div className="lg:w-2/3">
                     {/* Featured Image */}
@@ -171,17 +171,17 @@ export default function BlogDetail() {
                         </div>
                         <div className="flex items-center gap-2">
                             <MessageCircle size={16} className="text-primary" />
-                            2 Comments
+                            2 Comments.
                         </div>
                     </div>
 
                     {/* Blog Content */}
                     <div className="prose prose-lg max-w-none text-gray-600 mb-10">
                         <h2 className="text-3xl font-serif font-bold text-gray-900 mb-4">{blog.title}</h2>
-                        
+
                         {/* Render rich text or basic text */}
                         <div dangerouslySetInnerHTML={{ __html: blog.content?.replace(/\n/g, '<br/>') || "<p>Detailed content goes here. The strategy emphasizes open communication, ensuring clients are fully informed about their options.</p>" }} />
-                        
+
                         {/* Visual blockquote (From screenshot) */}
                         <div className="my-10 p-8 bg-primary/5 rounded-xl border-l-4 border-primary relative">
                             <div className="absolute top-4 left-4 text-primary opacity-20 text-6xl font-serif">"</div>
@@ -237,7 +237,7 @@ export default function BlogDetail() {
                     {/* Comments Section */}
                     <div className="mb-12">
                         <h3 className="text-2xl font-serif font-bold text-gray-900 mb-8">Comments (2)</h3>
-                        
+
                         <div className="space-y-6">
                             {/* Comment 1 */}
                             <div className="bg-gray-50 p-6 rounded-xl flex gap-4">
@@ -285,7 +285,7 @@ export default function BlogDetail() {
                         <div className="bg-gray-50 p-8 rounded-xl border border-gray-100">
                             <h4 className="font-bold text-gray-900 mb-2">Send us a message</h4>
                             <p className="text-sm text-gray-500 mb-6">Provide clear contact information, including phone number, email, and address.</p>
-                            
+
                             <form className="space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <input type="text" placeholder="First Name" className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" />
@@ -310,9 +310,9 @@ export default function BlogDetail() {
                     <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
                         <h4 className="font-serif font-bold text-gray-900 mb-4 text-lg">Search</h4>
                         <div className="flex">
-                            <input 
-                                type="text" 
-                                placeholder="Search...." 
+                            <input
+                                type="text"
+                                placeholder="Search...."
                                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-l-lg focus:outline-none"
                             />
                             <button className="bg-primary px-4 text-white rounded-r-lg hover:bg-primary/90 transition">
@@ -326,11 +326,11 @@ export default function BlogDetail() {
                         <h4 className="font-serif font-bold text-gray-900 mb-4 text-lg">Blog Category</h4>
                         <div className="space-y-2">
                             {categories.map((cat, idx) => (
-                                <button 
+                                <button
                                     key={idx}
                                     className={`w-full flex justify-between items-center px-4 py-3 rounded-lg text-sm font-semibold transition
-                                        ${idx === 0 
-                                            ? 'bg-primary text-white shadow-md shadow-primary/20' 
+                                        ${idx === 0
+                                            ? 'bg-primary text-white shadow-md shadow-primary/20'
                                             : 'bg-white text-gray-600 hover:bg-primary/10 border border-gray-100 hover:text-primary'
                                         }`}
                                 >
@@ -348,10 +348,10 @@ export default function BlogDetail() {
                             {recentBlogs.length > 0 ? recentBlogs.map((b, i) => (
                                 <Link to={`/blog/${b._id}`} key={i} className="flex gap-4 group">
                                     <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                                        <img 
-                                            src={b.image ? (b.image.startsWith('http') ? b.image : `${import.meta.env.VITE_SERVER_URL}${b.image}`) : "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=200&q=80"} 
-                                            alt="Thumbnail" 
-                                            className="w-full h-full object-cover group-hover:scale-110 transition duration-300" 
+                                        <img
+                                            src={b.image ? (b.image.startsWith('http') ? b.image : `${import.meta.env.VITE_SERVER_URL}${b.image}`) : "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=200&q=80"}
+                                            alt="Thumbnail"
+                                            className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
                                         />
                                     </div>
                                     <div>
