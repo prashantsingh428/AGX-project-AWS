@@ -171,7 +171,7 @@ export default function BlogDetail() {
                         </div>
                         <div className="flex items-center gap-2">
                             <MessageCircle size={16} className="text-primary" />
-                            2 Comments.
+                            2 Comments
                         </div>
                     </div>
 
