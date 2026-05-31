@@ -186,7 +186,7 @@ export default function BlogDetail() {
                         <div className="my-10 p-8 bg-primary/5 rounded-xl border-l-4 border-primary relative">
                             <div className="absolute top-4 left-4 text-primary opacity-20 text-6xl font-serif">"</div>
                             <p className="text-xl font-medium text-gray-800 leading-relaxed relative z-10 italic pl-6 mb-6">
-                                Navigating the complexities of law requires a legal compassionate advocate who understands your unique situation to best service your dedicated lawyers.
+                                Navigating the complexities of law require a legal compassionate advocate who understands your unique situation to best service your dedicated lawyers.
                             </p>
                             <div className="flex items-center gap-4 pl-6">
                                 <img src="https://ui-avatars.com/api/?name=Alexander+Arnold&background=0D8ABC&color=fff" alt="Alexander" className="w-12 h-12 rounded-full" />
