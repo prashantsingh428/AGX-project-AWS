@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import {
     Play,
     ArrowRight,
@@ -57,6 +58,10 @@ const Services = () => {
         { label: "Completed Projects", value: "350", icon: <TrendingUp /> }
     ];
 
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const query = searchParams.get('q') || '';
+
     const [currentPage, setCurrentPage] = useState(1);
     const servicesPerPage = 6;
 
@@ -66,11 +71,42 @@ const Services = () => {
         setServiceModalOpen(false);
     };
 
+    // Filter services based on search query
+    const filteredServices = useMemo(() => {
+        if (!query.trim()) return allServices;
+        const lowerQuery = query.toLowerCase();
+        return allServices.filter(service => 
+            service.title.toLowerCase().includes(lowerQuery) ||
+            service.category.toLowerCase().includes(lowerQuery) ||
+            service.desc.toLowerCase().includes(lowerQuery)
+        );
+    }, [query, allServices]);
+
+    // Adjust page if current filter reduces result pages
+    const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
+    useEffect(() => {
+        if (currentPage > totalPages && totalPages > 0) {
+            setCurrentPage(totalPages);
+        }
+    }, [filteredServices, totalPages, currentPage]);
+
+    // Handle exact title match to open contact form automatically
+    useEffect(() => {
+        if (query) {
+            const exactMatch = allServices.find(
+                s => s.title.toLowerCase() === query.toLowerCase()
+            );
+            if (exactMatch) {
+                setSelectedServiceName(exactMatch.title);
+                setContactFormOpen(true);
+            }
+        }
+    }, [query, allServices]);
+
     // Pagination Logic
     const indexOfLastService = currentPage * servicesPerPage;
     const indexOfFirstService = indexOfLastService - servicesPerPage;
-    const currentServices = allServices.slice(indexOfFirstService, indexOfLastService);
-    const totalPages = Math.ceil(allServices.length / servicesPerPage);
+    const currentServices = filteredServices.slice(indexOfFirstService, indexOfLastService);
 
     return (
         <div className="min-h-screen bg-white font-sans text-slate-900">
@@ -214,66 +250,86 @@ const Services = () => {
 
                         {/* Grid area */}
                         <div className="w-full lg:w-2/3">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                                {currentServices.map((offer, i) => (
-                                    <motion.div
-                                        key={offer.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: i * 0.05 }}
-                                        onClick={() => handleStartService(offer.title)}
-                                        className={`p-8 rounded-sm shadow-sm transition-all duration-300 group relative cursor-pointer ${offer.featured ? 'bg-[#000048] text-white' : 'bg-white text-slate-900 hover:shadow-xl hover:-translate-y-1'
-                                            }`}
-                                    >
-                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 transition-colors duration-300 ${offer.featured ? 'bg-white/20 text-white' : 'bg-slate-50 text-[#000048] group-hover:bg-[#000048] group-hover:text-white'
-                                            }`}>
-                                            {offer.icon}
-                                        </div>
-                                        <h3 className="text-lg font-bold mb-4">{offer.title}</h3>
-                                        <p className={`text-xs mb-0 leading-relaxed line-clamp-3 ${offer.featured ? 'text-white/80' : 'text-slate-400'}`}>
-                                            {offer.desc}
-                                        </p>
+                            {filteredServices.length > 0 ? (
+                                <>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                                        {currentServices.map((offer, i) => (
+                                            <motion.div
+                                                key={offer.id}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: i * 0.05 }}
+                                                onClick={() => handleStartService(offer.title)}
+                                                className={`p-8 rounded-sm shadow-sm transition-all duration-300 group relative cursor-pointer ${offer.featured ? 'bg-[#000048] text-white' : 'bg-white text-slate-900 hover:shadow-xl hover:-translate-y-1'
+                                                    }`}
+                                            >
+                                                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 transition-colors duration-300 ${offer.featured ? 'bg-white/20 text-white' : 'bg-slate-50 text-[#000048] group-hover:bg-[#000048] group-hover:text-white'
+                                                    }`}>
+                                                    {offer.icon}
+                                                </div>
+                                                <h3 className="text-lg font-bold mb-4">{offer.title}</h3>
+                                                <p className={`text-xs mb-0 leading-relaxed line-clamp-3 ${offer.featured ? 'text-white/80' : 'text-slate-400'}`}>
+                                                    {offer.desc}
+                                                </p>
 
-                                        <div className="absolute top-4 right-4 flex gap-2">
-                                            <div className={`w-6 h-6 rounded-sm flex items-center justify-center ${offer.featured ? 'bg-white/20' : 'bg-slate-50 text-slate-300 group-hover:bg-[#000048]/10 group-hover:text-[#000048]'
-                                                }`}>
-                                                <ChevronRight className="w-4 h-4" />
+                                                <div className="absolute top-4 right-4 flex gap-2">
+                                                    <div className={`w-6 h-6 rounded-sm flex items-center justify-center ${offer.featured ? 'bg-white/20' : 'bg-slate-50 text-slate-300 group-hover:bg-[#000048]/10 group-hover:text-[#000048]'
+                                                        }`}>
+                                                        <ChevronRight className="w-4 h-4" />
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+
+                                    {/* Pagination Controls */}
+                                    {totalPages > 1 && (
+                                        <div className="flex items-center justify-center gap-4">
+                                            <button
+                                                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                                disabled={currentPage === 1}
+                                                className="p-3 rounded-full border border-slate-200 disabled:opacity-30 hover:bg-slate-100 transition-colors"
+                                            >
+                                                <ChevronRight className="w-5 h-5 rotate-180" />
+                                            </button>
+                                            <div className="flex gap-2">
+                                                {[...Array(totalPages)].map((_, i) => (
+                                                    <button
+                                                        key={i}
+                                                        onClick={() => setCurrentPage(i + 1)}
+                                                        className={`w-10 h-10 rounded-full text-xs font-black transition-all ${currentPage === i + 1 ? 'bg-[#000048] text-white' : 'bg-white text-slate-400 border border-slate-100 hover:border-slate-300'
+                                                            }`}
+                                                    >
+                                                        {i + 1}
+                                                    </button>
+                                                ))}
                                             </div>
+                                            <button
+                                                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                                disabled={currentPage === totalPages}
+                                                className="p-3 rounded-full border border-slate-200 disabled:opacity-30 hover:bg-slate-100 transition-colors"
+                                            >
+                                                <ChevronRight className="w-5 h-5" />
+                                            </button>
                                         </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-
-                            {/* Pagination Controls */}
-                            <div className="flex items-center justify-center gap-4">
-                                <button
-                                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                                    disabled={currentPage === 1}
-                                    className="p-3 rounded-full border border-slate-200 disabled:opacity-30 hover:bg-slate-100 transition-colors"
-                                >
-                                    <ChevronRight className="w-5 h-5 rotate-180" />
-                                </button>
-                                <div className="flex gap-2">
-                                    {[...Array(totalPages)].map((_, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setCurrentPage(i + 1)}
-                                            className={`w-10 h-10 rounded-full text-xs font-black transition-all ${currentPage === i + 1 ? 'bg-[#000048] text-white' : 'bg-white text-slate-400 border border-slate-100 hover:border-slate-300'
-                                                }`}
-                                        >
-                                            {i + 1}
-                                        </button>
-                                    ))}
+                                    )}
+                                </>
+                            ) : (
+                                <div className="text-center py-16 bg-white border border-slate-100 rounded-sm shadow-sm p-8 flex flex-col items-center justify-center">
+                                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6 text-[#000048]/40">
+                                        <Target className="w-8 h-8" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">No matching services</h3>
+                                    <p className="text-slate-400 text-sm max-w-sm mb-8">We couldn't find any services matching "{query}". Try searching with different keywords.</p>
+                                    <button
+                                        onClick={() => navigate('/services')}
+                                        className="bg-[#000048] hover:bg-[#000066] text-white px-8 py-3.5 text-[10px] font-black uppercase tracking-widest transition-all duration-300 shadow-xl shadow-[#000048]/20"
+                                    >
+                                        View All Services
+                                    </button>
                                 </div>
-                                <button
-                                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                                    disabled={currentPage === totalPages}
-                                    className="p-3 rounded-full border border-slate-200 disabled:opacity-30 hover:bg-slate-100 transition-colors"
-                                >
-                                    <ChevronRight className="w-5 h-5" />
-                                </button>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>

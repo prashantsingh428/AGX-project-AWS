@@ -4,6 +4,8 @@ import MainLayout from '../layouts/MainLayout';
 import ScrollToTop from '../components/ScrollToTop';
 import ContactModal from '../components/Modals/ContactModal';
 import AuthModal from '../components/Modals/AuthModal';
+import ProtectedRoute from '../components/ProtectedRoute';
+
 
 import CookieInfo from '../pages/CookieInfo';
 import CopyrightInfo from '../pages/CopyrightInfo';
@@ -25,6 +27,8 @@ const Contact = lazy(() => import('../pages/Contact'));
 const AdminPanel = lazy(() => import('../pages/admin/AdminPanel'));
 const ServiceDetailPage = lazy(() => import('../pages/ServiceDetailPage'));
 const CareerDetailPage = lazy(() => import('../pages/CareerDetailPage'));
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+
 
 const NotFound = () => <div className="p-20 text-center">404 - Page Not Found</div>;
 
@@ -44,7 +48,14 @@ const AppRoutes = () => {
         return (
             <Suspense fallback={<PageLoader />}>
                 <Routes>
-                    <Route path="/admin/*" element={<AdminPanel />} />
+                    <Route 
+                        path="/admin/*" 
+                        element={
+                            <ProtectedRoute adminOnly={true}>
+                                <AdminPanel />
+                            </ProtectedRoute>
+                        } 
+                    />
                 </Routes>
             </Suspense>
         );
@@ -72,6 +83,15 @@ const AppRoutes = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/careers" element={<Career />} />
                     <Route path="/careers/:slug" element={<CareerDetailPage />} />
+                    <Route 
+                        path="/dashboard" 
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        } 
+                    />
+
                     <Route path="/cookie-policy" element={<CookieInfo />} />
                     <Route path="/copyright-policy" element={<CopyrightInfo />} />
                     <Route path="/privacy-policy" element={<PrivacyInfo />} />

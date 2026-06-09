@@ -1,157 +1,124 @@
 import React, { useRef, useState } from "react";
-import { Zap, BarChart, Activity, ShieldCheck, Globe, ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import contentVideo from "../assets/Video_Content_Generation_Complete.mp4";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import backgroundImage from "../assets/chatgpt_banner.png";
 import PlansModal from "../components/Modals/PlansModal";
 
 const BannerSection = () => {
     const sectionRef = useRef(null);
     const [isPlansOpen, setIsPlansOpen] = useState(false);
-    const [currentSlide, setCurrentSlide] = useState(0);
-
-    const insights = [
-        {
-            title: "The Scale Effect: AI Industrial Revolution",
-            desc: "Leading experts share how AI is transforming every aspect of industry.",
-        },
-        {
-            title: "Predictive Growth: The New Standard",
-            desc: "How data-driven infrastructure is rewriting the rules of business scaling.",
-        },
-        {
-            title: "Autonomous Systems: Future of Operations",
-            desc: "Exploring the shift from manual monitoring to intelligent self-healing systems.",
-        },
-        {
-            title: "Cloud Intelligence: Seamless Integration",
-            desc: "Building the connective tissue between big data and actionable business insights.",
-        }
-    ];
-
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % insights.length);
-    };
-
-    const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + insights.length) % insights.length);
-    };
 
     return (
         <section
             ref={sectionRef}
-            className="relative w-full min-h-[400px] md:min-h-[550px] overflow-hidden bg-transparent flex items-center justify-center py-12 md:py-16"
+            className="relative w-full min-h-[660px] md:min-h-[620px] overflow-hidden bg-transparent flex items-center py-12 md:py-16"
         >
-            {/* Full Width Video Background (Original Clarity) */}
+            {/* Full Width Background Image */}
             <div className="absolute inset-0 z-0">
-                <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
+                <img
+                    src={backgroundImage}
+                    alt="AI Growth Infrastructure Background"
                     className="w-full h-full object-cover opacity-100"
-                >
-                    <source src={contentVideo} type="video/mp4" />
-                </video>
+                />
+                {/* Horizontal gradient overlay to darken the left half for text contrast */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
             </div>
 
-            {/* Main Centered Branding */}
-            <div className="relative z-10 container mx-auto px-6 text-center max-w-4xl space-y-6">
-                <div className="space-y-2">
-                    <motion.span 
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        className="text-primary font-bold uppercase tracking-[0.3em] text-[10px] md:text-xs block drop-shadow-md"
-                    >
-                        AI Infrastructure for Scalable Enterprises
-                    </motion.span>
-                    <motion.h2 
-                        initial={{ opacity: 0, y: 15 }}
+            {/* Left Shifted Content Container (No container mx-auto constraint) */}
+            <div className="relative z-10 w-full pl-6 md:pl-16 lg:pl-24 pr-6 flex flex-col justify-center">
+                <div className="max-w-xl text-left">
+                    {/* Professional Tagline Label */}
+                    <motion.span
+                        initial={{ opacity: 0, y: -10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                        className="text-blue-500 font-bold uppercase tracking-[0.25em] text-xs md:text-sm block mb-4"
                     >
-                        AI Growth Exa
+                        Enterprise AI Systems
+                    </motion.span>
+
+                    <motion.h2
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        viewport={{ once: true }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-white mb-8"
+                    >
+                        Smarter Solutions.<br />
+                        <span className="text-blue-500">Better Tomorrow.</span>
                     </motion.h2>
-                    <motion.h3 
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        className="text-lg md:text-2xl font-light text-white/95 tracking-tight italic drop-shadow-lg"
-                    >
-                        Intelligent Growth Systems
-                    </motion.h3>
-                </div>
 
-                <motion.p 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    className="text-sm md:text-base text-white font-medium max-w-xl mx-auto font-light leading-relaxed drop-shadow-lg"
-                >
-                    We design and deploy AI-driven systems that accelerate growth and enable data-driven transformation.
-                </motion.p>
+                    {/* Horizontal Divider Line */}
+                    <motion.div
+                        initial={{ opacity: 0, width: 0 }}
+                        whileInView={{ opacity: 1, width: 64 }}
+                        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                        viewport={{ once: true }}
+                        className="h-1 bg-blue-500 mb-8"
+                    />
 
-                <div className="pt-2">
-                    <button
-                        onClick={() => setIsPlansOpen(true)}
-                        className="px-10 py-4 bg-primary hover:bg-primary/90 text-white font-bold text-base rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.4),0_0_20px_rgba(29,52,97,0.3)] transition-all duration-300 transform hover:scale-105 border border-white/10"
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                        viewport={{ once: true }}
+                        className="text-base md:text-lg text-gray-300 font-normal leading-relaxed max-w-xl mb-12"
                     >
-                        Book a Free Strategy Call
-                    </button>
+                        AI-powered solutions that drive growth, efficiency and innovation. We design, deploy, and optimize custom AI agents and intelligent infrastructure to scale workflows and unlock predictive business growth.
+                    </motion.p>
+
+                    {/* CTA Actions */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+                        viewport={{ once: true }}
+                        className="flex flex-wrap gap-4"
+                    >
+                        <button
+                            onClick={() => setIsPlansOpen(true)}
+                            className="group px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2"
+                        >
+                            Book a Free Strategy Call
+                            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </button>
+                        <Link
+                            to="/services"
+                            className="px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/10 transition-all duration-300 backdrop-blur-sm"
+                        >
+                            Explore Services
+                        </Link>
+                    </motion.div>
                 </div>
             </div>
 
-            {/* Small Floating Insight Card (Right Corner) */}
-            <div className="absolute z-20 bottom-8 right-8 hidden lg:block">
-                <motion.div 
-                    initial={{ opacity: 0, x: 50 }}
+            {/* Minimalist Tech Status (Bottom Right Corner) - Open Type Layout (White) */}
+            <div className="absolute z-20 bottom-12 right-12 hidden lg:flex items-center gap-5">
+                {/* Thin Vertical Line Divider */}
+                <motion.div
+                    initial={{ scaleY: 0 }}
+                    whileInView={{ scaleY: 1 }}
+                    transition={{ duration: 0.8, delay: 0.8 }}
+                    viewport={{ once: true }}
+                    className="h-12 w-[1px] bg-white/40 origin-top"
+                />
+
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    className="w-[380px] bg-slate-950/40 rounded-xl border border-white/20 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col justify-between overflow-hidden"
+                    transition={{ duration: 0.8, delay: 1 }}
+                    viewport={{ once: true }}
+                    className="space-y-0.5 text-left"
                 >
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentSlide}
-                            initial={{ opacity: 0, x: 10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -10 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-3"
-                        >
-                            <h4 className="text-xl font-bold text-white leading-tight drop-shadow-sm">
-                                {insights[currentSlide].title}
-                            </h4>
-                            <p className="text-white/80 text-sm leading-relaxed drop-shadow-sm">
-                                {insights[currentSlide].desc}
-                            </p>
-                        </motion.div>
-                    </AnimatePresence>
-
-                    {/* Compact Navigation Footer */}
-                    <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/10">
-                        <div className="flex gap-2">
-                            {insights.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setCurrentSlide(i)}
-                                    className={`h-1.5 transition-all duration-500 rounded-sm ${
-                                        currentSlide === i ? "bg-primary w-8" : "bg-white/20 w-4 hover:bg-white/40"
-                                    }`}
-                                />
-                            ))}
-                        </div>
-
-                        <div className="flex gap-3">
-                            <button 
-                                onClick={prevSlide}
-                                className="p-1.5 rounded-sm border border-white/20 bg-black/20 hover:bg-black/40 text-white/60 hover:text-white transition-all active:scale-95"
-                            >
-                                <ChevronLeft size={16} />
-                            </button>
-                            <button 
-                                onClick={nextSlide}
-                                className="p-1.5 rounded-sm border border-white/20 bg-black/20 hover:bg-black/40 text-white/60 hover:text-white transition-all active:scale-95"
-                            >
-                                <ChevronRight size={16} />
-                            </button>
-                        </div>
-                    </div>
+                    <p className="text-[11px] font-bold text-white tracking-[0.2em] uppercase flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                        Infrastructure Active
+                    </p>
+                    <p className="text-xs text-white/75 tracking-wider font-light">
+                        Decisions/sec: 85.4K+ • Accuracy: 99.4%
+                    </p>
                 </motion.div>
             </div>
 

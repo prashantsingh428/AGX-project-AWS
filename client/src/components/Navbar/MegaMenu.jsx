@@ -47,22 +47,20 @@ const MegaMenu = ({ name, data, items, isOpen, onClose, onMouseEnter }) => {
                     <div className="lg:col-span-4 border-r border-gray-50 px-8">
                         <div className="space-y-1">
                             {items && items.map((item, idx) => (
-                                <div
+                                <Link
                                     key={idx}
+                                    to={item.path}
+                                    onClick={onClose}
                                     onMouseEnter={() => setActiveItem(item)}
-                                    className={`group flex items-center justify-between px-6 py-4 rounded-lg cursor-pointer transition-all duration-300 ${activeItem?.name === item.name ? 'bg-gray-50 text-primary' : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'}`}
+                                    className={`group flex items-center justify-between px-6 py-4 cursor-pointer transition-all duration-300 border-b border-gray-200 last:border-0 ${activeItem?.name === item.name ? 'bg-gray-50 text-primary' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50/50'}`}
                                 >
-                                    <Link
-                                        to={item.path}
-                                        onClick={onClose}
-                                        className="flex-1 text-[17px] font-bold tracking-wide"
-                                    >
+                                    <span className="flex-1 text-[17px] font-bold tracking-wide">
                                         {item.name}
-                                    </Link>
+                                    </span>
                                     {(item.subItems || item.children) && (
                                         <ChevronRight size={18} className={`transition-all duration-300 ${activeItem?.name === item.name ? 'translate-x-1 text-primary' : 'text-gray-400'}`} />
                                     )}
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
@@ -84,27 +82,27 @@ const MegaMenu = ({ name, data, items, isOpen, onClose, onMouseEnter }) => {
                                             {activeItem.name} Categories
                                         </p>
                                         <div className="grid grid-cols-1 gap-6">
-                                            {(activeItem.subItems || activeItem.children).map((sub, sIdx) => (
-                                                <div key={sIdx} className="space-y-4">
+                                             {(activeItem.subItems || activeItem.children).map((sub, sIdx) => (
+                                                <div key={sIdx} className="border-b border-gray-200 pb-5 last:border-0 last:pb-0 space-y-3">
                                                     <Link
                                                         to={sub.path}
                                                         onClick={onClose}
-                                                        className="block text-[19px] font-bold text-gray-900 hover:text-primary transition-colors"
+                                                        className="block text-[17px] font-bold text-gray-900 hover:text-primary transition-colors"
                                                     >
                                                         {sub.name}
                                                     </Link>
-                                                    
+
                                                     {sub.children && (
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 pl-0">
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 pl-2 pt-1">
                                                             {sub.children.map((child, cIdx) => (
                                                                 <Link
                                                                     key={cIdx}
                                                                     to={child.path}
                                                                     onClick={onClose}
-                                                                    className="text-[14px] font-medium text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-3 group/child"
+                                                                    className="text-[14px] font-medium text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-2 group/child"
                                                                 >
-                                                                    <div className="w-1.5 h-1.5 bg-gray-200 group-hover/child:bg-primary rounded-full transition-colors" />
-                                                                    {child.name}
+                                                                    <div className="w-1.5 h-1.5 bg-gray-300 group-hover/child:bg-primary rounded-full transition-colors flex-shrink-0" />
+                                                                    <span className="truncate">{child.name}</span>
                                                                 </Link>
                                                             ))}
                                                         </div>

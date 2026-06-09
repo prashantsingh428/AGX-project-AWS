@@ -12,6 +12,7 @@ const connectRoutes = require("./routes/connectRoutes");
 const subscriberRoutes = require("./routes/subscriberRoutes");
 const serviceRoutes = require("./routes/pageRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api", connectRoutes);
 app.use("/api", subscriberRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/api", (req, res) => {
     res.json({ message: "Welcome to Ai Growth Exa API", status: "Running" });
