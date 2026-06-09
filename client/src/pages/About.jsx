@@ -5,6 +5,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, useLocation } from 'react-router-dom';
 import FloatingParticles from '../components/FloatingParticles';
+import AnimatedList from '../components/AnimatedList';
+import { motion, useInView } from 'motion/react';
 import {
   Lightbulb,
   Target,
@@ -18,8 +20,11 @@ import {
   ShieldCheck,
   ArrowRight,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Search,
-  MessageSquare
+  MessageSquare,
+  Sparkles
 } from 'lucide-react';
 
 // Import images
@@ -32,12 +37,28 @@ import aboutConsultation from '../assets/images/about/about_consultation.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const AnimatedAccordionItem = ({ children, index }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { amount: 0.2, triggerOnce: false });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ scale: 0.7, opacity: 0 }}
+      animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.7, opacity: 0 }}
+      transition={{ duration: 0.2, delay: 0.1 }}
+      className="w-full"
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const About = () => {
   const { showNotification } = useNotification();
   const location = useLocation();
   const heroRef = useRef(null);
   const statsRef = useRef(null);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -72,6 +93,7 @@ const About = () => {
     }
   };
   const [showAllFaqs, setShowAllFaqs] = React.useState(false);
+  const [expandedIndex, setExpandedIndex] = useState(0);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -106,7 +128,7 @@ const About = () => {
           }
         );
       }
-      
+
       // Process animation
       gsap.fromTo(
         '.process-step',
@@ -142,38 +164,46 @@ const About = () => {
   return (
     <div className="bg-white font-sans text-gray-800">
       {/* 1. HERO SECTION */}
-      <section ref={heroRef} className="relative pt-32 pb-48 md:pt-48 md:pb-56 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden pt-32 pb-32 md:pb-40">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
           <img src={aboutHero} alt="Corporate Team" className="w-full h-full object-cover object-center" />
-          <div className="absolute inset-0 bg-slate-900/80 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-slate-950/45 mix-blend-normal"></div>
           {/* Subtle gradient overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a] via-[#0f172a]/90 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/85 via-[#0f172a]/45 to-transparent"></div>
         </div>
 
-        <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <div className="max-w-3xl">
-            <div className="hero-text inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/20 text-primary font-bold uppercase tracking-widest mb-6 border border-primary/30 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-              About Us
+        <div className="container mx-auto px-6 max-w-7xl relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-end w-full">
+            {/* Left Column: Title & Badge */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="hero-text inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[#e6b446] font-bold uppercase tracking-widest mb-4 border border-white/10 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-[#e6b446] animate-pulse"></span>
+                About Us
+              </div>
+
+              <h1 className="hero-text text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] text-white">
+                Building Growth Systems for the <br />
+                <span className="text-[#e6b446]">AI-First World</span>
+              </h1>
+
+              <div className="pt-4">
+                <Link
+                  to="/contact"
+                  className="hero-text inline-flex items-center gap-2 px-8 py-4 bg-[#e6b446] text-black font-bold rounded-xl hover:bg-[#ffcc00] transition-all shadow-xl shadow-[#e6b446]/10"
+                >
+                  Start Your Journey Today.
+                  <ArrowRight size={20} />
+                </Link>
+              </div>
             </div>
 
-            <h1 className="hero-text text-5xl md:text-7xl font-black leading-[1.1] text-white mb-6">
-              Building Growth Systems for the <br />
-              <span className="text-primary">AI-First World</span>
-            </h1>
-
-            <p className="hero-text text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-medium">
-              At AI Growth Exa, we don’t just market brands. We build intelligent growth system designed for an AI-first world. Founded in 2019, we believe marketing should be intelligent, measurable, and scalable — not guesswork.
-            </p>
-
-            <Link
-              to="/contact"
-              className="hero-text inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/20"
-            >
-              Start Your Journey Today.
-              <ArrowRight size={20} />
-            </Link>
+            {/* Right Column: Description Paragraph */}
+            <div className="lg:col-span-5 lg:pb-4">
+              <p className="hero-text text-base md:text-lg lg:text-xl text-slate-300 leading-relaxed font-medium">
+                At AI Growth Exa, we don’t just market brands. We build intelligent growth system designed for an AI-first world. Founded in 2019, we believe marketing should be intelligent, measurable, and scalable — not guesswork.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -239,13 +269,13 @@ const About = () => {
                   <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/40"></div>
                 ))}
               </div>
-              
-              <img 
-                src={aboutCompany} 
-                alt="About AI Growth Exa" 
+
+              <img
+                src={aboutCompany}
+                alt="About AI Growth Exa"
                 className="relative z-10 w-full h-[500px] object-cover rounded-[2.5rem] shadow-xl border-4 border-white"
               />
-              
+
               {/* Decorative circle */}
               <div className="absolute -bottom-6 -left-6 w-12 h-12 rounded-full bg-primary z-20"></div>
             </div>
@@ -406,7 +436,7 @@ const About = () => {
           <div className="w-full md:w-1/2 h-[500px] md:h-auto">
             <img src={aboutConsultation} alt="Consultation" className="w-full h-full object-cover object-center" />
           </div>
-          
+
           {/* Right Form Area */}
           <div className="w-full md:w-1/2 p-12 md:p-20 xl:p-24 flex flex-col justify-center">
             <span className="inline-flex self-start items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-primary-foreground/80 text-xs font-bold uppercase tracking-widest mb-6">
@@ -418,53 +448,53 @@ const About = () => {
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="Name" 
+                  placeholder="Name"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-primary transition-colors"
                 />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="Email" 
+                  placeholder="Email"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-primary transition-colors"
                 />
-                <input 
-                  type="tel" 
+                <input
+                  type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  placeholder="Phone" 
+                  placeholder="Phone"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-primary transition-colors"
                 />
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="Subject" 
+                  placeholder="Subject"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
-              <textarea 
+              <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 required
-                placeholder="Message" 
+                placeholder="Message"
                 rows="4"
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-primary transition-colors resize-none"
               ></textarea>
-              
-              <button 
+
+              <button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full sm:w-auto px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -536,20 +566,20 @@ const About = () => {
         </div>
 
         <div className="relative w-full overflow-hidden mask-gradient-sides">
-          <div className="flex w-max animate-marquee hover:pause-animation" style={{animationDuration: '60s'}}>
+          <div className="flex w-max animate-marquee hover:pause-animation" style={{ animationDuration: '60s' }}>
             {[
-                { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
-                { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
-                { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
-                { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
-                { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
-                { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
-                { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
-                { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
-                { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
-                { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
-                { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
-                { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
+              { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
+              { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
+              { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
+              { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
+              { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
+              { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
+              { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
+              { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
+              { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
+              { name: 'Rahul Sharma', review: 'PRIYANSHU SIR NE AND AI Growthexa TEAM ने हमारी ब्रांड पहचान पूरी तरह बदल दी। लोगो से लेकर मैसेजिंग तक, हर चीज़ में clarity और professionalism दिखता है।', stars: 5 },
+              { name: 'Pooja Verma', review: 'Honestly, laga tha agency k sath kaam kr na bahot kaam chori bhara hoga but, AI Growthexa ke saath kaam karke bahut acha laga. Team ne sirf design nahi banaya, brand ko feel diya.', stars: 5 },
+              { name: 'Amit Patel', review: 'AI Growthexa Team ne humare brand ko next level le aaye. Pehle sab scattered lagta tha, but ab har platform pe ek strong aur consistent identity hai.', stars: 5 },
             ].map((t, i) => (
               <div key={i} className="mx-4 flex-shrink-0 w-96 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="flex gap-1 text-yellow-500 mb-4 text-xl">{'★'.repeat(t.stars)}</div>
@@ -560,33 +590,89 @@ const About = () => {
           </div>
         </div>
       </section>
-      
-      {/* 8. FAQs (Retained) */}
-      <section className="relative py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-3xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black text-slate-900 mb-4">Company FAQs</h2>
-            <p className="text-slate-500">Everything you need to know about us.</p>
-          </div>
-          <div className="space-y-4">
-            {visibleFaqs.map((faq, i) => (
-              <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:border-primary/20 transition-colors">
-                <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
-                  <MessageSquare size={18} className="text-primary" /> {faq.q}
-                </h3>
-                <p className="text-slate-600 pl-7">{faq.a}</p>
-              </div>
-            ))}
-            {!showAllFaqs && (
-              <div className="text-center mt-8">
-                <button 
-                  onClick={() => setShowAllFaqs(true)}
-                  className="text-primary font-bold hover:text-primary/80 transition-colors"
+
+      {/* 8. FAQs (Redesigned with Two Column Brand Layout) */}
+      <section className="relative py-24 bg-slate-50/50">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+            {/* Left Column: Heading and CTA */}
+            <div className="lg:col-span-5 text-left">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1d3465]/5 text-[#1d3465] text-xs font-bold uppercase tracking-widest mb-6">
+                <Sparkles size={12} /> Questions & Answers
+              </span>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-6">
+                Clear answers for <br />complex operations
+              </h2>
+              <p className="text-slate-600 text-lg leading-relaxed mb-10">
+                Clear answers on timelines, engagement models, AI integration capabilities, and measurable business outcomes.
+              </p>
+
+              {/* Still have questions card */}
+              <div className="bg-[#1d3465]/5 border border-[#1d3465]/10 rounded-3xl p-8 shadow-sm">
+                <h4 className="text-xl font-bold text-slate-900 mb-3">Still have questions?</h4>
+                <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+                  Need clarity before moving forward? Speak with our operations team and get direct answers tailored to your business challenges.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#1d3465] text-white hover:bg-[#1d3465]/90 transition-all shadow-md hover:shadow-lg font-bold text-sm rounded-xl"
                 >
-                  View All FAQs
+                  Book a consultation
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: Accordion FAQs */}
+            <div className="lg:col-span-7 space-y-4">
+              {visibleFaqs.map((faq, index) => {
+                const isOpen = expandedIndex === index;
+                return (
+                  <AnimatedAccordionItem key={index} index={index}>
+                    <div
+                      className={`p-6 rounded-2xl border transition-all duration-300 text-left ${isOpen
+                          ? 'bg-white border-[#1d3465]/20 shadow-md scale-[1.01]'
+                          : 'bg-white/60 border-slate-100 hover:border-[#1d3465]/20 hover:bg-white'
+                        }`}
+                    >
+                      <button
+                        onClick={() => setExpandedIndex(isOpen ? -1 : index)}
+                        className="w-full flex items-center justify-between gap-4 text-left font-bold text-slate-900 text-lg focus:outline-none"
+                      >
+                        <span className="font-semibold text-slate-800">{faq.q}</span>
+                        <span className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${isOpen ? 'bg-[#1d3465] text-white' : 'bg-slate-200/60 text-slate-600'
+                          }`}>
+                          {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        </span>
+                      </button>
+                      <div className={`transition-all duration-300 overflow-hidden ${isOpen ? 'max-h-[150px] opacity-100 mt-4' : 'max-h-0 opacity-0'
+                        }`}>
+                        <p className="text-slate-600 text-base leading-relaxed pl-1">{faq.a}</p>
+                      </div>
+                    </div>
+                  </AnimatedAccordionItem>
+                );
+              })}
+
+              <div className="text-left pt-4 pl-2">
+                <button
+                  onClick={() => {
+                    if (showAllFaqs) {
+                      setShowAllFaqs(false);
+                      setExpandedIndex(0); // reset active to first element
+                    } else {
+                      setShowAllFaqs(true);
+                    }
+                  }}
+                  className="text-[#1d3465] font-black hover:text-[#1d3465]/80 transition-colors flex items-center gap-1 text-sm uppercase tracking-wider"
+                >
+                  {showAllFaqs ? 'View Less' : 'View All FAQs'}
+                  {showAllFaqs ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
               </div>
-            )}
+            </div>
+
           </div>
         </div>
       </section>

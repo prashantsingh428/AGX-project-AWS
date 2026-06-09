@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Search } from 'lucide-react';
 import officeImage from '../assets/images/modern_office_collab.png';
 import { Link } from 'react-router-dom';
+import ScrollReveal from '../components/ScrollReveal';
+import ClickSpark from '../components/ClickSpark';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -159,7 +161,7 @@ const EcosystemSection = () => {
                                     <input
                                         type="text"
                                         placeholder="Search ..."
-                                        className="w-full bg-white/5 border border-white/10 rounded-none py-4 px-6 pr-20 text-white placeholder:text-white/30 focus:outline-none focus:bg-white/10 focus:border-white/30 transition-all duration-300 backdrop-blur-sm transition-all"
+                                        className="w-full bg-white/5 border border-white/10 rounded-none py-4 px-6 pr-20 text-white placeholder:text-white/30 focus:outline-none focus:bg-white/10 focus:border-white/30 transition-all duration-300 backdrop-blur-sm cursor-target"
                                     />
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4">
                                         <Search className="w-4 h-4 text-white/30" />
@@ -182,7 +184,7 @@ const EcosystemSection = () => {
                                     <Link
                                         key={topic}
                                         to="/blog"
-                                        className="flex items-center justify-between w-full p-3 bg-white/5 hover:bg-white/10 border border-white/5 transition-all duration-300 group text-left"
+                                        className="flex items-center justify-between w-full p-3 bg-white/5 hover:bg-white/10 border border-white/5 transition-all duration-300 group text-left cursor-target"
                                     >
                                         <span className="text-white/80 text-xs font-medium pr-4">{topic}</span>
                                         <Search className="w-3 h-3 text-white/30 group-hover:text-white transition-colors" />
@@ -204,33 +206,72 @@ const EcosystemSection = () => {
                             <div
                                 key={idx}
                                 ref={(el) => (logoCardsRef.current[idx] = el)}
-                                className="aspect-[16/10] bg-white border border-slate-100 rounded-none flex items-center justify-center p-6 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-500 group"
+                                className="aspect-[16/10] bg-white border border-slate-100 rounded-none shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-500 group overflow-hidden"
                             >
-                                <img
-                                    src={logo}
-                                    alt="Partner Logo"
-                                    className="max-w-[80%] max-h-[80%] object-contain group-hover:scale-110 transition-transform duration-500"
-                                />
+                                <ClickSpark
+                                    sparkColor="#1D3557"
+                                    sparkSize={8}
+                                    sparkRadius={20}
+                                    sparkCount={8}
+                                    duration={400}
+                                >
+                                    <div className="w-full h-full flex items-center justify-center p-6 cursor-pointer">
+                                        <img
+                                            src={logo}
+                                            alt="Partner Logo"
+                                            className="max-w-[80%] max-h-[80%] object-contain group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                    </div>
+                                </ClickSpark>
                             </div>
                         ))}
                     </div>
 
                     {/* Right: Pinned Text Container (Moved to Right) */}
                     <div ref={pinnedContainerRef} className="lg:col-span-5 space-y-8 lg:order-2">
-                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
-                            Strategic Alliance <br />
-                            Partner Ecosystem
-                        </h2>
-                        <div className="space-y-6 text-lg text-slate-600 leading-relaxed">
-                            <p>
+                        <ScrollReveal
+                            as="h2"
+                            trigger={bottomTierRef}
+                            baseRotation={2}
+                            enableBlur={true}
+                            baseOpacity={0.1}
+                            containerClassName="text-4xl md:text-5xl font-black text-slate-900 leading-tight"
+                        >
+                            Strategic Alliance Partner Ecosystem
+                        </ScrollReveal>
+                        <div className="space-y-6">
+                            <ScrollReveal
+                                as="p"
+                                trigger={bottomTierRef}
+                                baseRotation={0}
+                                enableBlur={true}
+                                baseOpacity={0.2}
+                                containerClassName="text-lg text-slate-600 leading-relaxed"
+                            >
                                 With a deep focus on AI/GenAI and cloud, we drive partnerships with the world's leading technology firms to create new and differentiated solutions.
-                            </p>
-                            <p>
+                            </ScrollReveal>
+                            <ScrollReveal
+                                as="p"
+                                trigger={bottomTierRef}
+                                baseRotation={0}
+                                enableBlur={true}
+                                baseOpacity={0.2}
+                                containerClassName="text-lg text-slate-600 leading-relaxed"
+                            >
                                 AI Growth Exa's vast experience and business acumen coupled with these dynamic innovators enable us to solve your business problems so you can thrive.
-                            </p>
+                            </ScrollReveal>
                         </div>
                         <Link to="/contact" className="group inline-flex items-center gap-3 px-6 py-3 bg-white border border-slate-200 rounded-full text-slate-700 font-bold text-sm hover:border-primary hover:text-primary transition-all duration-300 shadow-sm">
-                            Click each partner logo to learn more
+                            <ScrollReveal
+                                as="span"
+                                trigger={bottomTierRef}
+                                baseRotation={0}
+                                enableBlur={false}
+                                baseOpacity={0.3}
+                                containerClassName="font-bold text-sm"
+                            >
+                                Click each partner logo to learn more
+                            </ScrollReveal>
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
