@@ -73,40 +73,40 @@ const StatsSection = () => {
             // Animate left side content
             gsap.fromTo(
                 leftContentRef.current,
-                { x: -50, opacity: 0 },
+                { x: -30, opacity: 0 },
                 {
                     x: 0,
                     opacity: 1,
-                    duration: 0.4,
+                    duration: 0.5,
                     ease: 'power3.out',
                     scrollTrigger: {
-                        trigger: leftContentRef.current,
-                        start: 'top 90%',
+                        trigger: sectionRef.current,
+                        start: 'top 85%',
                         once: true
                     }
                 }
             );
 
-            // Animate cards
-            cardsRef.current.forEach((card, index) => {
-                if (!card) return;
+            // Animate cards in a staggered sequence triggered by the section entry
+            const validCards = cardsRef.current.filter(Boolean);
+            if (validCards.length > 0) {
                 gsap.fromTo(
-                    card,
-                    { x: 50, opacity: 0 },
+                    validCards,
+                    { x: 30, opacity: 0 },
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 0.35,
-                        delay: index * 0.08,
+                        duration: 0.5,
+                        stagger: 0.08,
                         ease: 'power3.out',
                         scrollTrigger: {
-                            trigger: card,
-                            start: 'top 95%',
+                            trigger: sectionRef.current,
+                            start: 'top 85%',
                             once: true
                         }
                     }
                 );
-            });
+            }
         }, sectionRef);
 
         return () => ctx.revert();
