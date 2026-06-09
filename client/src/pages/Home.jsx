@@ -8,6 +8,7 @@ import InsightBannerSection from '../sections/InsightBannerSection';
 import EcosystemSection from '../sections/EcosystemSection';
 import SuccessStoriesSection from '../sections/SuccessStoriesSection';
 import LimitlessSection from '../sections/LimitlessSection';
+import FloatingContactWidget from '../components/FloatingContactWidget';
 
 const Home = () => {
     return (
@@ -21,6 +22,7 @@ const Home = () => {
             <EcosystemSection />
             <SuccessStoriesSection />
             <LimitlessSection />
+            <FloatingContactWidget />
         </>
     );
 };

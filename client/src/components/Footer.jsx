@@ -99,7 +99,7 @@ const Footer = () => {
     ];
 
     return (
-        <footer ref={footerRef} className="bg-slate-50 text-slate-600 py-12 px-6 sm:px-12 lg:px-16 border-t border-gray-200 relative overflow-hidden mt-0">
+        <footer ref={footerRef} className="bg-slate-50 text-slate-600 py-12 px-6 sm:px-12 lg:px-16 border-t border-gray-200 relative overflow-hidden mt-24">
             {/* Background Decorative Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[150px] rounded-full pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-100/30 blur-[150px] rounded-full pointer-events-none"></div>
