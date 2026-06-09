@@ -31,29 +31,17 @@ const FloatingContactWidget = () => {
     scrollToBottom();
   }, [messages, isTyping, activeTab]);
 
-  // Auto-open on reaching the 5th section of the homepage (#stats-section)
+  // Auto-open 5 seconds after page loads
   useEffect(() => {
-    const targetElement = document.getElementById('stats-section');
-    if (!targetElement) return;
-
     const hasInteracted = sessionStorage.getItem('widget_interacted');
     if (hasInteracted) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsOpen(true);
-            sessionStorage.setItem('widget_interacted', 'true');
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+      sessionStorage.setItem('widget_interacted', 'true');
+    }, 5000);
 
-    observer.observe(targetElement);
-    return () => observer.disconnect();
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSendMessage = (textToSend) => {
