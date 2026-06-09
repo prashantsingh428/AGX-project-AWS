@@ -11,6 +11,7 @@ const FloatingContactWidget = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showNotification } = useNotification();
+  const hasInteractedRef = useRef(false);
 
   // Chat States
   const [chatInput, setChatInput] = useState('');
@@ -33,12 +34,10 @@ const FloatingContactWidget = () => {
 
   // Auto-open 5 seconds after page loads
   useEffect(() => {
-    const hasInteracted = sessionStorage.getItem('widget_interacted');
-    if (hasInteracted) return;
-
     const timer = setTimeout(() => {
-      setIsOpen(true);
-      sessionStorage.setItem('widget_interacted', 'true');
+      if (!hasInteractedRef.current) {
+        setIsOpen(true);
+      }
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -127,7 +126,7 @@ const FloatingContactWidget = () => {
             <button
               onClick={() => {
                 setIsOpen(false);
-                sessionStorage.setItem('widget_interacted', 'true');
+                hasInteractedRef.current = true;
               }}
               className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all z-20"
               title="Close"
@@ -299,7 +298,7 @@ const FloatingContactWidget = () => {
       <motion.button
         onClick={() => {
           setIsOpen(!isOpen);
-          sessionStorage.setItem('widget_interacted', 'true');
+          hasInteractedRef.current = true;
         }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
