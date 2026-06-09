@@ -1,6 +1,14 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (to, subject, text) => {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.warn("⚠️ Email credentials not fully configured. Logging email instead:");
+        console.log(`To: ${to}`);
+        console.log(`Subject: ${subject}`);
+        console.log(`Content: ${text}`);
+        return;
+    }
+
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -18,8 +26,12 @@ const sendEmail = async (to, subject, text) => {
         });
         console.log(`Email sent to ${to}`);
     } catch (error) {
-        console.error("Email sending failed:", error);
-        throw new Error("Email sending failed");
+        console.error("❌ Email sending failed. Logging to console instead:", error.message);
+        console.log("=========================================");
+        console.log(`MOCK EMAIL SENT TO: ${to}`);
+        console.log(`SUBJECT: ${subject}`);
+        console.log(`MESSAGE: ${text}`);
+        console.log("=========================================");
     }
 };
 

@@ -2,13 +2,32 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import api from '../api/api';
+import { useAuth } from '../context/AuthContext';
+
 import logo from '../assets/client-logos/ailogo2.png';
-import { FaTimes, FaBars } from 'react-icons/fa';
+import { FaTimes, FaBars, FaUser, FaSignOutAlt, FaTachometerAlt, FaChevronDown } from 'react-icons/fa';
 import AuthModal from './Modals/AuthModal';
 import LanguageSelector from './LanguageSelector';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import MegaMenu from './Navbar/MegaMenu';
+
+const highlightText = (text, highlight) => {
+    if (!highlight || !highlight.trim()) return <span>{text}</span>;
+    const regex = new RegExp(`(${highlight})`, 'gi');
+    const parts = text.split(regex);
+    return (
+        <>
+            {parts.map((part, i) => 
+                regex.test(part) ? (
+                    <strong key={i} className="font-extrabold text-blue-600">{part}</strong>
+                ) : (
+                    <span key={i} className="text-gray-500 font-normal">{part}</span>
+                )
+            )}
+        </>
+    );
+};
 
 const Navbar = () => {
     const { t } = useTranslation();
@@ -23,6 +42,9 @@ const Navbar = () => {
     const [hoveredLink, setHoveredLink] = useState(null);
 
     const [navbarSearch, setNavbarSearch] = useState('');
+    const { token, user, logout } = useAuth();
+    const profileDropdownRef = useRef(null);
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -47,6 +69,9 @@ const Navbar = () => {
                 if (navbarSearch.trim() === '') {
                     setIsSearchExpanded(false);
                 }
+            }
+            if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+                setShowProfileMenu(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -79,7 +104,11 @@ const Navbar = () => {
     }, [navbarSearch]);
 
     const handleResultClick = (service) => {
-        navigate(`/services?q=${encodeURIComponent(service.title)}`);
+        if (service.url) {
+            navigate(service.url);
+        } else {
+            navigate(`/services?q=${encodeURIComponent(service.title)}`);
+        }
         setNavbarSearch('');
         setShowDropdown(false);
     };
@@ -178,15 +207,15 @@ const Navbar = () => {
             },
             dropdown: [
                 { name: t('navbar.careers.overview'), path: '/careers', description: "Our culture, values and mission" },
-                { 
-                    name: t('navbar.careers.open_roles.main'), 
-                    path: '/careers#open-roles', 
+                {
+                    name: t('navbar.careers.open_roles.main'),
+                    path: '/careers#open-roles',
                     description: "Find your next challenge",
                     subItems: [
                         { name: t('navbar.careers.open_roles.all_jobs'), path: '/careers#open-roles' },
                         { name: t('navbar.careers.open_roles.featured'), path: '/careers#open-roles' },
-                        { 
-                            name: t('navbar.careers.open_roles.departments.main'), 
+                        {
+                            name: t('navbar.careers.open_roles.departments.main'),
                             path: '/careers#open-roles',
                             isDepartment: true,
                             children: [
@@ -199,8 +228,6 @@ const Navbar = () => {
                     ]
                 },
                 { name: t('navbar.careers.life_at_exa'), path: '/careers#life-at-exa', description: "A glimpse into our daily work environment" },
-                { name: t('navbar.careers.growth_learning'), path: '/careers/growth-learning', description: "How we invest in your professional journey" },
-                { name: t('navbar.careers.what_you_work_on'), path: '/careers/what-you-work-on', description: "Impactful projects and cutting-edge tech" },
                 { name: t('navbar.careers.apply_now'), path: '/careers#open-roles', isHighlight: true }
             ]
         },
@@ -289,6 +316,14 @@ const Navbar = () => {
                                     autoFocus
                                     value={navbarSearch}
                                     onChange={(e) => setNavbarSearch(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && navbarSearch.trim().length > 0) {
+                                            navigate(`/services?q=${encodeURIComponent(navbarSearch.trim())}`);
+                                            setNavbarSearch('');
+                                            setShowDropdown(false);
+                                            setIsSearchExpanded(false);
+                                        }
+                                    }}
                                     className="block w-full h-full pl-10 pr-4 text-sm text-gray-900 bg-transparent border-none placeholder-gray-400 focus:outline-none focus:ring-0"
                                     placeholder="Search services..."
                                 />
@@ -316,8 +351,8 @@ const Navbar = () => {
                                                     onClick={() => handleResultClick(service)}
                                                     className="w-full text-left px-4 py-3 hover:bg-primary/5 transition-colors border-b border-gray-50 last:border-0"
                                                 >
-                                                    <div className="text-sm font-semibold text-gray-900 truncate">
-                                                        {service.title}
+                                                    <div className="text-sm text-gray-900 truncate">
+                                                        {highlightText(service.title, navbarSearch)}
                                                     </div>
                                                     <div className="text-xs text-primary font-medium">
                                                         {service.category}
@@ -338,12 +373,66 @@ const Navbar = () => {
 
                     <div className="flex items-center gap-4">
                         <div ref={addToRefs}>
-                            <button
-                                onClick={() => openAuthModal('register')}
-                                className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-sm font-medium transition-all shadow-lg shadow-primary/20"
-                            >
-                                {t('navbar.get_started')}
-                            </button>
+                            {token ? (
+                                <div className="relative" ref={profileDropdownRef}>
+                                    <button
+                                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                                        className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 rounded-full transition-all duration-200 border border-gray-200"
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                                            {user?.name ? user.name.charAt(0).toUpperCase() : <FaUser />}
+                                        </div>
+                                        <span className="text-sm font-semibold text-gray-700 max-w-[100px] truncate">
+                                            {user?.name || 'Profile'}
+                                        </span>
+                                        <FaChevronDown className={`w-3 h-3 text-gray-500 transition-transform duration-200 ${showProfileMenu ? 'rotate-180' : ''}`} />
+                                    </button>
+
+                                    {showProfileMenu && (
+                                        <div className="absolute right-0 mt-2.5 w-56 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden z-[60] py-1">
+                                            <div className="px-4 py-2 border-b border-gray-100 bg-slate-50">
+                                                <p className="text-xs text-gray-400 font-medium">Signed in as</p>
+                                                <p className="text-sm font-bold text-gray-900 truncate">{user?.email || 'User'}</p>
+                                            </div>
+                                            <Link
+                                                to="/dashboard"
+                                                onClick={() => setShowProfileMenu(false)}
+                                                className="flex items-center gap-2.5 px-4 py-3 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors font-medium border-b border-gray-50"
+                                            >
+                                                <FaUser className="text-gray-400 w-3.5 h-3.5" />
+                                                Dashboard
+                                            </Link>
+                                            {user?.role === 'admin' && (
+                                                <Link
+                                                    to="/admin"
+                                                    onClick={() => setShowProfileMenu(false)}
+                                                    className="flex items-center gap-2.5 px-4 py-3 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors font-medium border-b border-gray-50"
+                                                >
+                                                    <FaTachometerAlt className="text-gray-400 w-3.5 h-3.5" />
+                                                    Admin Panel
+                                                </Link>
+                                            )}
+                                            <button
+                                                onClick={() => {
+                                                    setShowProfileMenu(false);
+                                                    logout();
+                                                }}
+                                                className="w-full text-left flex items-center gap-2.5 px-4 py-3 text-sm text-red-650 hover:bg-red-50 transition-colors font-medium border-t border-gray-105"
+                                            >
+                                                <FaSignOutAlt className="text-red-400 w-3.5 h-3.5" />
+                                                Logout
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => openAuthModal('register')}
+                                    className="px-6 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-sm font-medium transition-all shadow-lg shadow-primary/20"
+                                >
+                                    {t('navbar.get_started')}
+                                </button>
+                            )}
                         </div>
                         <div ref={addToRefs}>
                             <LanguageSelector />
@@ -413,17 +502,53 @@ const Navbar = () => {
                                 </div>
                             ))}
 
-                            <div className="pt-2 mt-2 border-t border-gray-200 flex flex-col gap-3">
-                                <button
-                                    onClick={() => openAuthModal('register')}
-                                    className="block w-full text-center px-4 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg text-base font-medium transition-colors"
-                                >
-                                    {t('navbar.get_started')}
-                                </button>
-                                <div className="flex justify-center">
-                                    <LanguageSelector />
+                            {token ? (
+                                <div className="flex flex-col gap-2 pt-2 border-t border-gray-200">
+                                    <div className="px-4 py-2 text-center text-xs text-gray-500 font-bold border-b border-gray-100">
+                                        Logged in as {user?.email}
+                                    </div>
+                                    <Link
+                                        to="/dashboard"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block text-center px-4 py-2.5 bg-blue-600/10 text-blue-600 rounded-lg text-base font-semibold hover:bg-blue-600/20 transition-colors"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                    {user?.role === 'admin' && (
+                                        <Link
+                                            to="/admin"
+                                            onClick={() => setIsMenuOpen(false)}
+                                            className="block text-center px-4 py-2.5 bg-indigo-600/10 text-indigo-600 rounded-lg text-base font-semibold hover:bg-indigo-600/20 transition-colors"
+                                        >
+                                            Admin Panel
+                                        </Link>
+                                    )}
+                                    <button
+                                        onClick={() => {
+                                            setIsMenuOpen(false);
+                                            logout();
+                                        }}
+                                        className="block w-full text-center px-4 py-2.5 bg-red-50 text-red-600 border border-red-200 rounded-lg text-base font-semibold hover:bg-red-100 transition-colors"
+                                    >
+                                        Logout
+                                    </button>
+                                    <div className="flex justify-center pt-2">
+                                        <LanguageSelector />
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="pt-2 mt-2 border-t border-gray-200 flex flex-col gap-3">
+                                    <button
+                                        onClick={() => openAuthModal('register')}
+                                        className="block w-full text-center px-4 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg text-base font-medium transition-colors"
+                                    >
+                                        {t('navbar.get_started')}
+                                    </button>
+                                    <div className="flex justify-center">
+                                        <LanguageSelector />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

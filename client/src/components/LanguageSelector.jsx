@@ -4,60 +4,60 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 const languageData = [
-  { 
-    group: 'Americas', 
-    items: [
-        { code: 'es', name: 'Argentina', flag: '🇦🇷' },
-        { code: 'pt', name: 'Brazil', flag: '🇧🇷' },
-        { code: 'en', name: 'Canada', flag: '🇨🇦', variants: ['En', 'Fr'] },
-        { code: 'es', name: 'Costa Rica', flag: '🇨🇷' },
-        { code: 'es', name: 'El Salvador', flag: '🇸🇻' },
-        { code: 'es', name: 'Mexico', flag: '🇲🇽' },
-        { code: 'en', name: 'United States', flag: '🇺🇸' },
-    ],
-    footer: {
-        title: 'Middle East',
-        link: 'Visit our Regional Website'
+    {
+        group: 'Americas',
+        items: [
+            { code: 'es', name: 'Argentina', flag: '🇦🇷' },
+            { code: 'pt', name: 'Brazil', flag: '🇧🇷' },
+            { code: 'en', name: 'Canada', flag: '🇨🇦', variants: ['En', 'Fr'] },
+            { code: 'es', name: 'Costa Rica', flag: '🇨🇷' },
+            { code: 'es', name: 'El Salvador', flag: '🇸🇻' },
+            { code: 'es', name: 'Mexico', flag: '🇲🇽' },
+            { code: 'en', name: 'United States', flag: '🇺🇸' },
+        ],
+        footer: {
+            title: 'Middle East',
+            link: 'Visit our Regional Website'
+        }
+    },
+    {
+        group: 'Europe',
+        items: [
+            { code: 'fr', name: 'Belgium', flag: '🇧🇪', variants: ['Fr', 'Nl', 'En'] },
+            { code: 'da', name: 'Denmark', flag: '🇩🇰' },
+            { code: 'fi', name: 'Finland', flag: '🇫🇮' },
+            { code: 'fr', name: 'France', flag: '🇫🇷' },
+            { code: 'de', name: 'Germany', flag: '🇩🇪' },
+            { code: 'hu', name: 'Hungary', flag: '🇭🇺' },
+            { code: 'it', name: 'Italy', flag: '🇮🇹' },
+            { code: 'lv', name: 'Latvia', flag: '🇱🇻' },
+            { code: 'lt', name: 'Lithuania', flag: '🇱🇹' },
+            { code: 'no', name: 'Norway', flag: '🇳🇴' },
+            { code: 'pl', name: 'Poland', flag: '🇵🇱' },
+            { code: 'pt', name: 'Portugal', flag: '🇵🇹' },
+            { code: 'ro', name: 'Romania', flag: '🇷🇴' },
+            { code: 'es', name: 'Spain', flag: '🇪🇸' },
+            { code: 'sv', name: 'Sweden', flag: '🇸🇪' },
+            { code: 'fr', name: 'Switzerland', flag: '🇨🇭', variants: ['Fr', 'En', 'De'] },
+            { code: 'nl', name: 'The Netherlands', flag: '🇳🇱' },
+            { code: 'en', name: 'United Kingdom & Ireland', flag: '🇬🇧' },
+        ]
+    },
+    {
+        group: 'Asia Pacific',
+        items: [
+            { code: 'en', name: 'Australia', flag: '🇦🇺' },
+            { code: 'zh', name: 'China', flag: '🇨🇳', variants: ['En', '中文'] },
+            { code: 'zh', name: 'Hong Kong SAR', flag: '🇭🇰' },
+            { code: 'hi', name: 'India', flag: '🇮🇳', variants: ['En', 'हिंदी'] },
+            { code: 'ja', name: 'Japan', flag: '🇯🇵', variants: ['日本語'] },
+            { code: 'ms', name: 'Malaysia', flag: '🇲🇾' },
+            { code: 'en', name: 'New Zealand', flag: '🇳🇿' },
+            { code: 'en', name: 'Philippines', flag: '🇵🇭' },
+            { code: 'en', name: 'Singapore', flag: '🇸🇬' },
+            { code: 'th', name: 'Thailand', flag: '🇹🇭' },
+        ]
     }
-  },
-  { 
-    group: 'Europe', 
-    items: [
-        { code: 'fr', name: 'Belgium', flag: '🇧🇪', variants: ['Fr', 'Nl', 'En'] },
-        { code: 'da', name: 'Denmark', flag: '🇩🇰' },
-        { code: 'fi', name: 'Finland', flag: '🇫🇮' },
-        { code: 'fr', name: 'France', flag: '🇫🇷' },
-        { code: 'de', name: 'Germany', flag: '🇩🇪' },
-        { code: 'hu', name: 'Hungary', flag: '🇭🇺' },
-        { code: 'it', name: 'Italy', flag: '🇮🇹' },
-        { code: 'lv', name: 'Latvia', flag: '🇱🇻' },
-        { code: 'lt', name: 'Lithuania', flag: '🇱🇹' },
-        { code: 'no', name: 'Norway', flag: '🇳🇴' },
-        { code: 'pl', name: 'Poland', flag: '🇵🇱' },
-        { code: 'pt', name: 'Portugal', flag: '🇵🇹' },
-        { code: 'ro', name: 'Romania', flag: '🇷🇴' },
-        { code: 'es', name: 'Spain', flag: '🇪🇸' },
-        { code: 'sv', name: 'Sweden', flag: '🇸🇪' },
-        { code: 'fr', name: 'Switzerland', flag: '🇨🇭', variants: ['Fr', 'En', 'De'] },
-        { code: 'nl', name: 'The Netherlands', flag: '🇳🇱' },
-        { code: 'en', name: 'United Kingdom & Ireland', flag: '🇬🇧' },
-    ]
-  },
-  { 
-    group: 'Asia Pacific', 
-    items: [
-        { code: 'en', name: 'Australia', flag: '🇦🇺' },
-        { code: 'zh', name: 'China', flag: '🇨🇳', variants: ['En', '中文'] },
-        { code: 'zh', name: 'Hong Kong SAR', flag: '🇭🇰' },
-        { code: 'hi', name: 'India', flag: '🇮🇳', variants: ['En', 'हिंदी'] },
-        { code: 'ja', name: 'Japan', flag: '🇯🇵', variants: ['日本語'] },
-        { code: 'ms', name: 'Malaysia', flag: '🇲🇾' },
-        { code: 'en', name: 'New Zealand', flag: '🇳🇿' },
-        { code: 'en', name: 'Philippines', flag: '🇵🇭' },
-        { code: 'en', name: 'Singapore', flag: '🇸🇬' },
-        { code: 'th', name: 'Thailand', flag: '🇹🇭' },
-    ]
-  }
 ];
 
 // Flatten for easier lookup
@@ -67,7 +67,7 @@ const LanguageSelector = () => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const { i18n } = useTranslation();
-    
+
     // Find matching language object or default to English/US
     const currentLang = allLanguages.find(l => l.code.toLowerCase() === i18n.language.split('-')[0]) || allLanguages[6];
 
@@ -97,8 +97,8 @@ const LanguageSelector = () => {
                     <Globe className="w-4 h-4 text-slate-400 group-hover:text-primary transition-colors" strokeWidth={1.5} />
                     <span>{currentLang.code === 'en' ? 'US-EN' : `${currentLang.code.toUpperCase()}`}</span>
                 </div>
-                <ChevronDown 
-                    className={`w-3 h-3 text-slate-300 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+                <ChevronDown
+                    className={`w-3 h-3 text-slate-300 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                     strokeWidth={3}
                 />
             </button>

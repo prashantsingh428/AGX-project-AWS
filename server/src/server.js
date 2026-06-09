@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const app = require("./app");
+const { seedServices } = require("./utils/seeder");
 
 if (process.env.NODE_ENV !== "production") {
     dotenv.config();
@@ -28,12 +29,14 @@ const startServer = (port) => {
 
 mongoose
     .connect(MONGO_URI)
-    .then(() => {
+    .then(async () => {
         console.log("✅ MongoDB Connected");
+        await seedServices();
         startServer(Number(PORT));
     })
     .catch((err) => {
         console.error("❌ MongoDB connection failed:", err);
         process.exit(1);
     });
+
 

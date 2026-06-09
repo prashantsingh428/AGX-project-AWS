@@ -4,8 +4,11 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X, Mail, Lock, User, ArrowRight, Loader2, Github, CheckCircle, AlertCircle } from 'lucide-react';
 import api from '../../api/api';
+import { useAuth } from '../../context/AuthContext';
+
 
 const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
+    const { login, googleLogin } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -48,34 +51,21 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
         setLoading(true);
         setError('');
 
-        try {
-            const res = await api.post('/auth/login', loginData);
-
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify({ role: res.data.role })); // Simplified user object
-
-            // Dispatch custom event for Navbar update
-            window.dispatchEvent(new Event('storage'));
-
+        const result = await login(loginData.email, loginData.password);
+        if (result.success) {
             showNotification("Login Successful!", "success");
             setTimeout(() => {
                 handleClose();
-                // Optional: Reload or redirect
-                // window.location.reload(); 
             }, 1000);
-        } catch (err) {
-            const msg = err.response?.data?.message || 'Login failed';
-            setError(msg);
-            showNotification(`Login Failed: ${msg}`, "error");
+        } else {
+            setError(result.message);
+            showNotification(`Login Failed: ${result.message}`, "error");
 
-            if (err.response?.status === 403 && msg === "Verify email first") {
-                // Pre-fill email for verification if possible, or just switch
-                // Ideally we should carry over the email to the verify step logic
+            if (result.message === "Verify email first") {
                 setView('verify');
             }
-        } finally {
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     const handleRegisterSubmit = async (e) => {
@@ -158,11 +148,7 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
             const { credential } = credentialResponse;
             const res = await api.post('/auth/google', { token: credential });
 
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data.user || { role: res.data.role }));
-
-            // Dispatch custom event for Navbar update
-            window.dispatchEvent(new Event('storage'));
+            googleLogin(res.data.token, res.data.user || { role: res.data.role });
 
             showNotification("Google Login Successful!", "success");
             setTimeout(() => {

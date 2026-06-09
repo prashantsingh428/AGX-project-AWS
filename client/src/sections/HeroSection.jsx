@@ -26,37 +26,36 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (!titleRef.current || !textRef.current || !buttonsRef.current) return;
-
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } })
 
     tl.fromTo(
-      titleRef.current,
-      { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6 }
+      buttonsRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4 }
     )
       .fromTo(
-        textRef.current,
+        titleRef.current,
         { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5 },
+        "-=0.3"
+      )
+      .fromTo(
+        textRef.current,
+        { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.4 },
         "-=0.3"
       )
       .fromTo(
-        buttonsRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8, ease: "power4.out" },
-        "-=0.2"
-      )
-      .fromTo(
         insightsBarRef.current,
         { opacity: 0, x: 20 },
-        { opacity: 1, x: 0, duration: 0.5 },
-        "-=0.5"
+        { opacity: 1, x: 0, duration: 0.4 },
+        "-=0.3"
       )
       .fromTo(
         secondaryRef.current,
         { opacity: 0, x: 30 },
-        { opacity: 1, x: 0, duration: 0.6 },
-        "-=0.4"
+        { opacity: 1, x: 0, duration: 0.4 },
+        "-=0.3"
       )
 
     // Text shuffling interval
