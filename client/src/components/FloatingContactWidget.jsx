@@ -31,6 +31,31 @@ const FloatingContactWidget = () => {
     scrollToBottom();
   }, [messages, isTyping, activeTab]);
 
+  // Auto-open on reaching the 5th section of the homepage (#stats-section)
+  useEffect(() => {
+    const targetElement = document.getElementById('stats-section');
+    if (!targetElement) return;
+
+    const hasInteracted = sessionStorage.getItem('widget_interacted');
+    if (hasInteracted) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsOpen(true);
+            sessionStorage.setItem('widget_interacted', 'true');
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(targetElement);
+    return () => observer.disconnect();
+  }, []);
+
   const handleSendMessage = (textToSend) => {
     const text = textToSend || chatInput;
     if (!text || text.trim() === '') return;
@@ -112,7 +137,10 @@ const FloatingContactWidget = () => {
           >
             {/* Close Button */}
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                sessionStorage.setItem('widget_interacted', 'true');
+              }}
               className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all z-20"
               title="Close"
             >
@@ -281,7 +309,10 @@ const FloatingContactWidget = () => {
 
       {/* Floating Trigger Bubble */}
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          sessionStorage.setItem('widget_interacted', 'true');
+        }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="flex items-center justify-center w-14 h-14 bg-[#e6b446] hover:bg-[#ffcc00] text-black rounded-full shadow-xl shadow-[#e6b446]/20 transition-colors focus:outline-none relative ml-auto cursor-target"

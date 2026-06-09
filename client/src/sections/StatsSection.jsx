@@ -114,6 +114,7 @@ const StatsSection = () => {
 
     return (
         <section 
+            id="stats-section"
             ref={sectionRef} 
             className="pt-20 md:pt-24 pb-32 md:pb-40 bg-white relative z-50 overflow-hidden"
         >
