@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const mongoose = require("mongoose");
 
 const authRoutes = require("./routes/authRoutes");
 const leadRoutes = require("./routes/leadRoutes");
@@ -18,8 +19,20 @@ const app = express();
 
 app.use("/uploads", express.static("uploads"));
 
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    "http://localhost:5173",
+    "http://localhost:5174"
+].filter(Boolean);
+
 const corsOptions = {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Not allowed by CORS: ${origin}`));
+        }
+    },
     credentials: true,
 };
 
@@ -42,6 +55,34 @@ app.use("/api/admin", adminRoutes);
 
 app.get("/api", (req, res) => {
     res.json({ message: "Welcome to Ai Growth Exa API", status: "Running" });
+});
+
+app.get("/api/health", async (req, res) => {
+    try {
+        const isDbConnected = mongoose.connection && mongoose.connection.readyState === 1;
+        const dbStatus = isDbConnected ? "UP" : "DOWN";
+
+        const healthStatus = {
+            status: isDbConnected ? "UP" : "DEGRADED",
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+            services: {
+                database: dbStatus,
+                server: "UP"
+            },
+            system: {
+                memoryUsage: process.memoryUsage(),
+                cpuUsage: process.cpuUsage()
+            }
+        };
+
+        if (!isDbConnected) {
+            return res.status(503).json(healthStatus);
+        }
+        res.json(healthStatus);
+    } catch (error) {
+        res.status(500).json({ status: "DOWN", error: error.message });
+    }
 });
 
 

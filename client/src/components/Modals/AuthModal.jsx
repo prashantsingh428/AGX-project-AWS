@@ -27,6 +27,9 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
     // Form states
     const [loginData, setLoginData] = useState({ email: '', password: '' });
     const [registerData, setRegisterData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+    const [forgotEmail, setForgotEmail] = useState('');
+    const [forgotOtp, setForgotOtp] = useState('');
+    const [forgotPasswordData, setForgotPasswordData] = useState({ password: '', confirmPassword: '' });
     const [otp, setOtp] = useState('');
     const [notification, setNotification] = useState(null);
 
@@ -37,6 +40,7 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
 
     const handleLoginChange = (e) => setLoginData({ ...loginData, [e.target.name]: e.target.value });
     const handleRegisterChange = (e) => setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+    const handleForgotPasswordChange = (e) => setForgotPasswordData({ ...forgotPasswordData, [e.target.name]: e.target.value });
 
     const handleClose = () => {
         if (onClose) {
@@ -68,6 +72,21 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
         setLoading(false);
     };
 
+    const validatePassword = (password) => {
+        const hasNumber = /\d/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        if (password.length < 6) {
+            return "Password must be at least 6 characters long.";
+        }
+        if (!hasNumber) {
+            return "Password must contain at least one number (0-9).";
+        }
+        if (!hasSpecial) {
+            return "Password must contain at least one special character (e.g. !@#$%).";
+        }
+        return null;
+    };
+
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -81,14 +100,23 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
             return;
         }
 
+        const pwdError = validatePassword(registerData.password);
+        if (pwdError) {
+            setError(pwdError);
+            showNotification(pwdError, 'error');
+            setLoading(false);
+            return;
+        }
+
         try {
-            await api.post('/auth/register', {
+            const res = await api.post('/auth/register', {
                 name: registerData.name,
                 email: registerData.email,
                 password: registerData.password
             });
 
-            showNotification("Registration Successful. Check email for OTP.", "success");
+            const successMsg = res.data?.message || "Registration Successful. Check email for OTP.";
+            showNotification(successMsg, "success");
             // On success, switch to verify view
             setView('verify');
         } catch (err) {
@@ -137,6 +165,64 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
             const msg = err.response?.data?.message || 'Verification failed. Invalid OTP.';
             setError(msg);
             showNotification(`Verification Failed: ${msg}`, 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleForgotRequestSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        try {
+            const res = await api.post('/auth/forgot-password', { email: forgotEmail });
+            const successMsg = res.data?.message || "OTP sent successfully. Please check your email.";
+            showNotification(successMsg, "success");
+            setView('forgot-verify');
+        } catch (err) {
+            console.error("Forgot Password Request Error:", err);
+            const msg = err.response?.data?.message || 'Failed to send OTP. Please try again.';
+            setError(msg);
+            showNotification(`Error: ${msg}`, "error");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleForgotVerifySubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        if (forgotPasswordData.password !== forgotPasswordData.confirmPassword) {
+            const msg = 'Passwords do not match';
+            setError(msg);
+            showNotification(msg, 'error');
+            setLoading(false);
+            return;
+        }
+
+        const pwdError = validatePassword(forgotPasswordData.password);
+        if (pwdError) {
+            setError(pwdError);
+            showNotification(pwdError, 'error');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            await api.post('/auth/reset-password', {
+                email: forgotEmail,
+                otp: forgotOtp,
+                newPassword: forgotPasswordData.password
+            });
+            showNotification("Password reset successful! Please log in.", "success");
+            setView('login');
+        } catch (err) {
+            console.error("Password Reset Verification Error:", err);
+            const msg = err.response?.data?.message || 'Verification failed. Invalid OTP.';
+            setError(msg);
+            showNotification(`Error: ${msg}`, "error");
         } finally {
             setLoading(false);
         }
@@ -233,11 +319,15 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                 {view === 'login' && 'Welcome Back.'}
                                 {view === 'register' && 'Join the Revolution.'}
                                 {view === 'verify' && 'Verify Email.'}
+                                {view === 'forgot-request' && 'Forgot Password.'}
+                                {view === 'forgot-verify' && 'Reset Password.'}
                             </h2>
                             <p className="text-slate-400 text-sm leading-relaxed font-medium">
                                 {view === 'login' && 'Access your dashboard, manage your projects, and track your growth metrics.'}
                                 {view === 'register' && 'Create your account to start your journey with AI-driven growth strategies.'}
                                 {view === 'verify' && 'Enter the OTP sent to your email to verify your account.'}
+                                {view === 'forgot-request' && 'Enter your registered email address to receive a secure OTP code.'}
+                                {view === 'forgot-verify' && 'Check your email for the reset code and choose a secure new password.'}
                             </p>
                         </div>
 
@@ -265,11 +355,15 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                 {view === 'login' && 'Sign in'}
                                 {view === 'register' && 'Create Account'}
                                 {view === 'verify' && 'Verification'}
+                                {view === 'forgot-request' && 'Recover Access'}
+                                {view === 'forgot-verify' && 'Reset Password'}
                             </h3>
                             <p className="text-slate-500 text-sm">
                                 {view === 'login' && 'Enter your details to proceed'}
                                 {view === 'register' && 'Get started for free'}
                                 {view === 'verify' && 'Check your email for code'}
+                                {view === 'forgot-request' && 'Request password reset OTP'}
+                                {view === 'forgot-verify' && 'Enter your OTP and new password'}
                             </p>
                         </div>
 
@@ -278,7 +372,9 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                         <form onSubmit={
                             view === 'login' ? handleLoginSubmit :
                                 view === 'register' ? handleRegisterSubmit :
-                                    handleVerifySubmit
+                                    view === 'forgot-request' ? handleForgotRequestSubmit :
+                                        view === 'forgot-verify' ? handleForgotVerifySubmit :
+                                            handleVerifySubmit
                         } className="space-y-4">
 
                             {view === 'verify' && (
@@ -295,6 +391,29 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                             required
                                         />
                                     </div>
+                                    <p className="text-xs text-slate-500 mt-1.5 ml-1">
+                                        If the email hasn't arrived, please check your spam folder or try registering again.
+                                    </p>
+                                </div>
+                            )}
+
+                            {view === 'forgot-verify' && (
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">OTP Reset Code</label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                        <input
+                                            type="text"
+                                            value={forgotOtp}
+                                            onChange={(e) => setForgotOtp(e.target.value)}
+                                            className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium text-slate-900 transition-all"
+                                            placeholder="123456"
+                                            required
+                                        />
+                                    </div>
+                                    <p className="text-xs text-slate-500 mt-1.5 ml-1">
+                                        If the email hasn't arrived, please check your spam folder or try requesting the OTP again.
+                                    </p>
                                 </div>
                             )}
 
@@ -316,63 +435,67 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                 </div>
                             )}
 
-                            {view !== 'verify' && (
-                                <>
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-bold uppercase text-slate-500 ml-1">Email Address</label>
-                                        <div className="relative">
-                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                value={view === 'login' ? loginData.email : registerData.email}
-                                                onChange={view === 'login' ? handleLoginChange : handleRegisterChange}
-                                                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium text-slate-900 transition-all"
-                                                placeholder="name@company.com"
-                                                required
-                                            />
-                                        </div>
+                            {(view === 'login' || view === 'register' || view === 'forgot-request') && (
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">Email Address</label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={view === 'login' ? loginData.email : (view === 'forgot-request' ? forgotEmail : registerData.email)}
+                                            onChange={view === 'login' ? handleLoginChange : (view === 'forgot-request' ? (e) => setForgotEmail(e.target.value) : handleRegisterChange)}
+                                            className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium text-slate-900 transition-all"
+                                            placeholder="name@company.com"
+                                            required
+                                        />
                                     </div>
-
-                                    <div className="space-y-1">
-                                        <div className="flex justify-between ml-1">
-                                            <label className="text-xs font-bold uppercase text-slate-500">Password</label>
-                                            {view === 'login' && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => showNotification("Please contact support at contact@aigrowthexa.com to reset your password.", "success")}
-                                                    className="text-xs text-primary font-semibold hover:text-primary/80"
-                                                >
-                                                    Forgot?
-                                                </button>
-                                            )}
-                                        </div>
-                                        <div className="relative">
-                                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                            <input
-                                                type="password"
-                                                name="password"
-                                                value={view === 'login' ? loginData.password : registerData.password}
-                                                onChange={view === 'login' ? handleLoginChange : handleRegisterChange}
-                                                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium text-slate-900 transition-all"
-                                                placeholder="••••••••"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                </>
+                                </div>
                             )}
 
-                            {view === 'register' && (
+                            {(view === 'login' || view === 'register' || view === 'forgot-verify') && (
                                 <div className="space-y-1">
-                                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">Confirm Password</label>
+                                    <div className="flex justify-between ml-1">
+                                        <label className="text-xs font-bold uppercase text-slate-500">
+                                            {view === 'forgot-verify' ? 'New Password' : 'Password'}
+                                        </label>
+                                        {view === 'login' && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setView('forgot-request')}
+                                                className="text-xs text-primary font-semibold hover:text-primary/80"
+                                            >
+                                                Forgot?
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="relative">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            value={view === 'login' ? loginData.password : (view === 'forgot-verify' ? forgotPasswordData.password : registerData.password)}
+                                            onChange={view === 'login' ? handleLoginChange : (view === 'forgot-verify' ? handleForgotPasswordChange : handleRegisterChange)}
+                                            className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium text-slate-900 transition-all"
+                                            placeholder="••••••••"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {(view === 'register' || view === 'forgot-verify') && (
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold uppercase text-slate-500 ml-1">
+                                        {view === 'forgot-verify' ? 'Confirm New Password' : 'Confirm Password'}
+                                    </label>
                                     <div className="relative">
                                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                         <input
                                             type="password"
                                             name="confirmPassword"
-                                            value={registerData.confirmPassword}
-                                            onChange={handleRegisterChange}
+                                            value={view === 'register' ? registerData.confirmPassword : forgotPasswordData.confirmPassword}
+                                            onChange={view === 'register' ? handleRegisterChange : handleForgotPasswordChange}
                                             className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm font-medium text-slate-900 transition-all"
                                             placeholder="••••••••"
                                             required
@@ -391,13 +514,15 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                         {view === 'login' && 'Sign In'}
                                         {view === 'register' && 'Create Account'}
                                         {view === 'verify' && 'Verify'}
+                                        {view === 'forgot-request' && 'Send OTP'}
+                                        {view === 'forgot-verify' && 'Reset Password'}
                                         <ArrowRight className="w-4 h-4" />
                                     </>
                                 )}
                             </button>
                         </form>
 
-                        {view !== 'verify' && (
+                        {view !== 'verify' && view !== 'forgot-request' && view !== 'forgot-verify' && (
                             <>
                                 <div className="relative my-6">
                                     <div className="absolute inset-0 flex items-center">
@@ -431,10 +556,12 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                     {view === 'login' && "Don't have an account?"}
                                     {view === 'register' && "Already have an account?"}
                                     {view === 'verify' && "Incorrect email?"}
+                                    {(view === 'forgot-request' || view === 'forgot-verify') && "Remembered your password?"}
 
                                     <button
                                         onClick={() => {
                                             if (view === 'verify') setView('register');
+                                            else if (view === 'forgot-request' || view === 'forgot-verify') setView('login');
                                             else setView(view === 'login' ? 'register' : 'login');
                                         }}
                                         className="ml-2 text-primary font-bold hover:text-primary/80 hover:underline transition-colors"
@@ -442,6 +569,7 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
                                         {view === 'login' && 'Sign up free'}
                                         {view === 'register' && 'Sign in'}
                                         {view === 'verify' && 'Register again'}
+                                        {(view === 'forgot-request' || view === 'forgot-verify') && 'Sign in'}
                                     </button>
                                 </p>
                             </div>

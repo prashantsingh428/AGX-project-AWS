@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------
+  # Local MongoDB Container
+  # -------------------------------------------------------------
+  mongodb:
+    image: mongo:6.0-jammy
+    container_name: aigrowthexa_db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app_network
+
+  # -------------------------------------------------------------
+  # Express Backend Server (Dev Mode)
+  # -------------------------------------------------------------
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: aigrowthexa_server
+    restart: unless-stopped
+    command: npm run dev
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=development
+      - PORT=5001
+      - MONGO_URI=mongodb://mongodb:27017/aigrowthexa
+      - JWT_SECRET=local_secret_key_12345
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules # Do not override container's node_modules with host's
+    depends_on:
+      - mongodb
+    networks:
+      - app_network
+
+  # -------------------------------------------------------------
+  # React + Vite Client (Dev Mode)
+  # -------------------------------------------------------------
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: aigrowthexa_client
+    restart: unless-stopped
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5001/api
+    volumes:
+      - ./client:/app
+      - /app/node_modules # Do not override container's node_modules with host's
+    depends_on:
+      - server
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local

@@ -41,6 +41,15 @@ exports.register = async (req, res) => {
         const { name, email, password } = req.body;
         const normalizedEmail = email.toString().toLowerCase();
 
+        // Validate password strength: minimum 6 characters, at least one digit, and one special character
+        const hasNumber = /\d/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        if (!hasNumber || !hasSpecial || password.length < 6) {
+            return res.status(400).json({ 
+                message: "Password must be at least 6 characters long and contain at least one number and one special character." 
+            });
+        }
+
         const existingUser = await User.findOne({ email: normalizedEmail });
         if (existingUser) {
             if (existingUser.isVerified) {
@@ -48,6 +57,11 @@ exports.register = async (req, res) => {
             } else {
                 // User exists but is not verified. Let's update password and send new OTP.
                 const otp = generateOTP();
+                const originalName = existingUser.name;
+                const originalPassword = existingUser.password;
+                const originalOtp = existingUser.otp;
+                const originalOtpExpiry = existingUser.otpExpiry;
+
                 existingUser.name = name;
                 existingUser.password = await bcrypt.hash(password.toString(), 10);
                 existingUser.otp = otp;
@@ -59,14 +73,24 @@ exports.register = async (req, res) => {
                 console.log(`[AUTH] OTP CODE IS: ${otp}`);
                 console.log("=========================================");
 
-                await sendEmail(normalizedEmail, "Verify OTP", `Your OTP is ${otp}`);
-                return res.json({ message: "OTP sent" });
+                try {
+                    await sendEmail(normalizedEmail, "Verify OTP", `Your OTP is ${otp}`);
+                    return res.json({ message: "OTP sent" });
+                } catch (emailError) {
+                    console.error("[AUTH] Resend OTP email failed, rolling back changes:", emailError.message);
+                    existingUser.name = originalName;
+                    existingUser.password = originalPassword;
+                    existingUser.otp = originalOtp;
+                    existingUser.otpExpiry = originalOtpExpiry;
+                    await existingUser.save();
+                    return res.status(500).json({ message: "Failed to send verification email. Registration changes rolled back. Please try again." });
+                }
             }
         }
 
         const otp = generateOTP();
 
-        await User.create({
+        const newUser = await User.create({
             name,
             email: normalizedEmail,
             password: await bcrypt.hash(password.toString(), 10),
@@ -79,8 +103,14 @@ exports.register = async (req, res) => {
         console.log(`[AUTH] OTP CODE IS: ${otp}`);
         console.log("=========================================");
 
-        await sendEmail(normalizedEmail, "Verify OTP", `Your OTP is ${otp}`);
-        res.json({ message: "OTP sent" });
+        try {
+            await sendEmail(normalizedEmail, "Verify OTP", `Your OTP is ${otp}`);
+            res.json({ message: "OTP sent" });
+        } catch (emailError) {
+            console.error("[AUTH] New user OTP email failed, rolling back user creation:", emailError.message);
+            await User.deleteOne({ _id: newUser._id });
+            return res.status(500).json({ message: "Failed to send verification email. Registration rolled back. Please try again." });
+        }
     } catch (error) {
         console.error("Registration failed:", error);
         res.status(500).json({ message: error.message });
@@ -98,9 +128,7 @@ exports.verifyEmail = async (req, res) => {
         const user = await User.findOne({ email: email.toString().toLowerCase() });
         if (!user) return res.status(400).json({ message: "Invalid OTP" });
 
-        const isDefaultOTP = process.env.NODE_ENV !== "production" && (otp.toString() === "123456" || otp.toString() === "111111");
-
-        if (!isDefaultOTP && (user.otp !== otp.toString() || user.otpExpiry < Date.now()))
+        if (user.otp !== otp.toString() || user.otpExpiry < Date.now())
             return res.status(400).json({ message: "Invalid OTP" });
 
         user.isVerified = true;
@@ -124,7 +152,11 @@ exports.login = async (req, res) => {
         }
 
         const user = await User.findOne({ email: email.toString().toLowerCase() });
-        if (!user) return res.status(400).json({ message: "Invalid login" });
+        if (!user) {
+            return res.status(400).json({
+                message: "Account not found. If you recently registered and didn't receive an OTP, your registration may have failed and rolled back due to email delivery failure. Please register again."
+            });
+        }
 
         if (!user.isVerified)
             return res.status(403).json({ message: "Verify email first" });
@@ -175,8 +207,16 @@ exports.forgotPassword = async (req, res) => {
         user.otpExpiry = Date.now() + 10 * 60 * 1000;
         await user.save();
 
-        await sendEmail(email, "Reset Password OTP", `OTP: ${otp}`);
-        res.json({ message: "OTP sent" });
+        try {
+            await sendEmail(email, "Reset Password OTP", `OTP: ${otp}`);
+            res.json({ message: "OTP sent" });
+        } catch (emailError) {
+            console.error("[AUTH] Forgot password email failed, rolling back OTP generation:", emailError.message);
+            user.otp = undefined;
+            user.otpExpiry = undefined;
+            await user.save();
+            return res.status(500).json({ message: "Failed to send password reset email. Please try again later." });
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -186,12 +226,19 @@ exports.resetPassword = async (req, res) => {
     try {
         const { email, otp, newPassword } = req.body;
 
+        // Validate password strength: minimum 6 characters, at least one digit, and one special character
+        const hasNumber = /\d/.test(newPassword);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+        if (!hasNumber || !hasSpecial || newPassword.length < 6) {
+            return res.status(400).json({ 
+                message: "Password must be at least 6 characters long and contain at least one number and one special character." 
+            });
+        }
+
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ message: "Invalid OTP" });
 
-        const isDefaultOTP = process.env.NODE_ENV !== "production" && (otp.toString() === "123456" || otp.toString() === "111111");
-
-        if (!isDefaultOTP && (user.otp !== otp || user.otpExpiry < Date.now()))
+        if (user.otp !== otp.toString() || user.otpExpiry < Date.now())
             return res.status(400).json({ message: "Invalid OTP" });
 
         user.password = await bcrypt.hash(newPassword.toString(), 10);

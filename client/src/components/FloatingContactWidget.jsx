@@ -38,7 +38,7 @@ const FloatingContactWidget = () => {
       if (!hasInteractedRef.current) {
         setIsOpen(true);
       }
-    }, 5000);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -138,21 +138,19 @@ const FloatingContactWidget = () => {
             <div className="flex border-b border-slate-100 mb-4 pb-2 mr-8 text-xs md:text-sm font-bold gap-3">
               <button
                 onClick={() => setActiveTab('callback')}
-                className={`pb-1 px-1 transition-all ${
-                  activeTab === 'callback'
-                    ? 'text-slate-800 border-b-2 border-slate-800'
-                    : 'text-slate-400 hover:text-slate-600'
-                }`}
+                className={`pb-1 px-1 transition-all ${activeTab === 'callback'
+                  ? 'text-slate-800 border-b-2 border-slate-800'
+                  : 'text-slate-400 hover:text-slate-600'
+                  }`}
               >
                 Call Back
               </button>
               <button
                 onClick={() => setActiveTab('chat')}
-                className={`pb-1 px-1 transition-all flex items-center gap-1.5 ${
-                  activeTab === 'chat'
-                    ? 'text-slate-800 border-b-2 border-slate-800'
-                    : 'text-slate-400 hover:text-slate-600'
-                }`}
+                className={`pb-1 px-1 transition-all flex items-center gap-1.5 ${activeTab === 'chat'
+                  ? 'text-slate-800 border-b-2 border-slate-800'
+                  : 'text-slate-400 hover:text-slate-600'
+                  }`}
               >
                 <Sparkles size={14} className="text-[#e6b446]" />
                 Chat with AI
@@ -210,16 +208,14 @@ const FloatingContactWidget = () => {
                       {messages.map((msg, i) => (
                         <div
                           key={i}
-                          className={`flex ${
-                            msg.sender === 'user' ? 'justify-end' : 'justify-start'
-                          }`}
+                          className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                            }`}
                         >
                           <div
-                            className={`p-2.5 rounded-2xl max-w-[90%] leading-relaxed ${
-                              msg.sender === 'user'
-                                ? 'bg-slate-800 text-white rounded-tr-none'
-                                : 'bg-slate-100 text-slate-700 rounded-tl-none border border-slate-100'
-                            }`}
+                            className={`p-2.5 rounded-2xl max-w-[90%] leading-relaxed ${msg.sender === 'user'
+                              ? 'bg-slate-800 text-white rounded-tr-none'
+                              : 'bg-slate-100 text-slate-700 rounded-tl-none border border-slate-100'
+                              }`}
                           >
                             {msg.text}
                           </div>

@@ -10,13 +10,15 @@ if (process.env.NODE_ENV !== "production") {
 const PORT = process.env.PORT || 5011;
 const MONGO_URI = process.env.MONGO_URI;
 
+let serverInstance;
+
 const startServer = (port) => {
-    const server = app.listen(port, "0.0.0.0", () => {
+    serverInstance = app.listen(port, "0.0.0.0", () => {
         console.log(`🚀 Server running on port ${port}`);
         console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
     });
 
-    server.on("error", (err) => {
+    serverInstance.on("error", (err) => {
         if (err.code === "EADDRINUSE" && process.env.NODE_ENV !== "production") {
             console.log(`⚠️  Port ${port} is busy, trying ${port + 1}...`);
             startServer(port + 1);
@@ -38,5 +40,39 @@ mongoose
         console.error("❌ MongoDB connection failed:", err);
         process.exit(1);
     });
+
+// Graceful Shutdown Handler
+const gracefulShutdown = (signal) => {
+    console.log(`\n⚠️  ${signal} received. Starting graceful shutdown...`);
+
+    if (serverInstance) {
+        serverInstance.close(() => {
+            console.log("🛑 HTTP server closed.");
+
+            mongoose.connection.close(false)
+                .then(() => {
+                    console.log("💾 MongoDB connection closed.");
+                    process.exit(0);
+                })
+                .catch((err) => {
+                    console.error("❌ Error during MongoDB disconnection:", err);
+                    process.exit(1);
+                });
+        });
+
+        // Set safety timeout to force termination if active connections drag on
+        setTimeout(() => {
+            console.error("⚠️ Forcefully shutting down because graceful shutdown took too long.");
+            process.exit(1);
+        }, 10000);
+    } else {
+        process.exit(0);
+    }
+};
+
+// Listen for system signals
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+
 
 
