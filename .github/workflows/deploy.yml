@@ -1,23 +1,30 @@
-name: Deploy to EC2 - Test Connection
+name: Deploy to EC2
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  test-connection:
+  deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Connect to EC2 and run basic commands
+      - name: Deploy Project
         uses: appleboy/ssh-action@v1.0.3
+
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+
           script: |
-            pwd
-            whoami
-            hostname
+            cd ~/AGX-project-AWS
+
+            git fetch origin
+            git reset --hard origin/main
+
+            cd server
+            npm install
+
+            pm2 restart agx-server
