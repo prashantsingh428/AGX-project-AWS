@@ -42,3 +42,4 @@ This project includes a Blue-Green deployment script.
 ./deploy/deploy.sh
 ```
 This script handles zero-downtime deployment by switching traffic between active and new container stacks using Nginx.
+<!-- co-author test -->
