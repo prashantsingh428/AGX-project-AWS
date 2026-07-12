@@ -296,7 +296,7 @@ const Footer = () => {
 
                 {/* Cookie Notice Row */}
                 <div className="text-center text-xs text-slate-400 max-w-2xl mx-auto px-4">
-                    We use cookies on our site. Please read more about our <Link to="/cookie-policy" className="text-primary hover:underline">cookies policies</Link> here.
+                    We use cookies on our site. Please read  more about our <Link to="/cookie-policy" className="text-primary hover:underline">cookies policies</Link> here.
                 </div>
             </div>
         </footer>
