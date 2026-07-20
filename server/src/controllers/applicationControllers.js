@@ -1,4 +1,5 @@
 const Application = require("../models/Application");
+const { uploadToCloudinary } = require("../utils/cloudinaryUtils");
 
 exports.applyForJob = async (req, res) => {
     try {
@@ -7,9 +8,12 @@ exports.applyForJob = async (req, res) => {
             return res.status(400).json({ message: "Resume required" });
         }
 
+        // Upload PDF/DOCX to Cloudinary as a "raw" file
+        const result = await uploadToCloudinary(req.file.buffer, "resumes", "raw");
+
         const application = new Application({
             ...req.body,
-            resume: req.file.filename,
+            resume: result.secure_url,
         });
 
         await application.save();

@@ -1,11 +1,18 @@
 const Career = require("../models/Career");
+const { uploadToCloudinary } = require("../utils/cloudinaryUtils");
 
 /* SUBMIT APPLICATION */
 exports.submitCareer = async (req, res) => {
     try {
+        let resumeUrl = "";
+        if (req.file) {
+            const result = await uploadToCloudinary(req.file.buffer, "resumes", "raw");
+            resumeUrl = result.secure_url;
+        }
+
         const career = await Career.create({
             ...req.body,
-            resume: req.file?.filename
+            resume: resumeUrl
         });
 
         res.status(201).json({

@@ -1,12 +1,14 @@
-
 const Blog = require("../models/Blog");
+const { uploadToCloudinary } = require("../utils/cloudinaryUtils");
 
 // CREATE BLOG
 exports.createBlog = async (req, res) => {
     try {
-        const imagePath = req.file
-            ? `/uploads/blogs/${req.file.filename}`
-            : "";
+        let imagePath = "";
+        if (req.file) {
+            const result = await uploadToCloudinary(req.file.buffer, "blogs", "image");
+            imagePath = result.secure_url;
+        }
 
         const blog = await Blog.create({
             title: req.body.title,
@@ -56,7 +58,8 @@ exports.updateBlog = async (req, res) => {
         const updateData = { ...req.body };
 
         if (req.file) {
-            updateData.image = `/uploads/blogs/${req.file.filename}`;
+            const result = await uploadToCloudinary(req.file.buffer, "blogs", "image");
+            updateData.image = result.secure_url;
         }
 
         const blog = await Blog.findByIdAndUpdate(

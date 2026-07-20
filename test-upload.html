@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cloudinary Upload</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; }
+        .box { border: 2px dashed #ccc; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 1rem; }
+        #preview { max-width: 100%; margin-top: 1rem; border-radius: 8px; display: none; }
+        #video-preview { max-width: 100%; margin-top: 1rem; border-radius: 8px; display: none; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        #status { margin-top: 1rem; font-weight: bold; }
+        .url-box { margin-top: 1rem; padding: 1rem; background: #f4f4f4; word-break: break-all; display: none; border-radius: 4px;}
+    </style>
+</head>
+<body>
+    <h2>Upload to Cloudinary Test</h2>
+    
+    <div class="box">
+        <input type="file" id="fileInput" accept="image/*,video/*" />
+        <br><br>
+        <button id="uploadBtn" onclick="uploadFile()">Upload File</button>
+    </div>
+
+    <div id="status"></div>
+    
+    <div class="url-box" id="urlBox">
+        <strong>Uploaded URL:</strong> <br>
+        <a id="urlLink" href="#" target="_blank"></a>
+    </div>
+
+    <img id="preview" alt="Uploaded Preview" />
+    <video id="video-preview" controls></video>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const statusDiv = document.getElementById('status');
+            const preview = document.getElementById('preview');
+            const videoPreview = document.getElementById('video-preview');
+            const urlBox = document.getElementById('urlBox');
+            const urlLink = document.getElementById('urlLink');
+            const btn = document.getElementById('uploadBtn');
+
+            if (fileInput.files.length === 0) {
+                alert("Please select a file first.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            btn.disabled = true;
+            statusDiv.innerText = "Uploading to Cloudinary... Please wait ⏳";
+            statusDiv.style.color = "blue";
+            preview.style.display = "none";
+            videoPreview.style.display = "none";
+            urlBox.style.display = "none";
+
+            try {
+                // Adjust port if your backend runs on a different port than 5001
+                const response = await fetch("http://localhost:5001/api/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusDiv.innerText = "✅ Upload Successful!";
+                    statusDiv.style.color = "green";
+                    
+                    urlLink.href = data.url;
+                    urlLink.innerText = data.url;
+                    urlBox.style.display = "block";
+
+                    // Show image or video preview
+                    if (data.resource_type === 'video') {
+                        videoPreview.src = data.url;
+                        videoPreview.style.display = "block";
+                    } else {
+                        preview.src = data.url;
+                        preview.style.display = "block";
+                    }
+                } else {
+                    statusDiv.innerText = "❌ Upload Failed: " + data.message;
+                    statusDiv.style.color = "red";
+                }
+            } catch (error) {
+                statusDiv.innerText = "❌ Error connecting to server. Is it running on port 5001?";
+                statusDiv.style.color = "red";
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

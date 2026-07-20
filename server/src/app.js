@@ -14,6 +14,7 @@ const subscriberRoutes = require("./routes/subscriberRoutes");
 const serviceRoutes = require("./routes/pageRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 const app = express();
 
@@ -27,7 +28,7 @@ const allowedOrigins = [
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || origin === "null" || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error(`Not allowed by CORS: ${origin}`));
@@ -52,6 +53,7 @@ app.use("/api", subscriberRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes);
 
 app.get("/api", (req, res) => {
     res.json({ message: "Welcome to Ai Growth Exa API", status: "Running" });
