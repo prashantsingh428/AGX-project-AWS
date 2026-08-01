@@ -16,24 +16,77 @@
     transform: rotateY(180deg);
   }
   .nav-link-hover {
-    @apply relative py-1;
+    @apply relative py-1 overflow-hidden;
   }
   .nav-link-hover::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-full h-[2px] bg-primary scale-x-0 origin-left;
+    @apply absolute bottom-0 left-0 w-full h-[2px] bg-primary transition-transform duration-300 ease-out;
+    transform: scaleX(0);
+    transform-origin: bottom right;
   }
-  .nav-link-hover:hover::after {
-    animation: double-slide 0.8s cubic-bezier(0.65, 0.05, 0.36, 1) forwards;
+  .nav-link-hover:hover::after,
+  .nav-link-hover.active-link::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
   }
 
-  @keyframes double-slide {
-    0% { transform: scaleX(0); transform-origin: left; }
-    25% { transform: scaleX(1); transform-origin: left; }
-    40% { transform: scaleX(1); transform-origin: right; }
-    50% { transform: scaleX(0); transform-origin: right; }
-    60% { transform: scaleX(0); transform-origin: left; }
-    85% { transform: scaleX(1); transform-origin: left; }
-    100% { transform: scaleX(1); transform-origin: left; }
+  /* Creative Link Effect 2: Brackets */
+  .link-effect-brackets {
+    @apply relative inline-block transition-transform duration-300;
+  }
+  .link-effect-brackets::before,
+  .link-effect-brackets::after {
+    @apply absolute inline-block opacity-0 transition-all duration-300 text-primary font-bold;
+  }
+  .link-effect-brackets::before {
+    content: '[';
+    left: -15px;
+    transform: translateX(10px);
+  }
+  .link-effect-brackets::after {
+    content: ']';
+    right: -15px;
+    transform: translateX(-10px);
+  }
+  .link-effect-brackets:hover::before {
+    @apply opacity-100;
+    transform: translateX(0);
+  }
+  .link-effect-brackets:hover::after {
+    @apply opacity-100;
+    transform: translateX(0);
+  }
+
+  /* Global Creative Button Effect (Codrops Style Fill) */
+  .creative-btn, 
+  button[class*="bg-"], 
+  a[class*="bg-"][class*="px-"] {
+    @apply relative overflow-hidden isolate;
+  }
+  
+  .creative-btn::before, 
+  button[class*="bg-"]::before, 
+  a[class*="bg-"][class*="px-"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  
+  .creative-btn:hover::before, 
+  button[class*="bg-"]:hover::before, 
+  a[class*="bg-"][class*="px-"]:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 

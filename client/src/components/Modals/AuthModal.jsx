@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { X, Mail, Lock, User, ArrowRight, Loader2, Github, CheckCircle, AlertCircle } from 'lucide-react';
 import api from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
+import GeoPattern from 'geopattern';
 
 
 const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
@@ -253,6 +254,14 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
 
     if (!isOpen) return null;
 
+    let geoPatternUrl = '';
+    try {
+        const pattern = GeoPattern.generate(`ai-growth-exa-${view}`);
+        geoPatternUrl = pattern.toDataUrl();
+    } catch (err) {
+        console.error("GeoPattern failed:", err);
+    }
+
     return createPortal(
         <div className="fixed inset-0 bg-gray-950/80 z-[100] flex items-center justify-center p-4 backdrop-blur-md transition-all duration-300 animate-in fade-in" onClick={handleClose}>
 
@@ -305,6 +314,11 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login' }) => {
 
                     {/* Left Side: Visuals */}
                     <div className="w-full md:w-1/2 bg-[#0f172a] p-10 text-white relative overflow-hidden flex flex-col justify-center gap-12 min-h-[400px]">
+                        {/* GeoPattern Background Overlay */}
+                        <div 
+                            className="absolute inset-0 opacity-15 pointer-events-none mix-blend-overlay"
+                            style={{ backgroundImage: geoPatternUrl }}
+                        ></div>
                         {/* Background Elements */}
                         <div className="absolute top-[-20%] right-[-20%] w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
                         <div className="absolute bottom-[-10%] left-[-10%] w-64 h-64 bg-purple-600/20 rounded-full blur-3xl"></div>

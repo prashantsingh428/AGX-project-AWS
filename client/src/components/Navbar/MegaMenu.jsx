@@ -87,7 +87,7 @@ const MegaMenu = ({ name, data, items, isOpen, onClose, onMouseEnter }) => {
                                                     <Link
                                                         to={sub.path}
                                                         onClick={onClose}
-                                                        className="block text-[17px] font-bold text-gray-900 hover:text-primary transition-colors"
+                                                        className="block text-[17px] font-bold text-gray-900 hover:text-primary transition-colors nav-link-hover w-max"
                                                     >
                                                         {sub.name}
                                                     </Link>

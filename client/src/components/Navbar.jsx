@@ -265,12 +265,10 @@ const Navbar = () => {
                                     to={link.path}
                                     state={link.path === '/contact' ? { background: location } : undefined}
                                     ref={addToRefs}
-                                    className={({ isActive }) =>
-                                        `flex items-center gap-1.5 text-[15px] font-semibold transition-all hover:text-primary nav-link-hover ${isActive || (link.path === '/contact' && location.pathname === '/contact') || hoveredLink === link.name
-                                            ? 'text-primary'
-                                            : 'text-gray-600'
-                                        }`
-                                    }
+                                    className={({ isActive }) => {
+                                        const isCurrent = isActive || (link.path === '/contact' && location.pathname === '/contact') || hoveredLink === link.name;
+                                        return `flex items-center gap-1.5 text-[15px] font-semibold transition-all hover:text-primary nav-link-hover ${isCurrent ? 'text-primary active-link' : 'text-gray-600'}`;
+                                    }}
                                 >
                                     {link.name}
                                     {link.dropdown && (

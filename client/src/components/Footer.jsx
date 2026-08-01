@@ -114,7 +114,7 @@ const Footer = () => {
                             <img src={logo} alt="Ai Growth Exa" className="h-10 md:h-12 w-auto object-contain" />
                         </Link>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-                            Elevating businesses through precision AI-powered strategies and performance-first growth systems.
+                            Elevating business through precision AI-powered strategies and performance-first growth systems.
                         </p>
                     </div>
 
@@ -176,9 +176,7 @@ const Footer = () => {
                                 <Link
                                     to={item.path}
                                     state={item.path === '/contact' ? { background: location } : undefined}
-                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary text-sm"
-                                    onMouseEnter={handleLinkHover}
-                                    onMouseLeave={handleLinkLeave}
+                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary text-sm nav-link-hover w-max"
                                 >
                                     <span className="text-primary/50">{item.icon}</span>
                                     {item.name}
@@ -208,9 +206,7 @@ const Footer = () => {
                             <li key={sol}>
                                 <Link
                                     to="/services"
-                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary text-sm"
-                                    onMouseEnter={handleLinkHover}
-                                    onMouseLeave={handleLinkLeave}
+                                    className="flex items-center gap-2 transition-colors duration-300 text-slate-500 hover:text-primary text-sm nav-link-hover w-max"
                                 >
                                     <ArrowRight size={12} className="text-primary/30" />
                                     {sol}
@@ -284,13 +280,13 @@ const Footer = () => {
                     <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center">
                         <span className="font-medium text-slate-600">Copyright © {new Date().getFullYear()} Ai Growth Exa. All rights reserved.</span>
                         <span className="text-slate-300 hidden sm:inline">•</span>
-                        <Link to="/contact" state={{ background: location }} className="hover:text-primary transition-colors">Contact Us</Link>
+                        <Link to="/contact" state={{ background: location }} className="hover:text-primary transition-colors nav-link-hover">Contact Us</Link>
                         <span className="text-slate-300">/</span>
-                        <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Statement</Link>
+                        <Link to="/privacy-policy" className="hover:text-primary transition-colors nav-link-hover">Privacy Statement</Link>
                         <span className="text-slate-300">/</span>
-                        <Link to="/terms-and-conditions" className="hover:text-primary transition-colors">Terms of use</Link>
+                        <Link to="/terms-and-conditions" className="hover:text-primary transition-colors nav-link-hover">Terms of use</Link>
                         <span className="text-slate-300">/</span>
-                        <Link to="/cookie-policy" className="hover:text-primary transition-colors">Cookie info</Link>
+                        <Link to="/cookie-policy" className="hover:text-primary transition-colors nav-link-hover">Cookie info</Link>
                     </div>
                 </div>
 
